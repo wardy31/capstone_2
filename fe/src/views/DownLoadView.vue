@@ -1,0 +1,142 @@
+<template>
+  <v-app>
+    <v-main class="bg">
+      <v-app-bar color="transparent" flat>
+        <div class="primary--text font-weight-bold size">Unitrace</div>
+      </v-app-bar>
+
+      <v-container>
+        <div class="viewH">
+          <v-row v-if="isMobile">
+            <v-col cols="12">
+              <div class="text-center mt-12">
+                <v-img src="../assets/ed.jpg" class="rounded-lg"></v-img>
+              </div>
+            </v-col>
+            <v-col cols="12">
+              <div class="mt-16">
+                <h1>Download The App</h1>
+                <h6>University Contact Tracing</h6>
+
+                <div class="mt-6">
+                  <div class="text-justify textSize">
+                    Lorem ipsum dfadf sit amet consectetur adipisicing elit.
+                    Nisi itaque nihil ut possimus debitis dolores asperiores,
+                    laudantium illum. Ipsam sint odit velit! Eveniet numquam
+                    dolorum enim placeat recusandae dolores provident?
+                  </div>
+
+                  <div class="mt-5">
+                    <v-btn
+                      color="primary"
+                      large
+                      class="font-weight-bold text-capitalize"
+                    >
+                      <v-icon class="mr-2">cloud_download</v-icon>
+                      Download
+                    </v-btn>
+                  </div>
+                </div>
+              </div>
+            </v-col>
+          </v-row>
+          <v-row v-else>
+            <v-col cols="6">
+              <div class="mt-16">
+                <h1 class="primary--text">Download The App</h1>
+                <h5 class="secondary--text">Leyte Normal University Contact Tracing</h5>
+
+
+                <div class="mt-6">
+                  <div class="text-justify textSize">
+                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Nisi itaque nihil ut possimus debitis dolores asperiores,
+                    laudantium illum. Ipsam sint odit velit! Eveniet numquam
+                    dolorum enim placeat recusandae dolores provident?
+                  </div>
+
+                  <div class="mt-5">
+                    <v-btn
+                      color="primary"
+                      large
+                      class="font-weight-bold text-capitalize"
+                    >
+                      <v-icon class="mr-2">cloud_download</v-icon>
+                      Download
+                    </v-btn>
+                  </div>
+                </div>
+              </div>
+            </v-col>
+            <v-col cols="6">
+              <v-img
+                src="../assets/cp.jpeg"
+                class="rounded-lg ml-12"
+                contain
+                max-height="580"
+              ></v-img>
+            </v-col>
+          </v-row>
+        </div>
+      </v-container>
+      <!-- <div class="view2" id="system">
+        <v-container>
+          <div class="text-center mt-12">
+            <h2 class="white--text">Software Requirements</h2>
+
+            <div class="white--text mt-8">Android must be at least API26</div>
+            <div class="white--text mt-2">Camera atleast 480p Quality</div>
+            <div class="white--text mt-2">Android</div>
+          </div>
+        </v-container>
+      </div> -->
+    </v-main>
+  </v-app>
+</template>
+
+<script>
+export default {
+  data: () => ({ isMobile: false }),
+
+  beforeDestroy() {
+    if (typeof window === "undefined") return;
+
+    window.removeEventListener("resize", this.onResize, { passive: true });
+  },
+
+  mounted() {
+    this.onResize();
+
+    window.addEventListener("resize", this.onResize, { passive: true });
+  },
+
+  methods: {
+    onResize() {
+      this.isMobile = window.innerWidth < 600;
+    },
+  },
+};
+</script>
+
+<style>
+* {
+  scroll-behavior: smooth;
+}
+.bg {
+  /* background-color: #141e61; */
+  background-color: whitesmoke;
+}
+.size {
+  font-size: 22px;
+}
+.textSize {
+  font-size: 18px;
+}
+.viewH {
+  height: 100vh;
+}
+.view2 {
+  background-color: #141e61;
+  height: 100vh;
+}
+</style>

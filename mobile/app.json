@@ -1,0 +1,43 @@
+{
+  "expo": {
+    "name": "unitrace",
+    "slug": "mobile_trace",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon_trace.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash_trace.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#141E61"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "softwareKeyboardLayoutMode": "pan",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon_trace.png",
+        "backgroundColor": "#141E61"
+      },
+      "package": "com.wardi258.mobile_trace"
+    },
+    "web": {
+      "favicon": "../assets/icon_trace.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "cd78b6d0-0c1c-4f3d-8fb8-38d21974cdc5"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "sdkVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/cd78b6d0-0c1c-4f3d-8fb8-38d21974cdc5"
+    }
+  }
+}
