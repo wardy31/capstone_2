@@ -6,16 +6,43 @@ const multer = require("multer");
 const predictRoute = require("./routes/PredictRoute");
 const axios = require('axios')
 const fs = require("fs");
+
+const { createServer } = require('http')
+const { Server } = require("socket.io");
+
+
 const corsOptions = {
-  origin: "*",
+  origin: ['http://192.168.1.136:8080'],
+  credentials: true
 };
 
+app.use(cors(corsOptions));
 app.use(logger("dev"));
 app.use(express.json());
-app.use(cors(corsOptions));
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/api", predictRoute);
+
+// Websocket
+const httpServer = createServer(app);
+const io = new Server(httpServer, {
+  cors: {
+    origin: ["http://192.168.1.136:8080"],
+    credentials: true
+  }
+});
+
+io.on('connection', async (socket) => {
+  socket.on('clinic-server', (args) => {
+    socket.emit('clinic-notify', { 'message': "clnic" })
+    console.log('clinic',args.to)
+  })
+
+  socket.on('user-server', (args) => {
+    socket.emit('user-notify', { 'message': "user" })
+    console.log('user',args)
+  })
+})
 
 const images = () => {
   const storage = multer.diskStorage({
@@ -41,16 +68,16 @@ const images = () => {
 app.post("/ge", images(), (req, res) => {
   req.files;
   console.log(req.files);
-  res.json({ data: req.files });
+  res.json({ data: req.files, body: req.body });
 });
 
 app.get("/checking", async (req, res) => {
-axios.get('http://192.168.1.136:8000/api/check').then((result) => {
-  console.log(result.data);
-  res.json({message:result.data,host:req.host})
-}).catch((err) => {
-  console.log(err);
-});
+  axios.get('http://192.168.1.136:8000/api/check').then((result) => {
+    console.log(result.data);
+    res.json({ message: result.data, host: req.host })
+  }).catch((err) => {
+    console.log(err);
+  });
   // console.log(req.files);
 });
 
@@ -58,6 +85,10 @@ PORT = process.env.PORT || 3000;
 console.log(`Running server at http://localhost:${PORT}`);
 // app.listen(PORT);
 
-app.listen(3000, "192.168.1.136", () => {
+// app.listen(3000, "192.168.1.136", () => {
+//   console.log("running server at http://192.168.1.136:3000");
+// });
+
+httpServer.listen(3000, "192.168.1.136", () => {
   console.log("running server at http://192.168.1.136:3000");
 });

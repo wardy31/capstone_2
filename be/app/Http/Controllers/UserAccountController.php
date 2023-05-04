@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\FollowUp;
 use App\Models\UserAccount;
 use App\Models\UserPatient;
+use App\Models\UserResponse;
+use App\Models\VisitedLocationRecord;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -64,20 +67,20 @@ class UserAccountController extends Controller
 
         $request->validate([
             'first_name' => ['required'],
-            'middle_name' => ['required'],
+            // 'middle_name' => ['required'],
             'last_name' => ['required'],
             'gender' => ['required'],
             'address' => ['required'],
             'email' => ['required', 'email', 'unique:user_accounts,email', 'unique:clinic_accounts,email'],
-            // 'department' => ['required'],
+            'department' => ['required'],
             'contact_number' => ['required', 'min:11', 'max:11'],
             'classification_id' => ['required'],
             'vaccination_status' => ['required'],
             //'images_path' => ['required'],
             'username' => ['required', 'unique:clinic_accounts,username', 'unique:user_accounts,username', 'unique:station_accounts,username'],
             'password' => ['required', 'confirmed'],
-            'upload_1' => ['required', 'mimes:jpg'],
-            'upload_2' => ['required', 'mimes:jpg'],
+            'upload_1' => ['required', 'mimes:jpg,png'],
+            'upload_2' => ['required', 'mimes:jpg,png'],
         ]);
 
         $image = $request->file('upload_1')->storeAs('user/' . $request->username, $request->username . "." . $request->file('upload_1')->extension(), 'public');
@@ -158,7 +161,17 @@ class UserAccountController extends Controller
 
     public function getProfile($id)
     {
-        $user = UserAccount::with(['classification','userTagged.contactCategory','userPatient.contactCategory'])->find($id);
+        $user = UserAccount::with(['classification', 'userTagged.contactCategory', 'userPatient.contactCategory'])->find($id);
         return response()->json($user);
+    }
+
+    public function userDetails(Request $request)
+    {
+        $hdrResponse = UserResponse::with('answers.question')->where('user_account_id', $request->user()->id)->get();
+        $visitedStation = VisitedLocationRecord::with('location')->where('user_account_id', $request->user()->id)->get();
+        $followUps = FollowUp::where('user_account_id', $request->user()->id)->get();
+
+        
+        return response()->json(['hdr'=> $hdrResponse, 'visited' => $visitedStation, 'followUps' => $followUps]);
     }
 }

@@ -85,7 +85,7 @@
           class="text-capitalize mb-2"
           :class="[validate() ? `d-none` : ``]"
           @click="submitSelected"
-          >Submit Selected Contact</v-btn
+          >Submit Selected As Contact</v-btn
         >
       </div>
       <v-simple-table class="rounded-lg elevation-6">
@@ -175,7 +175,7 @@
                   </v-btn>
                 </template>
                 <v-list>
-                  <v-list-item :to="`/admin/checkprofile/${2}`">
+                  <v-list-item :to="`/admin/checkprofile/${visited.user_account.id}`">
                     <v-list-item-icon class="mr-4"
                       ><v-icon color="primary"
                         >account_circle</v-icon

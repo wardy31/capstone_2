@@ -1,50 +1,32 @@
 <template>
   <v-app id="apps">
-    <v-card class="ma-auto rounded-xl" elevation="5">
+    <v-card class="ma-auto " elevation="5" width="720" tile>
       <v-container>
-        <v-row>
-          <v-col class="rounded-xl rounded-r-0 accent">
-            <h4 class="mt-3 ml-2 mb-16 primary--text">UniTrace</h4>
-            <img :src="require('@/assets/undraw/user.png')" width="340" />
+        <v-row class="accent">
+          <v-col class="accent">
+            <h4 class="mt-3 ml-2 mb-16 primary--text">UniTrace.</h4>
+            <img :src="require('@/assets/user_4.svg')" width="320" />
           </v-col>
-          <v-col>
+          <v-col class="white" :class="$vuetify.breakpoint.mobile ? `rounded-t-xl` : ``">
             <v-container>
-              <h1 class="font-weight-black primary--text">Welcome To</h1>
-              <h1 class="font-weight-bold primary--text">UniTrace</h1>
-              
-              <div class="mt-12">
-                <v-alert type="error" text dense  :value="error">
-                  {{ message }}
-              </v-alert>
-                <h4 class="primary--text mb-4 bolds">Login User</h4>
+              <h2 class="font-weight-bold mb-4 mt-3 primary--text text-center">UniTrace.</h2>
+
+              <div class="mt-15 mx-2">
+                <h4 class="primary--text mb-6 font-weight-bold">Login Account</h4>
                 <h5 class="mb-1 font-weight-regular">Username</h5>
-                <v-text-field
-                  outlined
-                  dense
-                  class="rounded-lg"
-                  v-model="credentials.username"
-                ></v-text-field>
+                <v-text-field outlined dense class="rounded-lg" filled prepend-inner-icon="person"
+                  :error-messages="message.username" v-model="credentials.username"></v-text-field>
 
-                <h5 class="mb-1 mt-n4 font-weight-regular">Password</h5>
-                <v-text-field
-                  outlined
-                  dense
-                  type="password"
-                  class="rounded-lg"
-                  v-model="credentials.password"
-                ></v-text-field>
+                <h5 class="mb-1 mt-n1 font-weight-regular">Password</h5>
+                <v-text-field outlined dense type="password" class="rounded-lg" prepend-inner-icon="vpn_key" filled
+                  v-model="credentials.password" :error-messages="message.password"></v-text-field>
 
-                <v-btn
-                  color="primary"
-                  class="rounded-md mt-n2"
-                  block
-                  @click="login()"
-                  :loading="loading"
-                  ><h4>Login</h4></v-btn
-                >
-                <v-btn class="rounded-md mt-2" block text
-                 to="/UserRegister" ><h5 class="font-weight-regular">Create Account</h5></v-btn
-                >
+                <v-btn color="primary" class="rounded-md mt-n1 text-capitalize" block @click="login()" :loading="loading">
+                  <h4>Login</h4>
+                </v-btn>
+                <v-btn class="rounded-md mt-2" block text to="/UserRegister">
+                  <h4 class="font-weight-regular text-capitalize mt-n2">Create Account</h4>
+                </v-btn>
               </div>
             </v-container>
           </v-col>
@@ -91,6 +73,7 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Poppins:wght@700&display=swap");
+
 #apps {
   background-color: #141e61;
   font-family: "Poppins", sans-serif;

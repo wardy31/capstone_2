@@ -38,25 +38,20 @@ class FollowUpController extends Controller
 
     public function checkFollowUp(Request $request)
     {
-        $user = UserAccount::whereHas('userTagged', function ($q) use ($request) {
-            $q->where('user_account_id', $request->user()->id)->where('isActive', true);
-        })->orWhereHas('userPatient', function ($q) use ($request) {
-            $q->where('user_account_id', $request->user()->id)->where('isActive', true);
-        })->with(['userTagged' => function ($q) use ($request) {
-            $q->where('user_account_id', $request->user()->id)->where('isActive', true);
-        }, 'userPatient']);
+        $user = UserAccount::with(['userTagged', 'userPatient'])->where('id', $request->user()->id)->latest();
 
         //if not exist
-        if ($user->doesntExist()) {
-            $healthDeclare = UserResponse::where('user_account_id', $request->user()->id)->whereDate('created_at', Carbon::now())->exists();
-            return response()->json(['data' => [], 'healthDeclaration' => $healthDeclare]);
-        }
+        // if ($user->doesntExist()) {
+        //     $healthDeclare = UserResponse::where('user_account_id', $request->user()->id)->whereDate('created_at', Carbon::now())->exists();
+        //     return response()->json(['data' => [], 'healthDeclaration' => $healthDeclare]);
+        // }
 
-        //if has now follow up data
+        // //if has now follow up data
         $now = Carbon::now();
         $followUp = FollowUp::where('user_account_id', $user->first()->id)->whereDate('created_at', $now)->exists();
+        $healthDeclare = UserResponse::where('user_account_id', $request->user()->id)->whereDate('created_at', Carbon::now())->exists();
 
-        return response()->json(['data' => [$user->first()], 'followUp' => $followUp]);
+        return response()->json(['data' => [$user->first()], 'followUp' => $followUp, 'healthDeclaration' => $healthDeclare]);
     }
 
 

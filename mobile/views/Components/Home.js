@@ -79,7 +79,7 @@ function Home({ navigation }) {
                 style={{
                   fontFamily: "PoppinsBold",
                   color: "#141E61",
-                  fontSize: 16,
+                  fontSize: 16
                 }}
               >
                 Contact Status
@@ -150,13 +150,13 @@ function Home({ navigation }) {
             style={{
               fontFamily: "PoppinsBold",
               color: "#141E61",
-              fontSize: 22,
+              fontSize: 18,
             }}
           >
             Daily Announcements
           </Text>
 
-          <View style={{ marginTop: 12 }}>
+          <View style={{ marginTop: 10 }}>
             <Dialog dialog={dialog} closeModal={closeModal} />
             {userStatus?.user_patient.length ||
             userStatus?.user_tagged.length ? (

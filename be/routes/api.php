@@ -1,5 +1,7 @@
 <?php
 
+use App\Events\ClinicNotification as EventsClinicNotification;
+use App\Events\OrderShipmentStatusUpdated;
 use App\Http\Controllers\ClassifiedCloseContactController;
 use App\Http\Controllers\ClinicAccountController;
 use App\Http\Controllers\ClinicNotificationController;
@@ -23,6 +25,7 @@ use App\Models\UserResponse;
 use App\Models\VisitedLocationRecord;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Broadcast;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -106,6 +109,9 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('follow-up', [FollowUpController::class, "storeFollowUp"]);
         Route::get('check-profile/{id}', [UserAccountController::class, "getProfile"]);
         Route::get('visited-log-record', [VisitedLocationRecordController::class, 'getUserRecord']);
+
+        Route::get('notification-paginate',[ClinicNotificationController::class,'userPaginateNotification']);
+        Route::get('notification-all',[ClinicNotificationController::class,'userNotificationAll']);
     });
 
     //clinic
@@ -199,4 +205,8 @@ Route::middleware('auth:sanctum')->group(function () {
 
     // Notifications 
     Route::get('clinic-notifications',[NotificationController::class,'show']);
+    Route::get('user-notifications',[NotificationController::class,'userShow']);
+
+    // User Details
+    Route::get('user-details',[UserAccountController::class,'userDetails']);
 });

@@ -7,7 +7,7 @@ export default {
       data: [],
       loading: false,
       error: "",
-      page:1
+      page: 1,
     },
     store: {
       loading: false,
@@ -37,6 +37,9 @@ export default {
       success: false,
       message: "",
     },
+    details:{
+      data:null
+    }
   }),
   mutations: {
     user(state, data) {
@@ -51,7 +54,7 @@ export default {
     setData(state, data) {
       state[data.type].data = data.data;
     },
-    setPage(state,data){
+    setPage(state, data) {
       state[data.type].page = data.page
     },
     setLoading(state, data) {
@@ -70,7 +73,7 @@ export default {
     },
   },
   actions: {
-    async getAllUser({ commit },param) {
+    async getAllUser({ commit }, param) {
       commit("setLoading", { type: "all", loading: true });
       try {
         const { data } = await axios.get(`clinic/get-users?page=${param}`, {
@@ -85,9 +88,9 @@ export default {
         console.log(error);
       }
     },
-    async userSearch({ commit,dispatch },param) {
+    async userSearch({ commit, dispatch }, param) {
       commit("setLoading", { type: "all", loading: true });
-      if(!param.trim()){
+      if (!param.trim()) {
         dispatch('getAllUser')
         return false
       }
@@ -158,7 +161,10 @@ export default {
       console.log(commit);
       console.log(payload);
       state.password.loading = true;
-      state.password.error = false;
+      commit("password", {
+        error: false,
+        message: ""
+      });
       state.password.success = false;
       axios
         .put("user/update-password", payload, {
@@ -173,7 +179,7 @@ export default {
         .catch((err) => {
           commit("password", {
             error: true,
-            message: err.response.data.message,
+            message: err.response.data.errors,
           });
           state.password.loading = false;
           console.log(err.response.data);
@@ -193,7 +199,7 @@ export default {
         .catch((err) => {
           console.log(err.response.data);
           commit("loading", false);
-          commit("error", { error: true, message: err.response.data.message });
+          commit("error", { error: true, message: err.response.data.errors });
         });
     },
     async logout({ commit }) {
@@ -211,6 +217,19 @@ export default {
     async reset({ commit }) {
       commit("next", false);
     },
+    async userDetails({commit}){
+      try {
+          const {data} = await axios.get('user-details',{
+            headers:{
+              Authorization : `Bearer ${localStorage.getItem('token')}`
+            }
+          })
+          
+          commit('setData',{type:"details",data:data})
+      } catch (error) {
+          console.log(error);
+      }
+    }
   },
   getters: {},
 };

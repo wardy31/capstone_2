@@ -49,7 +49,6 @@
                   {{ user.classification.name }}
                 </div>
               </td>
-              
               <td class="text-left text-uppercase font-weight-bold">
                 <div class="mb-1 text-primary">
                   {{ user.department }}

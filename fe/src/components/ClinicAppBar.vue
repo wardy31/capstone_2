@@ -1,22 +1,18 @@
 <template>
   <v-app-bar app color="accent">
     <v-app-bar-nav-icon color="primary" @click="$emit('handleDialog')"></v-app-bar-nav-icon>
+    <v-app-bar-title>
+      <h4 class="primary--text mr-4 text-capitalize font-weight-bold">
+        UniTrace.
+      </h4>
+    </v-app-bar-title>
+
     <v-spacer></v-spacer>
-    <v-menu
-      :rounded="rounded"
-      offset-y
-      transition="slide-y-transition"
-      max-width="280"
-    >
+    <v-menu :rounded="rounded" offset-y transition="slide-y-transition" max-width="280">
       <template v-slot:activator="{ attrs, on }">
         <v-badge color="red" left dot :value="dot">
-          <v-icon
-            class="primary--text mr-8"
-            size="26"
-            v-bind="attrs"
-            v-on="on"
-            @click="$store.state.notifications.dot = false"
-          >
+          <v-icon class="primary--text mr-8" size="26" v-bind="attrs" v-on="on"
+            @click="$store.state.notifications.dot = false">
             notifications
           </v-icon>
         </v-badge>
@@ -33,19 +29,12 @@
               <h5 class="font-weight-thin">{{ notif.message }}</h5>
             </v-list-item-subtitle>
             <v-list-item-subtitle>
-             <h5 class="font-weight-thin"> {{ notif.created_at | timeFormat }}</h5>
+              <h5 class="font-weight-thin"> {{ notif.created_at | timeFormat }}</h5>
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
         <v-divider></v-divider>
-        <v-btn
-          block
-          text
-          color="primary"
-          class="text-capitalize"
-          to="/admin/notifications"
-          >See all notifications</v-btn
-        >
+        <v-btn block text color="primary" class="text-capitalize" to="/admin/notifications">See all notifications</v-btn>
       </v-list>
     </v-menu>
     <h4 class="black--text mr-4 text-capitalize font-weight-regular">
@@ -56,32 +45,22 @@
     </h4>
     <v-menu offset-y bottom transition="slide-y-transition" rounded="lg">
       <template v-slot:activator="{ on, attrs }">
-        <v-avatar
-          color="primary"
-          class="white--text font-weight-bold"
-          v-bind="attrs"
-          v-on="on"
-          size="50"
-          >{{ data.first_name.slice(0, 1).toUpperCase() }}</v-avatar
-        >
+        <v-avatar color="primary" class="white--text font-weight-bold" v-bind="attrs" v-on="on" size="50">{{
+          data.first_name.slice(0, 1).toUpperCase() }}</v-avatar>
       </template>
       <v-list>
         <v-list-item to="/admin/editprofile">
-          <v-list-item-icon class="mr-4"
-            ><v-icon color="primary">account_circle</v-icon></v-list-item-icon
-          >
-          <v-list-item-title class="font-weight-bold"
-            ><h5>Edit Profile</h5></v-list-item-title
-          >
+          <v-list-item-icon class="mr-4"><v-icon color="primary">account_circle</v-icon></v-list-item-icon>
+          <v-list-item-title class="font-weight-bold">
+            <h5>Edit Profile</h5>
+          </v-list-item-title>
         </v-list-item>
         <v-divider></v-divider>
         <v-list-item @click="logout">
-          <v-list-item-icon class="mr-4"
-            ><v-icon color="primary">logout</v-icon></v-list-item-icon
-          >
-          <v-list-item-title class="font-weight-bold"
-            ><h5>Logout</h5></v-list-item-title
-          >
+          <v-list-item-icon class="mr-4"><v-icon color="primary">logout</v-icon></v-list-item-icon>
+          <v-list-item-title class="font-weight-bold">
+            <h5>Logout</h5>
+          </v-list-item-title>
         </v-list-item>
       </v-list>
     </v-menu>
@@ -92,7 +71,7 @@
 import moment from "moment";
 import { mapState } from "vuex";
 export default {
-  props: ["data",'dialog'],
+  props: ["data", 'dialog'],
   mounted() {
     this.$store.dispatch("notifications/getNotifications");
   },
@@ -113,7 +92,7 @@ export default {
   },
   methods: {
     fiveNotif() {
-      const slice = this.notify.slice(0,4)
+      const slice = this.notify.slice(0, 4)
       console.log("wa", slice);
       return slice;
     },

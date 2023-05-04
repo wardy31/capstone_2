@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main class="bg">
-      <v-app-bar color="transparent" flat>
+      <v-app-bar color="transparent" flat class="mb-8">
         <div class="primary--text font-weight-bold size">Unitrace</div>
       </v-app-bar>
 
@@ -27,11 +27,7 @@
                   </div>
 
                   <div class="mt-5">
-                    <v-btn
-                      color="primary"
-                      large
-                      class="font-weight-bold text-capitalize"
-                    >
+                    <v-btn color="primary" large class="font-weight-bold text-capitalize">
                       <v-icon class="mr-2">cloud_download</v-icon>
                       Download
                     </v-btn>
@@ -49,18 +45,13 @@
 
                 <div class="mt-6">
                   <div class="text-justify textSize">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                    Nisi itaque nihil ut possimus debitis dolores asperiores,
-                    laudantium illum. Ipsam sint odit velit! Eveniet numquam
-                    dolorum enim placeat recusandae dolores provident?
+                    Downloading the unitrace app is a simple yet powerful way to contribute to the university to
+                    slow the spread of infectious diseases. By taking just a few minutes to download and set up the app,
+                    you can help protect yourself, your loved ones, and your community.
                   </div>
 
                   <div class="mt-5">
-                    <v-btn
-                      color="primary"
-                      large
-                      class="font-weight-bold text-capitalize"
-                    >
+                    <v-btn color="primary" large class="font-weight-bold text-capitalize">
                       <v-icon class="mr-2">cloud_download</v-icon>
                       Download
                     </v-btn>
@@ -69,12 +60,7 @@
               </div>
             </v-col>
             <v-col cols="6">
-              <v-img
-                src="../assets/cp.jpeg"
-                class="rounded-lg ml-12"
-                contain
-                max-height="580"
-              ></v-img>
+              <v-img src="../assets/download.png" class="rounded-lg ml-12" contain max-height="410"></v-img>
             </v-col>
           </v-row>
         </div>
@@ -122,19 +108,24 @@ export default {
 * {
   scroll-behavior: smooth;
 }
+
 .bg {
   /* background-color: #141e61; */
   background-color: whitesmoke;
 }
+
 .size {
   font-size: 22px;
 }
+
 .textSize {
-  font-size: 18px;
+  font-size: 17px;
 }
+
 .viewH {
   height: 100vh;
 }
+
 .view2 {
   background-color: #141e61;
   height: 100vh;

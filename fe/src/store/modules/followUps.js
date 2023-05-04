@@ -38,7 +38,7 @@ export default {
   actions: {
     async followUp({ commit,dispatch }, payload) {
         commit("setLoading",true)
-      axios.post("user/follow-up", payload,{headers:{"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+      axios.post("submit-follow-up", payload,{headers:{"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
         .then(res =>{
             commit("setLoading",false)
             commit("setDialog",false)

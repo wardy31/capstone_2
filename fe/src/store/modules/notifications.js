@@ -29,10 +29,10 @@ export default {
 
         if (data.length > state.data.length) {
           if (data.length) {
-              await commit("setData", data);
-              commit("setDot", true);
-            }
+            await commit("setData", data);
+            commit("setDot", true);
           }
+        }
         await commit("setLoading", false);
 
         return true
@@ -43,5 +43,31 @@ export default {
         return false
       }
     },
+
+    async getUserNotifications({ commit, state }) {
+      commit("setLoading", true);
+      try {
+        const { data } = await axios.get(`user-notifications`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
+
+        if (data.length > state.data.length) {
+          if (data.length) {
+            await commit("setData", data);
+            commit("setDot", true);
+          }
+        }
+        await commit("setLoading", false);
+
+        return true
+      } catch (error) {
+        commit("setLoading", false);
+        console.log(error);
+
+        return false
+      }
+    },
+
   },
+
 };

@@ -58,7 +58,7 @@
               </ul>
             </div>
           </v-card-text>
-          <v-card-actions>
+          <v-card-actions class="ml-4">
             <v-tooltip bottom >
               <template v-slot:activator="{ on, attrs }">
                 <v-btn

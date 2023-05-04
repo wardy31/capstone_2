@@ -117,6 +117,11 @@
       </div>
     </v-main>
     <v-dialog v-model="checkDialog" width="540">
+      <v-app-bar color="primary" >
+        <v-app-bar-title class="white--text">
+          <h5>Response</h5>
+        </v-app-bar-title>
+      </v-app-bar>
       <v-card v-for="(response,index) in responseData" :key="response.id" tile>
         <v-card-title primary-title class="text-justify">
           <h6>{{ `${index + 1}. ${response.question.question}` }}</h6>

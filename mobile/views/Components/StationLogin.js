@@ -28,8 +28,9 @@ import {
           console.log(true);
         } else {
           setAuth(false);
-          console.log(true);
+          console.log(false);
         }
+        SplashScreen.hideAsync()
       })();
     }, [authCheck]);
   

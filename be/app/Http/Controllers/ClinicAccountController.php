@@ -71,11 +71,11 @@ class ClinicAccountController extends Controller
 
         //if  exist
         if (!$clinic) {
-            return response()->json(['message' => "Username Doesn't Exist"], 400);
+            return response()->json(['errors' => ['username' => "Username Doesn't Exist"]], 400);
         }
         //check password
         if (!Hash::check($request->password, $clinic->password)) {
-            return response()->json(['message' => "Password Doesn't Match"], 400);
+            return response()->json(['errors' => ['password' => "Password Doesn't Match"]], 400);
         }
 
         $token = $clinic->createToken('token')->plainTextToken;
@@ -144,13 +144,13 @@ class ClinicAccountController extends Controller
     public function getCounts()
     {
         $clinic = ClinicAccount::count();
-        $station = StationAccount::count();        
-        $followUp = FollowUp::with('users')->whereDate('created_at',Carbon::now())->get();
+        $station = StationAccount::count();
+        $followUp = FollowUp::with('users')->whereDate('created_at', Carbon::now())->get();
         $monthClassifedContacts = UserPatient::with(['contacts.userTagged.userAccount', 'userAccount', 'disease'])
-        ->whereMonth('created_at', Carbon::now())
-        ->latest()
-        ->get();
-        
+            ->whereMonth('created_at', Carbon::now())
+            ->latest()
+            ->get();
+
         $active = UserPatient::get();
         $sortActive = [];
         foreach ($active as $pat) {

@@ -1,42 +1,45 @@
 <template>
   <v-app id="apps">
-    <v-card class="ma-auto rounded-xl" elevation="5">
+    <v-card class="ma-auto" elevation="5" width="720">
       <v-container>
-        <v-row>
-          <v-col class="rounded-xl rounded-r-0 accent">
-            <h4 class="mt-3 ml-2 mb-16 primary--text">UniTrace</h4>
-            <img :src="require('@/assets/undraw/medicine.png')" width="340" />
+        <v-row class="accent">
+          <v-col class=" accent text-center">
+            <h4 class="mt-3 ml-4 mb-16 primary--text text-left">UniTrace.</h4>
+            <img :src="require('@/assets/doctors.svg')" width="280" />
           </v-col>
-          <v-col>
+          <v-col class="mb-6 white" :class="$vuetify.breakpoint.mobile ? `rounded-t-xl` : ``">
             <v-container>
-              <h1 class="font-weight-black primary--text">Welcome To</h1>
-              <h1 class="font-weight-bold primary--text">UniTrace</h1>
+              <!-- <h1 class="font-weight-black primary--text">Welcome to</h1> -->
+              <h2 class="font-weight-bold primary--text text-center mt-3 mb-4">UniTrace.</h2>
 
-              <div class="mt-12">
-                <v-alert type="error" text dense :value="error">
-                  {{ message }}
-                </v-alert>
-                <h4 class="primary--text mb-4 bolds">Login Clinic</h4>
+              <div class="mt-15 mx-2">
+                <h4 class="primary--text mb-6 font-weight-bold">Login Clinic</h4>
 
                 <h5 class="mb-1 font-weight-regular">Username</h5>
                 <v-text-field
                   outlined
                   dense
-                  class="rounded-lg"
+                  filled
+                  class="rounded-md"
+                  prepend-inner-icon="person"
                   v-model="credentials.username"
+                  :error-messages="message?.username"
                 ></v-text-field>
 
-                <h5 class="mb-1 mt-n4 font-weight-regular">Password</h5>
+                <h5 class="mb-1 mt-n2 font-weight-regular">Password</h5>
                 <v-text-field
                   outlined
                   dense
-                  class="rounded-lg"
+                  filled
+                  class="rounded-md"
+                  prepend-inner-icon="vpn_key"
+                  :error-messages="message?.password"
                   type="password"
                   v-model="credentials.password"
                 ></v-text-field>
                 <v-btn
                   color="primary"
-                  class="rounded-md mt-n2"
+                  class="rounded-md mt-n2 text-capitalize"
                   block
                   @click="login"
                   :loading="loading"><h4>Login</h4></v-btn
@@ -58,6 +61,7 @@ import { mapState } from "vuex";
 
 export default {
   mounted() {
+
     // if (localStorage.getItem("token")) {
     //   this.$router.push("/admin/dashboard");
     // }

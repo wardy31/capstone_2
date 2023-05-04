@@ -17,6 +17,7 @@ const store = create((set) => ({
       );
       const ss = await axios.post(`http://192.168.1.136:3000/api/create-account/${data.data.id}`, param, {
         headers: { "Content-Type": "multipart/form-data" },
+        withCredentials: true
       });
       await set({ loading: false });
       console.log("data", data.data);

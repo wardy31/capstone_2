@@ -95,7 +95,7 @@ export default {
           commit("setError", {
             type: "credentials",
             error: true,
-            message: err.response.data.message,
+            message: err.response.data.errors,
           });
           console.log(err.response.data);
         });

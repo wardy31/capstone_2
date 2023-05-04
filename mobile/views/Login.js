@@ -24,12 +24,12 @@ function Login({ navigation }) {
         await setAuth(true);
         await setUser();
         await navigation.navigate("Navigation");
-        SplashScreen.hideAsync()
         console.log(true);
       } else {
         setAuth(false);
-        console.log(true);
+        console.log(false);
       }
+      SplashScreen.hideAsync()
     })();
   }, [authCheck]);
 

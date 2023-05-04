@@ -64,7 +64,7 @@ export default {
       axios
         .post(
           "submit-form",
-          { all: payload },
+          { answers: payload },
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,

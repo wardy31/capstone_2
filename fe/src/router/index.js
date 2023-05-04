@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-import DownLoadView from "@/views/DownLoadView.vue";
+// import DownLoadView from "@/views/DownLoadView.vue";
 // Not Found
 import  NotFound from "@/views/error/NotFound.vue"
 
@@ -26,18 +26,18 @@ import EditProfile from "@/views/admin/Profile/EditProfile";
 
 //Login
 import LoginClinic from "@/views/Login/LoginClinic.vue";
-import LoginStation from "@/views/Login/LoginStation.vue";
 import LoginUser from "@/views/Login/LoginUser.vue";
+// import LoginStation from "@/views/Login/LoginStation.vue";
 
 //User
-// import UserView from "@/views/user/UserView.vue";
-// import UserHomeView from "@/views/user/HomeView.vue";
-// import PersonalProfile from "@/views/user/pages/PersonalProfile";
-// import UserEditProfile from "@/views/user/pages/profile/EditProfile"
-// import LocationRecord from "@/views/user/pages/LocationRecord";
-// import HealthDeclarationForm from "@/views/user/pages/HealthDeclarationForm";
-// import FollowUps from "@/views/user/pages/FollowUps";
-// import UserRegister from "../views/UserRegister.vue";
+import UserView from "@/views/user/UserView.vue";
+import UserHomeView from "@/views/user/HomeView.vue";
+import PersonalProfile from "@/views/user/pages/PersonalProfile";
+import UserEditProfile from "@/views/user/pages/profile/EditProfile"
+import LocationRecord from "@/views/user/pages/LocationRecord";
+import HealthDeclarationForm from "@/views/user/pages/HealthDeclarationForm";
+import FollowUps from "@/views/user/pages/FollowUps";
+import UserRegister from "../views/UserRegister.vue";
 //Clinic
 import ClinicRegister from "../views/ClinicRegister.vue";
 import StationViews from "../views/admin/StationView.vue";
@@ -60,72 +60,72 @@ Vue.use(VueRouter);
 const routes = [
   {
     path: "/",
-    name: "DownLoadView",
-    component: DownLoadView,
+    name: "LoginUser",
+    component: LoginUser,
   },
   {
     path: "/clinic-login",
     name: "clinic-login",
     component: LoginClinic,
   },
-  {
-    path: "/station-login",
-    name: "station-login",
-    component: LoginStation,
-  },
-  {
-    path: "/user-login",
-    name: "user-login",
-    component: LoginUser,
-  },
+  // {
+  //   path: "/station-login",
+  //   name: "station-login",
+  //   component: LoginStation,
+  // },
+  // {
+  //   path: "/user-login",
+  //   name: "user-login",
+  //   component: LoginUser,
+  // },
   {
     path: "/ClinicRegister",
     component: ClinicRegister,
   },
-  // {
-  //   path: "/UserRegister",
-  //   component: UserRegister,
-  // },
-  // {
-  //   path: "/user",
-  //   component: UserView,
-  //   children: [
-  //     {
-  //       path: "",
-  //       component: UserHomeView,
-  //     },
-  //     {
-  //       path: "home",
-  //       component: UserHomeView,
-  //     },
-  //     {
-  //       path: "personal-profile",
-  //       component: PersonalProfile,
-  //       children:[
-  //         {
-  //           path:'',
-  //           component:UserEditProfile,
-  //         },
-  //         {
-  //           path:'profile',
-  //           component:UserEditProfile
-  //         }
-  //       ]
-  //     },
-  //     {
-  //       path: "location-record",
-  //       component: LocationRecord,
-  //     },
-  //     {
-  //       path:'health-declaration-form',
-  //       component: HealthDeclarationForm
-  //     },
-  //     {
-  //       path:'follow-ups',
-  //       component: FollowUps
-  //     }
-  //   ],
-  // },
+  {
+    path: "/UserRegister",
+    component: UserRegister,
+  },
+  {
+    path: "/user",
+    component: UserView,
+    children: [
+      {
+        path: "",
+        component: UserHomeView,
+      },
+      {
+        path: "home",
+        component: UserHomeView,
+      },
+      {
+        path: "personal-profile",
+        component: PersonalProfile,
+        children:[
+          {
+            path:'',
+            component:UserEditProfile,
+          },
+          {
+            path:'profile',
+            component:UserEditProfile
+          }
+        ]
+      },
+      {
+        path: "location-record",
+        component: LocationRecord,
+      },
+      {
+        path:'health-declaration-form',
+        component: HealthDeclarationForm
+      },
+      {
+        path:'follow-ups',
+        component: FollowUps
+      }
+    ],
+  },
   {
     path: "/admin",
     component: AdminView,

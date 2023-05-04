@@ -1,42 +1,45 @@
 <template>
   <v-app>
-  <v-main class="accent">
-    <div v-if="checkContact.data.length">
-      <v-container>
-        <div class="text-center mt-12 ">
-            <v-avatar
-              height="280"
-              width="600"
-              tile
-            >
-              <img :src="require('@/assets/undraw/alert1.png')" alt="alt">
-            </v-avatar> 
-           <h1 class="primary--text mt-8">Sorry!</h1>
-           <h3>you are temporarily cannot access this feature.</h3>
-        </div>
-      </v-container>
-    </div>
-    
-    <div v-else>
-      <v-container v-if="questionnaires.length == 0 || loading">
-        <div class="ma-16">
-          <v-skeleton-loader type="card" class="mb-12"></v-skeleton-loader>
-          <v-skeleton-loader type="card" class="mb-12"></v-skeleton-loader>
-          <v-skeleton-loader type="card" class="mb-12"></v-skeleton-loader>
-        </div>
-      </v-container>
+    <v-main class="accent">
+      <div v-if="checkDays()">
+        <v-container>
+          <div class="text-center mt-12 ">
+            <v-avatar size="240" tile>
+              <img :src="require('@/assets/relax.svg')" alt="alt">
+            </v-avatar>
+            <div class="primary--text mt-4 font-weight-bold text-h5 text-lg-h4">Sorry!</div>
+            <div class="text-body-1 mt-2">you are temporarily cannot access this feature.</div>
+          </div>
+        </v-container>
+      </div>
 
-      <v-container>
-        <div class="ma-16" v-if="exists">
-          <h2 class="primary--text font-weight-bold mt-12 mb-1">
-            Health Declaration Form
-          </h2>
-          <h5 class="secondary--text">Filled Up Form</h5>
+      <div v-else>
+        <v-container v-if="questionnaires.length == 0 || loading">
+          <div class="mx-auto mx-lg-16">
+            <v-skeleton-loader type="card" class="mb-12"></v-skeleton-loader>
+            <v-skeleton-loader type="card" class="mb-12"></v-skeleton-loader>
+            <v-skeleton-loader type="card" class="mb-12"></v-skeleton-loader>
+          </div>
+        </v-container>
 
-          <v-alert type="info" :value="true" text info class="mb-n7 mt-5">
-            Editing the form will be available within 24 hours.
-          </v-alert>
-          <v-card
+        <v-container>
+          <div class="mx-auto mx-lg-16" v-if="exists">
+            <h2 class="primary--text font-weight-bold mt-4 mt-lg-12 mb-1">
+              Health Declaration Form
+            </h2>
+            <h5 class="secondary--text">Filled Up Form</h5>
+
+            <v-alert type="success" color="primary" :value="true" text info class="mt-8 text-body-2" prominent outlined
+              dense>
+              Thank you for submitting your response. The form will be active tomorrow.
+            </v-alert>
+
+            <div class="d-flex justify-center mt-16 mt-lg-12">
+              <v-avatar :size="$vuetify.breakpoint.mobile ? 180 : 260" tile>
+                <img src="@/assets/completed.svg" alt="">
+              </v-avatar>
+            </div>
+            <!-- <v-card
             class="mt-8"
             v-for="existed in existData"
             :key="existed.id"
@@ -68,88 +71,54 @@
             </v-card-actions>
           </v-card>
           <v-btn
-            class="text-capitalize mt-6 py-6 font-weight-bold"
-            block
+            class="text-capitalize mt-12 py-lg-4 py-2 font-weight-bold"
+            :block="$vuetify.breakpoint.mobile"
             color="primary"
             :loading="loading"
             @click="edit"
             >Edit Form</v-btn
-          >
-        </div>
+          > -->
+          </div>
 
-        <div class="ma-16" v-else>
-          <h2 class="primary--text font-weight-bold mt-12 mb-1">
-            Health Declaration Form
-          </h2>
-          <h5 class="secondary--text">Filled Up Form</h5>
-          <v-card
-            class="mt-8"
-            v-for="(question, index) in questionnaires"
-            :key="question.id"
-          >
-            <v-card-title
-              class="text-body-1 black--text font-weight-bold text-justify"
-            >
-              {{ question.question }}
-            </v-card-title>
-            <v-card-text v-if="question.sub_question">
-              <div>
-                <ul
-                  class="black--text text-body-2 text-capitalize"
-                  v-for="splits in question.sub_question.split(',')"
-                  :key="splits"
-                >
-                  <li class="mb-1">{{ splits }}</li>
-                </ul>
-              </div>
-            </v-card-text>
-            <v-card-actions>
-              <v-checkbox
-                label="Yes"
-                @click="questionnaire_id[index] = question.id"
-                v-model="answer[index]"
-                value="true"
-                class="mr-4"
-              ></v-checkbox>
-              <v-checkbox
-                label="No"
-                @click="questionnaire_id[index] = question.id"
-                v-model="answer[index]"
-                value="false"
-              ></v-checkbox>
-            </v-card-actions>
-          </v-card>
+          <div class="mx-auto mx-lg-16" v-else>
+            <h2 class="primary--text font-weight-bold mt-4 mt-lg-12 mb-1">
+              Health Declaration Form
+            </h2>
+            <h5 class="secondary--text">Filled Up Form</h5>
+            <v-card class="mt-8" v-for="(question, index) in questionnaires" :key="question.id">
+              <v-card-title class="text-body-1 black--text font-weight-bold text-justify">
+                {{ question.question }}
+              </v-card-title>
+              <v-card-text v-if="question.sub_question">
+                <div>
+                  <ul class="black--text text-body-2 text-capitalize" v-for="splits in question.sub_question.split(',')"
+                    :key="splits">
+                    <li class="mb-1">{{ splits }}</li>
+                  </ul>
+                </div>
+              </v-card-text>
+              <v-card-actions class="ml-2 mt-n4">
+                <v-checkbox label="Yes" @click="questionnaire_id[index] = question.id" v-model="answer[index]"
+                  value="true" class="mr-4"></v-checkbox>
+                <v-checkbox label="No" @click="questionnaire_id[index] = question.id" v-model="answer[index]"
+                  value="false"></v-checkbox>
+              </v-card-actions>
+            </v-card>
 
-          <v-btn
-            class="text-capitalize mt-6 py-6 font-weight-bold"
-            block
-            color="primary"
-            :loading="loading"
-            @click="submit"
-            >Submit Form</v-btn
-          >
+            <v-btn class="text-capitalize mt-6 py-6 font-weight-bold" block color="primary" :loading="loading"
+              @click="submit">Submit Form</v-btn>
 
-          <v-btn
-            color="black"
-            class="text-capitalize mt-2 font-weight-bold"
-            text
-            plain
-            @click="reset"
-            block
-            >Reset</v-btn
-          >
-        </div>
-      </v-container>
-    </div>
-    <v-snackbar v-model="error" color="red" right bottom timeout="2000" app>
-      <v-icon left>error</v-icon>
-      Please Filled Up All Question
-      <v-btn @click.native="error = false" small outlined class="ml-4"
-        >Close</v-btn
-      >
-    </v-snackbar>
-  </v-main>
-</v-app>
+            <v-btn color="black" class="text-capitalize mt-2 font-weight-bold" text plain @click="reset"
+              block>Reset</v-btn>
+          </div>
+        </v-container>
+      </div>
+      <v-snackbar v-model="error" color="red" right bottom timeout="2000" app>
+        <v-icon left>error</v-icon>
+        Please Filled Up All Questions
+      </v-snackbar>
+    </v-main>
+  </v-app>
 </template>
 
 <script>
@@ -165,6 +134,7 @@ export default {
   //   }
   // },
   async mounted() {
+    this.$store.dispatch("followUps/checkFollowUp");
     await this.$store.dispatch("declaration/getQuestions");
     await this.$store.dispatch("declaration/checkExist");
   },
@@ -189,6 +159,24 @@ export default {
     };
   },
   methods: {
+    checkDays(){
+      let taggedHasDays = false
+      let patientHasDays = false
+
+      for (const iterator of this.checkContact.data[0]?.user_tagged) {
+          if(iterator.days_left != 0){
+            taggedHasDays = true 
+          }
+      }
+
+      for (const iterator of this.checkContact.data[0]?.user_patient) {
+          if(iterator.days_left != 0){
+            patientHasDays = true 
+          }
+      }
+
+      return (taggedHasDays || patientHasDays)
+    },
     submitForm() {
       this.$store.dispatch("declaration/submitForm", this.answers);
     },
@@ -218,6 +206,7 @@ export default {
         });
       });
 
+      console.log(this.all)
       this.$store.dispatch("declaration/submitForm", this.all);
       this.reset();
     },
