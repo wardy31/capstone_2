@@ -217,9 +217,9 @@ export default {
     async reset({ commit }) {
       commit("next", false);
     },
-    async userDetails({commit}){
+    async userDetails({commit},id){
       try {
-          const {data} = await axios.get('user-details',{
+          const {data} = await axios.get(`user-details/${id}`,{
             headers:{
               Authorization : `Bearer ${localStorage.getItem('token')}`
             }

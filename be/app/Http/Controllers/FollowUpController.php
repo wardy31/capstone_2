@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ClinicNotification;
 use App\Models\FollowUp;
 use App\Models\HealthDeclaration;
 use App\Models\UserAccount;
@@ -72,6 +73,13 @@ class FollowUpController extends Controller
     }
     public function submitFollowUp(Request $request)
     {
+        ClinicNotification::create([
+            'user_account_id' => $request->user()->id,
+            'type' => 2,
+            'message' => "Follow Up Response Submitted"
+        ]);
+
+
         FollowUp::create(['user_account_id' => $request->user()->id, 'follow_up_status' => $request->form]);
         return response(['message' => "Submitted"]);
     }

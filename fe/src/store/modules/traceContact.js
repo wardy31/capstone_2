@@ -11,9 +11,9 @@ export default {
       dialog: false,
       loading: false,
     },
-    selected:{
-      loading:false
-    }
+    selected: {
+      loading: false,
+    },
   }),
   mutations: {
     setData(state, data) {
@@ -31,24 +31,32 @@ export default {
     },
   },
   actions: {
-    async submitCheckSelected({state},param) {
-      state.selected.loading = true
+    async submitCheckSelected({ state }, param) {
+      state.selected.loading = true;
       try {
-        await axios.post(`clinic/store-contact-selected/${param.id}`, param.data, {
-          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-        });
-        state.selected.loading = false
-        return true
+        await axios.post(
+          `clinic/store-contact-selected/${param.id}`,
+          param.data,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        );
+        state.selected.loading = false;
+        return true;
       } catch (error) {
         console.log(error);
-        state.selected.loading = false
-        return false
+        state.selected.loading = false;
+        return false;
       }
     },
     async getVisitedLocation({ commit }, payload) {
       commit("setLoading", true);
       axios
-        .get(`clinic/get-visited-location/${payload}`,{headers:{"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+        .get(`clinic/get-visited-location/${payload}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        })
         .then((res) => {
           const { data } = res.data;
           commit("setLoading", false);
@@ -74,7 +82,9 @@ export default {
     async filterVisitedRecord({ commit }, payload) {
       commit("setLoading", true);
       axios
-        .post(`clinic/get-filter-visited-location/${payload.id}`, payload,{headers:{"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
+        .post(`clinic/get-filter-visited-location/${payload.id}`, payload, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        })
         .then((res) => {
           const { data } = res.data;
           commit("setLoading", false);
@@ -97,15 +107,21 @@ export default {
           console.log(err.response.data);
         });
     },
-    async submitContact({ commit,dispatch }, payload) {
+    async submitContact({ commit, dispatch }, payload) {
       commit("setLoading", false);
-      axios.post("clinic/store-contact", payload,{headers:{"Authorization" : `Bearer ${localStorage.getItem('token')}`}})
-       .then((res) => {
-        dispatch('filterVisitedRecord',payload.filter)
-        console.log('submitted',res.data);
-       }).catch(err =>{
-         console.log(err.response.data);
-       });
+
+      try {
+        const res = await axios.post("clinic/store-contact", payload, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        });
+
+        dispatch("filterVisitedRecord", payload.filter);
+        console.log("submitted", res.data);
+        return true
+      } catch (err) {
+        console.log(err.response.data);
+        return false
+      }
     },
   },
 };

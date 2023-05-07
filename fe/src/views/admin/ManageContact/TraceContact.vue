@@ -175,7 +175,9 @@
                   </v-btn>
                 </template>
                 <v-list>
-                  <v-list-item :to="`/admin/checkprofile/${visited.user_account.id}`">
+                  <v-list-item
+                    :to="`/admin/checkprofile/${visited.user_account.id}`"
+                  >
                     <v-list-item-icon class="mr-4"
                       ><v-icon color="primary"
                         >account_circle</v-icon
@@ -216,7 +218,7 @@
         right
       >
         <v-icon class="pr-2">check</v-icon>
-        User classified as close contact.
+        successfully classified as close contact.
       </v-snackbar>
     </div>
   </v-container>
@@ -259,7 +261,7 @@ export default {
         checkBoxes: [],
       },
       docState: "saved",
-      snackBar:false,
+      snackBar: false,
       title: "",
       page: 1,
       menu: false,
@@ -283,17 +285,21 @@ export default {
         return f != null;
       });
 
-      const res = await this.$store.dispatch("traceContact/submitCheckSelected", {
-        id: this.$route.params.id,
-        data: {
-          selected:filtered
-        },
-      });
+      const res = await this.$store.dispatch(
+        "traceContact/submitCheckSelected",
+        {
+          id: this.$route.params.id,
+          data: {
+            selected: filtered,
+          },
+        }
+      );
 
-      if(res){
+      if (res) {
         this.checkBox.checkBoxes = [];
+        this.handleFilter();
+        this.snackBar = true;
       }
-      console.log("hehe", res);
     },
     handleCheck() {
       console.log("hehe", this.checkBox.checkAll);
@@ -320,13 +326,20 @@ export default {
       this.filterSubmit.location = "";
       this.menu = false;
     },
-    markContact(user) {
+    async markContact(user) {
       const submit = {
         tag: user.user_account_id,
         patient: this.$route.params.id,
         filter: this.filterSubmit,
       };
-      this.$store.dispatch("traceContact/submitContact", submit);
+      const res = await this.$store.dispatch(
+        "traceContact/submitContact",
+        submit
+      );
+      if (res) {
+        this.handleFilter();
+        this.snackBar = true;
+      }
       console.log(submit);
     },
   },

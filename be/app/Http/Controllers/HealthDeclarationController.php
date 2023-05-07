@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Answer;
+use App\Models\ClinicNotification;
 use App\Models\HealthDeclaration;
 use App\Models\Questionnaire;
 use App\Models\UserAccount;
@@ -55,14 +56,14 @@ class HealthDeclarationController extends Controller
 
     public function getAllResponses()
     {
-        $responses = UserResponse::with(['answers.question','userAccount.classification'])->latest()->get();
+        $responses = UserResponse::with(['answers.question', 'userAccount.classification'])->latest()->get();
 
         return response()->json(['data' => $responses]);
     }
 
     public function getDateResponse(Request $request)
     {
-        $responses = UserResponse::with(['answers.question','userAccount.classification'])->whereDate('created_at',$request->date)->latest()->get();
+        $responses = UserResponse::with(['answers.question', 'userAccount.classification'])->whereDate('created_at', $request->date)->latest()->get();
         return response()->json(['data' => $responses]);
     }
 
@@ -87,6 +88,12 @@ class HealthDeclarationController extends Controller
 
     public function submitForm(Request $request)
     {
+        ClinicNotification::create([
+            'user_account_id' => $request->user()->id,
+            'type' => 1,
+            'message' => "Health Declaration Response Submitted"
+        ]);
+
         $userResponse = UserResponse::query()->where('user_account_id', $request->user()->id)
             ->whereDate('created_at', Carbon::now());
 

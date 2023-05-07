@@ -9,13 +9,15 @@
         <h3 class="black--text mt-3">
           Are you experiencing one (1) or more of the follow symptoms?
         </h3>
-        <h3 class="black--text mb-4">
-          if not check No Symptoms.
-        </h3>
+        <h3 class="black--text mb-4">if not check No Symptoms.</h3>
 
         <div v-for="(status, index) in status" :key="status.id">
-          <v-checkbox v-model="resultBox[index]" :label="status.title" :value="status.title"
-            @click="handleCheck"></v-checkbox>
+          <v-checkbox
+            v-model="resultBox[index]"
+            :label="status.title"
+            :value="status.title"
+            @click="handleCheck"
+          ></v-checkbox>
         </div>
         <!-- <v-select
                     :items="['Im Well, No Symptoms','I Have Symptoms']"
@@ -25,8 +27,16 @@
       </v-card-text>
       <v-card-actions class="mt-n6">
         <v-spacer></v-spacer>
-        <v-btn text plain class="text-capitalize" @click="handleClose">cancel</v-btn>
-        <v-btn color="primary" class="text-capitalize" @click="submit" :loading="loading">Submit</v-btn>
+        <v-btn text plain class="text-capitalize" @click="handleClose"
+          >cancel</v-btn
+        >
+        <v-btn
+          color="primary"
+          class="text-capitalize"
+          @click="submit"
+          :loading="loading"
+          >Submit</v-btn
+        >
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -34,7 +44,7 @@
 
 <script>
 import { mapState } from "vuex";
-
+import { emits } from "@/config/webSocket";
 export default {
   computed: {
     ...mapState({
@@ -60,18 +70,22 @@ export default {
         { id: 7, status: false, title: "Vomiting" },
         { id: 8, status: false, title: "Difficulty of Breathing" },
         { id: 9, status: false, title: "No Symptoms" },
-      ]
+      ],
     };
   },
   methods: {
     handleClose() {
       this.$store.state.followUps.all.dialog = false;
     },
-    submit() {
-      const filter = this.resultBox.filter(f => f)
-      this.$store.dispatch("followUps/followUp", {form:filter.join(',')});
+    async submit() {
+      const filter = this.resultBox.filter((f) => f);
+      const res = await this.$store.dispatch("followUps/followUp", {
+        form: filter.join(","),
+      });
+      if (res) {
+        emits();
+      }
     },
   },
 };
 </script>
- 

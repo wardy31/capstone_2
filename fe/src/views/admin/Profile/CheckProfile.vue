@@ -11,13 +11,14 @@
           </div>
           <!-- <h2 class="font-weight-bold"><b class="primary--text">{{`${profile.first_name} ${profile.middle_name} ${profile.last_name}`}} </b></h2>
                 <h2>Profile</h2> -->
-          {{ details }}
         </div>
         <div class="mb-8 mt-6">
           <v-row align="center">
             <v-col cols="1">
-              <v-avatar color="primary" size="94" class="white--text" tile
-                ><h3>A</h3></v-avatar
+              <v-avatar color="primary" size="98" class="white--text elevation-3" tile
+                >
+                <img :src="`${imageUrl}${profile.images_path}`" alt="">
+                </v-avatar
               >
             </v-col>
             <v-col>
@@ -111,17 +112,22 @@
                 </tbody>
               </v-simple-table>
             </v-card>
+
           </v-tab-item>
           <v-tab-item>
             <v-simple-table>
               <thead>
                 <tr>
-                  <th>2</th>
+                  <th>Location Visited</th>
+                  <th>Time</th>
+                  <th>Date</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>dwd</td>
+                <tr v-for="visited in details.visited" :key="visited.id">
+                  <td>{{visited.location.name}}</td>
+                  <td>{{visited.created_at | time}}</td>
+                  <td>{{visited.created_at | date}}</td>
                 </tr>
               </tbody>
             </v-simple-table>
@@ -130,12 +136,14 @@
             <v-simple-table>
               <thead>
                 <tr>
-                  <th>3</th>
+                  <th>Submitted Response</th>
+                  <th>Date</th>
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td>dwd</td>
+                <tr v-for="followUp in details.followUps" :key="followUp.id">
+                  <td>{{followUp.follow_up_status}}</td>
+                  <td>{{followUp.created_at | date}}</td>
                 </tr>
               </tbody>
             </v-simple-table>
@@ -199,6 +207,7 @@ export default {
   },
   data() {
     return {
+      imageUrl: process.env.VUE_APP_IMAGE_URL,
       tab: 0,
       checkDialog: false,
       responseData: null,
@@ -209,12 +218,12 @@ export default {
       return moment(val).format("MMM DD, YYYY").toString();
     },
     time(val) {
-      return moment(val).format("mm:hh A").toString();
+      return moment(val).format("h:m A").toString();
     },
   },
   mounted() {
     this.$store.dispatch("user/checkProfile", this.$route.params.id);
-    this.$store.dispatch("user/userDetails");
+    this.$store.dispatch("user/userDetails",this.$route.params.id);
     console.log("reg");
   },
   methods: {
@@ -223,6 +232,13 @@ export default {
       this.responseData = data;
 
       console.log(data);
+    },
+    handleQuestion(data){
+      if(data.trim()){
+        const arr = data.split(",")
+        return arr
+      }
+      return []
     },
     checkStatus() {
       const patient = this.profile?.user_patient;

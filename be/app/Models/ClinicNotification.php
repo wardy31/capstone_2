@@ -9,7 +9,8 @@ class ClinicNotification extends Model
 {
     use HasFactory;
 
-
+    protected $fillable=['user_account_id','type','message'];
+    
     public function userAccount(){
         return $this->hasOne(UserAccount::class,'id','user_account_id');
     }

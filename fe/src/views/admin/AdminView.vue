@@ -25,24 +25,11 @@ export default {
       this.$router.push("/clinic-login");
     }
     this.$store.dispatch("clinic/getUser");
-
-    setInterval(() => {
-      console.log("lol");
-      this.$store.dispatch("notifications/getNotifications");
-    }, 5000);
   },
   data() {
     return {
-      isNotify: false,
       dialog:true
     };
-  },
-  watch: {
-    isNotify() {
-      if (this.isNotify) {
-        this.handleNotif();
-      }
-    },
   },
   computed: {
     ...mapState({
@@ -53,15 +40,6 @@ export default {
   methods: {
     handleDialog(){
       this.dialog = !this.dialog
-    },
-    async handleNotif() {
-      this.isNotify = false;
-      const res = await this.$store.dispatch("notifications/getNotifications");
-
-      if (res || !res) {
-        this.isNotify = true;
-        console.log("notif");
-      }
     },
   },
 };

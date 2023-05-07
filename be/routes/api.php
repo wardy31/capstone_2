@@ -208,5 +208,5 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('user-notifications',[NotificationController::class,'userShow']);
 
     // User Details
-    Route::get('user-details',[UserAccountController::class,'userDetails']);
+    Route::get('user-details/{id}',[UserAccountController::class,'userDetails']);
 });

@@ -33,13 +33,16 @@ const io = new Server(httpServer, {
 });
 
 io.on('connection', async (socket) => {
-  socket.on('clinic-server', (args) => {
-    socket.emit('clinic-notify', { 'message': "clnic" })
-    console.log('clinic',args.to)
+  socket.on('clinic-server', (args,callback) => {
+    io.emit('clinic-notify', { 'message': "clnic" })
+    callback({
+      status:"ok"
+    })
+    console.log('clinic',args)
   })
 
   socket.on('user-server', (args) => {
-    socket.emit('user-notify', { 'message': "user" })
+    // socket.emit('user-notify', { 'message': "user" })
     console.log('user',args)
   })
 })

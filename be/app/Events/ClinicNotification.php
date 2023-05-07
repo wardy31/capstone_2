@@ -19,6 +19,9 @@ class ClinicNotification implements ShouldBroadcast
      *
      * @return void
      */
+
+
+
     public function __construct()
     {
         //

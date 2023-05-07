@@ -111,7 +111,7 @@ const Dialog = ({ dialog, closeModal }) => {
                     onPress={() => {
                       const list = [...arr2];
 
-                      const found = list.find((f) => {
+                      const found = list.find((f) => {  
                         return f.id == val.id;
                       });
 

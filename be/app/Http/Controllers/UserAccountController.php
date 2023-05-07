@@ -165,11 +165,11 @@ class UserAccountController extends Controller
         return response()->json($user);
     }
 
-    public function userDetails(Request $request)
+    public function userDetails(Request $request,$id)
     {
-        $hdrResponse = UserResponse::with('answers.question')->where('user_account_id', $request->user()->id)->get();
-        $visitedStation = VisitedLocationRecord::with('location')->where('user_account_id', $request->user()->id)->get();
-        $followUps = FollowUp::where('user_account_id', $request->user()->id)->get();
+        $hdrResponse = UserResponse::with('answers.question')->where('user_account_id', $id)->get();
+        $visitedStation = VisitedLocationRecord::with('location')->where('user_account_id', $id)->get();
+        $followUps = FollowUp::where('user_account_id', $id)->get();
 
         
         return response()->json(['hdr'=> $hdrResponse, 'visited' => $visitedStation, 'followUps' => $followUps]);

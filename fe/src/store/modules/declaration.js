@@ -1,5 +1,6 @@
 import axios from "@/config/axios";
 import Swal from "sweetalert2";
+
 export default {
   namespaced: true,
   state: () => ({
@@ -61,8 +62,9 @@ export default {
     },
     async submitForm({ commit, dispatch }, payload) {
       commit("setLoading", { type: "submit", loading: true });
-      axios
-        .post(
+
+      try {
+        const res = await axios.post(
           "submit-form",
           { answers: payload },
           {
@@ -70,25 +72,26 @@ export default {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
             },
           }
-        )
-        .then((res) => {
-          commit("setLoading", { type: "submit", loading: false });
-          Swal.fire({
-            title: "Success",
-            text: "Successfully Submitted",
-            icon: "success",
-            confirmButtonText: "close",
-            timer: 2000,
-          });
-
-          dispatch("getQuestions");
-          dispatch("checkExist");
-          console.log(res.data);
-        })
-        .catch((err) => {
-          commit("setLoading", { type: "submit", loading: false });
-          console.log(err.response);
+        );
+        commit("setLoading", { type: "submit", loading: false });
+        Swal.fire({
+          title: "Success",
+          text: "Successfully Submitted",
+          icon: "success",
+          confirmButtonText: "close",
+          timer: 2000,
         });
+
+        dispatch("getQuestions");
+        dispatch("checkExist");
+        console.log(res.data);
+        return true
+      } catch (err) {
+        commit("setLoading", { type: "submit", loading: false });
+        console.log(err.response);
+
+        return false
+      }
     },
     async checkExist({ commit, state }) {
       axios
@@ -119,19 +122,18 @@ export default {
           console.log("exidast", res.data);
         });
     },
-    async responseSearch({ commit,dispatch }, param) {
-        if(!param.trim()){
-            dispatch('getSubmitted')
-        }
-        axios
-          .get(`clinic/response-search/${param}`, {
-            headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-          })
-          .then((res) => {
-            commit("setData", { type: "responses", data: res.data.data });
-            console.log("exidast", res.data);
-          });
-      },
-  
+    async responseSearch({ commit, dispatch }, param) {
+      if (!param.trim()) {
+        dispatch("getSubmitted");
+      }
+      axios
+        .get(`clinic/response-search/${param}`, {
+          headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
+        })
+        .then((res) => {
+          commit("setData", { type: "responses", data: res.data.data });
+          console.log("exidast", res.data);
+        });
+    },
   },
 };

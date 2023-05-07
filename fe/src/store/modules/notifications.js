@@ -20,27 +20,25 @@ export default {
     },
   },
   actions: {
-    async getNotifications({ commit, state }) {
+    async getNotifications({ commit }) {
       commit("setLoading", true);
+      commit("setDot", true);
       try {
         const { data } = await axios.get(`clinic-notifications`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
 
-        if (data.length > state.data.length) {
-          if (data.length) {
-            await commit("setData", data);
-            commit("setDot", true);
-          }
-        }
+        await commit("setData", data);
+        await commit("setDot", true);
         await commit("setLoading", false);
 
-        return true
+        console.log("data", data);
+        return true;
       } catch (error) {
         commit("setLoading", false);
         console.log(error);
 
-        return false
+        return false;
       }
     },
 
@@ -59,15 +57,13 @@ export default {
         }
         await commit("setLoading", false);
 
-        return true
+        return true;
       } catch (error) {
         commit("setLoading", false);
         console.log(error);
 
-        return false
+        return false;
       }
     },
-
   },
-
 };
