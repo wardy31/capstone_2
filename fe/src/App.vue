@@ -14,6 +14,9 @@ export default {
     socket.on("connect", () => {
       console.log("isConnected", socket.connected); // x8WIv7-mJelg7on_ALbx
     });
+
+    console.log(process.env.VUE_APP_API)
+    console.log('HOST',process.env.NODE_ENV)
   },
 };
 </script>
