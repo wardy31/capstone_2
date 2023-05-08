@@ -63,11 +63,11 @@ export default {
 
             try {
                 const { data } = await axios.post(
-                    "http://192.168.1.136:8000/api/register-user",
+                    `${process.env.VUE_APP_API}/register-user`,
                     payload,
                     { headers: { "Content-Type": "multipart/form-data" } }
                 );
-                const ss = await axios.post(`http://192.168.1.136:3000/api/create-account/${data.data.id}`, payload, {
+                const ss = await axios.post(`${process.env.VUE_APP_NODE}/create-account/${data.data.id}`, payload, {
                     headers: {
                         "Content-Type": "multipart/form-data",
                         'X-Requested-With': 'XMLHttpRequest'
