@@ -1,6 +1,6 @@
 import Vue from "vue";
 import VueRouter from "vue-router";
-// import DownLoadView from "@/views/DownLoadView.vue";
+import DownLoadView from "@/views/DownLoadView.vue";
 // Not Found
 import  NotFound from "@/views/error/NotFound.vue"
 
@@ -85,6 +85,10 @@ const routes = [
   {
     path: "/UserRegister",
     component: UserRegister,
+  },
+  {
+    path:'/station-download',
+    component:DownLoadView
   },
   {
     path: "/user",

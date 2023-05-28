@@ -16,6 +16,7 @@ export default {
     });
 
     console.log(process.env.VUE_APP_API)
+    console.log(process.env.VUE_APP_SOCKET)
     console.log('HOST',process.env.NODE_ENV)
   },
 };

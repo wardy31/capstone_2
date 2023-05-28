@@ -53,7 +53,7 @@ const predict = (req, res) => {
       console.log("none", match._label);
       try {
         const response = await axios.get(
-          `http://192.168.1.136:8000/api/check-user/${req.params.station_id}/${match._label}`
+          `https://laravel.lnucontacttracing.online/api/check-user/${req.params.station_id}/${match._label}`
         );
         console.log(response.data);
         res.json(response.data);

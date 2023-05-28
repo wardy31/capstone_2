@@ -70,7 +70,7 @@ import {
               paddingBottom: 12,
             }}
           >
-            Login Account
+            Login Station
           </Text>
   
           <Input
@@ -78,11 +78,12 @@ import {
             placeholderTextColor="#CCCCCC"
             leftIcon={<FontAwesome5 name="user" size={19} color="#141E61" />}
             inputContainerStyle={{
-              // backgroundColor: "#EEEEEE",
+              backgroundColor: "#EEEEEE",
               borderBottomWidth: error?.username ? 2 : 2,
               height: 52,
               paddingLeft: 16,
-              borderWidth: 0,
+              borderWidth:2,
+              borderRadius:5,
               borderColor: error?.username ? "red" : "gray",
             }}
             inputStyle={{
@@ -108,9 +109,11 @@ import {
             placeholderTextColor="#CCCCCC"
             leftIcon={<Foundation name="key" size={19} color="#141E61" />}
             inputContainerStyle={{
-              // backgroundColor: "#EEEEEE",
+              backgroundColor: "#EEEEEE",
               height: 52,
               paddingLeft: 16,
+              borderWidth:2,
+              borderRadius:5,
               borderBottomWidth: error?.password ? 2 : 2,
               borderColor: error?.password ? "red" : "gray",
             }}
@@ -146,7 +149,7 @@ import {
             }}
             titleStyle={{ color: "white", fontSize: 15, fontFamily: "Poppins" }}
           >
-            Login Station
+            Login
           </Button>
           {/* <Button
             title="Create Account"

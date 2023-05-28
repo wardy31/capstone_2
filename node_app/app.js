@@ -12,7 +12,7 @@ const { Server } = require("socket.io");
 
 
 const corsOptions = {
-  origin: ['http://192.168.1.136:8080'],
+  origin: ['http://192.168.1.136:8080','http://localhost:8080','https://lnucontacttracing.online','http://lnucontacttracing.online'],
   credentials: true
 };
 
@@ -27,12 +27,14 @@ app.use("/api", predictRoute);
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: ["http://192.168.1.136:8080"],
+    origin: ["http://192.168.1.136:8080",'http://localhost:8080','https://lnucontacttracing.online','http://localhost:80'],
     credentials: true
   }
 });
 
 io.on('connection', async (socket) => {
+  console.log('socket connected');
+
   socket.on('clinic-server', (args,callback) => {
     io.emit('clinic-notify', { 'message': "clnic" })
     callback({
@@ -74,13 +76,21 @@ app.post("/ge", images(), (req, res) => {
   res.json({ data: req.files, body: req.body });
 });
 
+app.get('/download-app',(req,res) =>{
+  res.download('descriptors/descriptors.json','data.json',(err) =>{
+    console.log('err',err);
+  })
+})
+
 app.get("/checking", async (req, res) => {
-  axios.get('http://192.168.1.136:8000/api/check').then((result) => {
-    console.log(result.data);
-    res.json({ message: result.data, host: req.host })
-  }).catch((err) => {
-    console.log(err);
-  });
+  // axios.get('http://localhost:8000/api/check').then((result) => {
+  //   console.log(result.data);
+  //   res.json({ message: result.data, host: req.host })
+  // }).catch((err) => {
+  //   console.log(err);
+  // });
+
+  res.json({"message": "Testing NODE API"})
   // console.log(req.files);
 });
 
@@ -91,7 +101,7 @@ console.log(`Running server at http://localhost:${PORT}`);
 // app.listen(3000, "192.168.1.136", () => {
 //   console.log("running server at http://192.168.1.136:3000");
 // });
-
-httpServer.listen(3000, "192.168.1.136", () => {
+ 
+httpServer.listen(3000, () => {
   console.log("running server at http://192.168.1.136:3000");
 });

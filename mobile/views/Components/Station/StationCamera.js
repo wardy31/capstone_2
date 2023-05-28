@@ -5,6 +5,7 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   ToastAndroid,
+  useWindowDimensions,
   Image,
 } from "react-native";
 import { Camera, CameraType } from "expo-camera";
@@ -22,7 +23,7 @@ import { Button, Card, LinearProgress } from "@rneui/base";
 import { CardTitle } from "@rneui/base/dist/Card/Card.Title";
 import * as FaceDetector from "expo-face-detector";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
+import DailyLogs from "../../../store/stationLogs"
 function StationCamera({ navigation }) {
   let cameraRef = useRef();
   const [photo, setPhoto] = useState();
@@ -30,22 +31,28 @@ function StationCamera({ navigation }) {
   const [hide, setHide] = useState(true);
   const [cameraType, setCameraType] = useState(true);
   const [granted, setGranted] = useState(false);
-  const [userName,setUserName] = useState("")
+  const [userName, setUserName] = useState("");
 
   const [loaded, setLoaded] = useState(false);
   const [success, setSuccess] = useState(false);
   const [warning, setWarning] = useState(false);
   const [form, setForm] = useState(false);
   const [noFace, setNoFace] = useState(false);
-
+  
+  const [isFaceInCenter, setIsFaceInCenter] = useState(false);
+  const windowDimensions = useWindowDimensions();
+  const [displayBorder, setDisplayBorder] = useState([]);
+  
+  const {setDaily,daily} = DailyLogs()
   useEffect(() => {
     (async () => {
       const user = await AsyncStorage.getItem("user");
-      const parsed = JSON.parse(user)
+      const parsed = JSON.parse(user);
       const res = await Camera.requestCameraPermissionsAsync();
       const av = await Speech.getAvailableVoicesAsync();
       await setGranted(true);
-      await setUserName(JSON.parse(user).location.name)
+      await setUserName(JSON.parse(user).location.name);
+      await setDaily(JSON.parse(user).location_id)
       setTimeout(() => {
         setHide(false);
         ToastAndroid.showWithGravity(
@@ -70,7 +77,6 @@ function StationCamera({ navigation }) {
         let getPhoto = await cameraRef.current.takePictureAsync(options);
         await setPhoto(getPhoto);
         await setLoaded(true);
-        // await cameraRef.current.pausePreview();
 
         const forms = new FormData();
         forms.append("image", {
@@ -82,13 +88,17 @@ function StationCamera({ navigation }) {
         try {
           const user = await AsyncStorage.getItem("user");
           const { data } = await axios.post(
-            `http://192.168.1.136:3000/api/prediction/${JSON.parse(user).id}`,
+            `https://node.lnucontacttracing.online/api/prediction/${JSON.parse(user).id}`,
             forms,
             { headers: { "Content-Type": "multipart/form-data" } }
           );
           console.log("data", data);
           setLoaded(false);
-          setPhoto(null)
+          setPhoto(null);
+
+          const dailyReset = await AsyncStorage.getItem("user");
+          await setDaily(JSON.parse(dailyReset).location_id)
+          
           if (
             data.user_patient[0]?.days_left ||
             data.user_tagged[0]?.days_left
@@ -118,7 +128,7 @@ function StationCamera({ navigation }) {
           console.log("error", error);
           setLoaded(false);
           setNoFace(true);
-          setPhoto(null)
+          setPhoto(null);
           setTimeout(() => {
             setFaceDetected(false);
             setNoFace(false);
@@ -131,7 +141,33 @@ function StationCamera({ navigation }) {
   const handleFaceDetection = async ({ faces }) => {
     console.log(faces);
     if (faces.length > 0) {
-      setFaceDetected(true);
+      setDisplayBorder(faces[0]);
+      // Get the coordinates of the first face detected
+      const { x, y } = faces[0].bounds.origin;
+      const { width, height } = faces[0].bounds.size;
+
+      // Calculate the center of the face
+      const faceCenterX = x + width / 2;
+      const faceCenterY = y + height / 2;
+
+      // Get the dimensions of the screen
+      const screenWidth = windowDimensions.width;
+      const screenHeight = windowDimensions.height;
+
+      // Calculate the center of the screen
+      const screenCenterX = screenWidth / 2;
+      const screenCenterY = screenHeight / 2;
+
+      // Check if the face is in the center of the screen
+      const isFaceInCenter =
+        Math.abs(faceCenterX - screenCenterX) <= 50 &&
+        Math.abs(faceCenterY - screenCenterY) <= 50;
+
+      setIsFaceInCenter(isFaceInCenter);
+      console.log(faces[0]);
+      if (isFaceInCenter) {
+        setFaceDetected(true);
+      }
     }
   };
 
@@ -162,6 +198,18 @@ function StationCamera({ navigation }) {
           }}
         ></Camera>
       </View>
+
+      <View
+        style={{
+          position: "absolute",
+          left: displayBorder?.bounds?.origin?.x,
+          top: displayBorder?.bounds?.origin?.y,
+          width: displayBorder?.bounds?.size?.width,
+          height: displayBorder?.bounds?.size?.height,
+          borderColor: isFaceInCenter || !displayBorder ? "green" : "red",
+          borderWidth: 6,
+        }}
+      ></View>
 
       <View
         style={{ flex: 1, position: "absolute", width: "100%", bottom: 20 }}
@@ -248,10 +296,10 @@ function StationCamera({ navigation }) {
         )}
 
         {loaded && (
-          <View style={{ marginBottom: "50%", width: "100%" }}>
+          <View style={{ marginBottom: "50%", width: "100%",borderRadius:8 }}>
             <Card>
               <Text style={{ fontFamily: "PoppinsBold", fontSize: 17 }}>
-                Face Verifying Please Wait ...
+                Verifying Face Please Wait ...
               </Text>
               {/* <Image style={{justifyContent:"center",alignItems:"center"}} source={require('../../../assets/loading.gif')}></Image> */}
               <LinearProgress
@@ -311,7 +359,7 @@ function StationCamera({ navigation }) {
                       marginRight: 8,
                     }}
                   >
-                    2
+                    {daily}
                   </Text>
                   <FontAwesome5
                     name="user"
@@ -321,6 +369,7 @@ function StationCamera({ navigation }) {
                   />
                 </View>
               </View>
+
               {/* <Text style={{ fontSize: 14, fontFamily: "PoppinsBold" }}>
               Status : <Text>Pass</Text>
             </Text> */}

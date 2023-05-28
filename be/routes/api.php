@@ -71,7 +71,7 @@ Route::post('submit', [HealthFormController::class, "submit"]);
 
 // HOsting check server
 Route::get('check', function () {
-    return response()->json(['data' => 'TESTING HOST']);
+    return response()->json(['data' => 'Checking Network']);
 });
 
 Route::middleware('auth:sanctum')->group(function () {

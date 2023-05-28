@@ -21,7 +21,7 @@ import Alert from "./views/Components/Station/Alert";
 
 SplashScreen.preventAutoHideAsync()
 export default function App()  {
-  const [type, setType] = useState(true); //Pag change hin type user or stations
+  const [type, setType] = useState(false); //Pag change hin type user or stations
   const [fontsLoaded] = useFonts({
     Poppins: require("./assets/Poppins-SemiBold.ttf"),
     PoppinsBold: require("./assets/Poppins-Bold.ttf"),

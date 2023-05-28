@@ -19,8 +19,8 @@ class VisitedLocationRecordSeeder extends Seeder
             ['user_account_id' => 1, 'location_id' => 1, 'time_in' => '10:30'],
             ['user_account_id' => 2, 'location_id' => 1, 'time_in' => '10:30'],
             ['user_account_id' => 3, 'location_id' => 1, 'time_in' => '10:30'],
-            ['user_account_id' => 4, 'location_id' => 1, 'time_in' => '10:30'],
-            ['user_account_id' => 5, 'location_id' => 1, 'time_in' => '10:30'],
+            // ['user_account_id' => 4, 'location_id' => 1, 'time_in' => '10:30'],
+            // ['user_account_id' => 5, 'location_id' => 1, 'time_in' => '10:30'],
         ];
 
         foreach($records as $record){

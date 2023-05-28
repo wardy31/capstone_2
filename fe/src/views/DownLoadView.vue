@@ -6,30 +6,29 @@
       </v-app-bar>
 
       <v-container>
-        <div class="viewH">
+        <div class="">
           <v-row v-if="isMobile">
             <v-col cols="12">
               <div class="text-center mt-12">
-                <v-img src="../assets/ed.jpg" class="rounded-lg"></v-img>
+                <v-img src="../assets/download.png" class="rounded-lg" contain max-height="380"></v-img>
               </div>
             </v-col>
             <v-col cols="12">
               <div class="mt-16">
-                <h1>Download The App</h1>
-                <h6>University Contact Tracing</h6>
+                <h1 class="primary--text">Download The App</h1>
+                <h6 class="secondary--text">University Contact Tracing</h6>
 
                 <div class="mt-6">
                   <div class="text-justify textSize">
-                    Lorem ipsum dfadf sit amet consectetur adipisicing elit.
-                    Nisi itaque nihil ut possimus debitis dolores asperiores,
-                    laudantium illum. Ipsam sint odit velit! Eveniet numquam
-                    dolorum enim placeat recusandae dolores provident?
+                    Downloading the unitrace app is a simple yet powerful way to contribute to the university to
+                    slow the spread of infectious diseases. By taking just a few minutes to download and set up the app,
+                    you can help protect yourself, your loved ones, and your community.
                   </div>
 
                   <div class="mt-5">
-                    <v-btn color="primary" large class="font-weight-bold text-capitalize">
+                    <v-btn color="primary" :loading="downloadLoading" href="https://node.lnucontacttracing.online/api/download" class="font-weight-bold text-capitalize py-5">
                       <v-icon class="mr-2">cloud_download</v-icon>
-                      Download
+                      Download App
                     </v-btn>
                   </div>
                 </div>
@@ -42,7 +41,6 @@
                 <h1 class="primary--text">Download The App</h1>
                 <h5 class="secondary--text">Leyte Normal University Contact Tracing</h5>
 
-
                 <div class="mt-6">
                   <div class="text-justify textSize">
                     Downloading the unitrace app is a simple yet powerful way to contribute to the university to
@@ -51,9 +49,9 @@
                   </div>
 
                   <div class="mt-5">
-                    <v-btn color="primary" large class="font-weight-bold text-capitalize">
+                    <v-btn color="primary" :loading="downloadLoading" href="https://node.lnucontacttracing.online/api/download" large class="font-weight-bold text-capitalize">
                       <v-icon class="mr-2">cloud_download</v-icon>
-                      Download
+                      Download App
                     </v-btn>
                   </div>
                 </div>
@@ -82,7 +80,7 @@
 
 <script>
 export default {
-  data: () => ({ isMobile: false }),
+  data: () => ({ isMobile: false,downloadLoading:false,nodeUrl:process.env.VUE_APP_NODE }),
 
   beforeDestroy() {
     if (typeof window === "undefined") return;
