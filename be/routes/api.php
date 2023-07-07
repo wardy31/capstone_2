@@ -19,6 +19,7 @@ use App\Http\Controllers\VisitedLocationRecordController;
 use App\Models\ClassifiedAsContact;
 use App\Models\ClinicAccount;
 use App\Models\ClinicNotification;
+use App\Models\Location;
 use App\Models\StationAccount;
 use App\Models\UserAccount;
 use App\Models\UserResponse;
@@ -68,6 +69,16 @@ Route::post('login-clinic', [ClinicAccountController::class, 'login']);
 Route::post('login-user', [UserAccountController::class, 'login']);
 Route::post('submit', [HealthFormController::class, "submit"]);
 
+Route::get('contact-notified/{id}/{location_id}',function(Request $request, $id,$location_id){
+    $location = Location::find($location_id);
+
+    $created = ClinicNotification::create([
+        'user_account_id' => $id,
+        'type' => 3,
+        'message' => "The user has been entered in the campus at $location->name please report/contact. " 
+    ]);
+    return response(['message' => "Notified Successlly"]);
+});
 
 // HOsting check server
 Route::get('check', function () {

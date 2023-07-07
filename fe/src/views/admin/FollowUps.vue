@@ -7,9 +7,9 @@
         respondents.
       </h5>
 
-      <v-card class="rounded-lg mt-8" width="290">
+      <v-card class="rounded-lg mt-8" width="260">
         <v-card-title class="font-weight-bold primary--text"
-          >Today's Respondent</v-card-title
+          ><h5>Today's Respondent</h5></v-card-title
         >
         <v-card-text>
           <v-row>

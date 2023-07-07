@@ -76,11 +76,11 @@ class UserAccountController extends Controller
             'contact_number' => ['required', 'min:11', 'max:11'],
             'classification_id' => ['required'],
             'vaccination_status' => ['required'],
-            //'images_path' => ['required'],
-            'username' => ['required', 'unique:clinic_accounts,username', 'unique:user_accounts,username', 'unique:station_accounts,username'],
-            'password' => ['required', 'confirmed'],
-            'upload_1' => ['required', 'mimes:jpg,png'],
-            'upload_2' => ['required', 'mimes:jpg,png'],
+            // 'images_path' => ['required'],
+            'username' => ['required', 'unique:clinic_accounts,username', 'unique:user_accounts,username', 'unique:station_accounts,username','min:4'],
+            'password' => ['required', 'confirmed','min:8'],
+            'upload_1' => ['required'],
+            'upload_2' => ['required']
         ]);
 
         $image = $request->file('upload_1')->storeAs('user/' . $request->username, $request->username . "." . $request->file('upload_1')->extension(), 'public');

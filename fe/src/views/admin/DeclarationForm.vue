@@ -8,7 +8,7 @@
         <h5 class="secondary--text">user's health declaration responses</h5>
 
         <v-row justify="start" class="mt-8">
-          <v-col cols="4">
+          <v-col cols="3">
             <v-card class="rounded-lg">
               <v-card-title class="font-weight-bold primary--text"
                 >Today Responses</v-card-title
@@ -24,7 +24,7 @@
               </v-card-text>
             </v-card>
           </v-col>
-          <v-col cols="4">
+          <v-col cols="3">
             <v-card class="rounded-lg">
               <v-card-title class="font-weight-bold primary--text"
                 >Total Responses</v-card-title
@@ -42,7 +42,7 @@
           </v-col>
         </v-row>
 
-        <div class="adj mt-12 mb-n3 d-flex">
+        <div class="adj mt-8 mb-n3 d-flex">
           <v-text-field
             class="mr-2"
             label="Search here"

@@ -11,7 +11,7 @@ const store = create((set) => ({
     try {
       const token = await AsyncStorage.getItem("token");
       const { data } = await axios.get(
-        "https://laravel.lnucontacttracing.online/api/station/get-visitor-station",
+        "http://192.168.254.118:9000/api/station/get-visitor-station",
         { headers: { Authorization: `Bearer ${token}` } }
       );
 

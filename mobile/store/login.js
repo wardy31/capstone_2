@@ -35,8 +35,12 @@ const store = create((set,get) => ({
     set({ loading: true });
     set({ error: "" });
     try {
+      // const { data } = await axios.post(
+      //   "https://laravel.lnucontacttracing.online/api/login-station",
+      //   params
+      // );
       const { data } = await axios.post(
-        "https://laravel.lnucontacttracing.online/api/login-station",
+        "http://192.168.1.136:8000/api/login-station",
         params
       );
       await AsyncStorage.setItem("token", data.token);
@@ -65,7 +69,7 @@ const store = create((set,get) => ({
     set({loading:true})
     try{
         const token = await AsyncStorage.getItem("token")
-        await axios.post("https://laravel.lnucontacttracing.online/api/logout",{},{headers:{"Authorization" : `Bearer ${token}`}})
+        await axios.post("http://192.168.254.118:9000/api/logout",{},{headers:{"Authorization" : `Bearer ${token}`}})
         await AsyncStorage.clear()
         set({loading:false})
         set(state => ({authCheck:!state.authCheck}))

@@ -68,7 +68,7 @@
                   dark
                   v-bind="attrs"
                   v-on="on"
-                  ><v-icon>article</v-icon> Update Form</v-btn
+                  ><v-icon>article</v-icon> Update</v-btn
                 >
               </template>
               <span>update form</span>

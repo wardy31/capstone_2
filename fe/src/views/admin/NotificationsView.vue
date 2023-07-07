@@ -5,12 +5,12 @@
       <v-list>
         <v-list-item three-line v-for="data in data" :key="data.id">
           <v-list-item-content>
-            <v-list-item-title class="font-weight-bold text-capitalize">
+            <v-list-item-title class="font-weight-bold text-capitalize" :class="[data.type == 3 ? 'error--text' : '']">
               {{
                 `${data.user_account.first_name} ${data.user_account.last_name}`
               }}
             </v-list-item-title>
-            <v-list-item-subtitle class="text-capitalize pt-2 pb-2 black--text">
+            <v-list-item-subtitle class="text-capitalize pt-2 pb-2 black--text" :class="[data.type == 3 ? 'error--text' : '']">
               {{ data.message }}
             </v-list-item-subtitle>
             <v-list-item-subtitle>{{ data.created_at | dateFormat  }} {{  data.created_at | timeFormat }} </v-list-item-subtitle>

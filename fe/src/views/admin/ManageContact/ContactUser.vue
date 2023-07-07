@@ -7,14 +7,14 @@
       <h5 class="secondary--text">
         Managing who has been in contact of the user
       </h5>
-      <v-card class="rounded-lg mt-8" width="290">
+      <v-card class="rounded-lg mt-8" width="250">
         <v-card-title class="font-weight-bold primary--text"
-          >Total Active Patient</v-card-title
+          ><h5>Total Active Patient</h5></v-card-title
         >
         <v-card-text>
           <v-row>
             <v-col>
-              <div class="d-flex align-center justify-center">
+              <div class="d-flex align-center">
                 <h1 class="primary--text mr-4">{{ allContacts }}</h1>
                 <v-icon size="30">person</v-icon>
               </div>

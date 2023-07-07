@@ -41,6 +41,7 @@
     "react-native-screens": "~3.20.0",
     "react-native-select-dropdown": "^3.3.0",
     "react-native-tab-view": "^3.4.1",
+    "socket.io-client": "^4.7.1",
     "zustand": "^4.3.3"
   },
   "devDependencies": {

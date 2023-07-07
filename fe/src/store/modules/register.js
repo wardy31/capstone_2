@@ -37,7 +37,7 @@ export default {
       commit("setLoading", { type: "submit", loading: true });
       commit("setError", { type: "submit", error: false, message: "" });
       axios
-        .post("http://192.168.1.136:8000/api/clinic/register-clinic", payload, {
+        .post(`${process.env.VUE_APP_API}/clinic/register-clinic`, payload, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         })
         .then((res) => {
@@ -77,6 +77,7 @@ export default {
             headers: { "Content-Type": "multipart/form-data" },
           }
         );
+
         const ss = await axios.post(
           `${process.env.VUE_APP_NODE}/create-account/${data.data.id}`,
           payload,
@@ -85,7 +86,7 @@ export default {
               "Content-Type": "multipart/form-data",
               // "X-Requested-With": "XMLHttpRequest",
             },
-            // withCredentials:true
+            withCredentials:true
           }
         );
 
@@ -109,7 +110,7 @@ export default {
           error: true,
           message: err.response.data.errors,
         });
-        console.log(err.response.data);
+        console.log('error_submission',err.response.data);
 
         return false;
       }

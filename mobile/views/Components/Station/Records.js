@@ -7,9 +7,11 @@ import { ListItemContent } from "@rneui/base/dist/ListItem/ListItem.Content";
 import { Entypo } from "@expo/vector-icons";
 import { ListItemSubtitle } from "@rneui/base/dist/ListItem/ListItem.Subtitle";
 import moment from "moment";
+
 const Records = () => {
   const { loading, error, setData, data } = RecordStore();
   const [refreshing, setRefreshing] = useState(false);
+
   useEffect(() => {
     setData();
   }, []);

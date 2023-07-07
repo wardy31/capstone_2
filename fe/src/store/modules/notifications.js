@@ -7,6 +7,7 @@ export default {
     data: [],
     loading: [],
     dot: false,
+    contact:false
   }),
   mutations: {
     setData(state, data) {
@@ -22,14 +23,13 @@ export default {
   actions: {
     async getNotifications({ commit }) {
       commit("setLoading", true);
-      commit("setDot", true);
       try {
         const { data } = await axios.get(`clinic-notifications`, {
           headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
         });
 
         await commit("setData", data);
-        await commit("setDot", true);
+        // await commit("setDot", true);
         await commit("setLoading", false);
 
         console.log("data", data);

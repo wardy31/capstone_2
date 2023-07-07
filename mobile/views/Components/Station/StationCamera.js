@@ -23,7 +23,7 @@ import { Button, Card, LinearProgress } from "@rneui/base";
 import { CardTitle } from "@rneui/base/dist/Card/Card.Title";
 import * as FaceDetector from "expo-face-detector";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import DailyLogs from "../../../store/stationLogs"
+import DailyLogs from "../../../store/stationLogs";
 function StationCamera({ navigation }) {
   let cameraRef = useRef();
   const [photo, setPhoto] = useState();
@@ -38,12 +38,12 @@ function StationCamera({ navigation }) {
   const [warning, setWarning] = useState(false);
   const [form, setForm] = useState(false);
   const [noFace, setNoFace] = useState(false);
-  
+
   const [isFaceInCenter, setIsFaceInCenter] = useState(false);
   const windowDimensions = useWindowDimensions();
   const [displayBorder, setDisplayBorder] = useState([]);
-  
-  const {setDaily,daily} = DailyLogs()
+
+  const { setDaily, daily } = DailyLogs();
   useEffect(() => {
     (async () => {
       const user = await AsyncStorage.getItem("user");
@@ -52,7 +52,7 @@ function StationCamera({ navigation }) {
       const av = await Speech.getAvailableVoicesAsync();
       await setGranted(true);
       await setUserName(JSON.parse(user).location.name);
-      await setDaily(JSON.parse(user).location_id)
+      await setDaily(JSON.parse(user).location_id);
       setTimeout(() => {
         setHide(false);
         ToastAndroid.showWithGravity(
@@ -88,25 +88,34 @@ function StationCamera({ navigation }) {
         try {
           const user = await AsyncStorage.getItem("user");
           const { data } = await axios.post(
-            `https://node.lnucontacttracing.online/api/prediction/${JSON.parse(user).id}`,
+            `https://node.lnucontacttracing.online/api/prediction/${
+              JSON.parse(user).id
+            }`,
             forms,
             { headers: { "Content-Type": "multipart/form-data" } }
           );
           console.log("data", data);
           setLoaded(false);
           setPhoto(null);
-
           const dailyReset = await AsyncStorage.getItem("user");
-          await setDaily(JSON.parse(dailyReset).location_id)
-          
+          await setDaily(JSON.parse(dailyReset).location_id);
+
           if (
             data.user_patient[0]?.days_left ||
             data.user_tagged[0]?.days_left
           ) {
-            setWarning(true);
-            Speech.speak("Warning! Please proceed to the clinic immediately.", {
-              language: "en-US",
-            });
+            const res = await axios.get(
+              `https://node.lnucontacttracing.online/contact-notify/${
+                data.id
+              }/${JSON.parse(user).location_id}`
+            );
+            Speech.speak("Successfully Recorded", { language: "en-US" });
+            setSuccess(true);
+            console.log("contact", res.data);
+            // setWarning(true);
+            // Speech.speak("Warning! Please proceed to the clinic immediately.", {
+            //   language: "en-US",
+            // });
           } else if (!data.user_response_exists) {
             Speech.speak("No Health Declaration Submitted.", {
               language: "en-US",
@@ -114,6 +123,11 @@ function StationCamera({ navigation }) {
             setForm(true);
           } else {
             setSuccess(true);
+            const res = await axios.get(
+              `https://node.lnucontacttracing.online/contact-notify/${
+                data.id
+              }/${JSON.parse(user).location_id}`
+            );
             Speech.speak("Successfully Recorded", { language: "en-US" });
           }
 
@@ -296,7 +310,7 @@ function StationCamera({ navigation }) {
         )}
 
         {loaded && (
-          <View style={{ marginBottom: "50%", width: "100%",borderRadius:8 }}>
+          <View style={{ marginBottom: "50%", width: "100%", borderRadius: 8 }}>
             <Card>
               <Text style={{ fontFamily: "PoppinsBold", fontSize: 17 }}>
                 Verifying Face Please Wait ...

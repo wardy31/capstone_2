@@ -5,7 +5,15 @@
     </div>
     <div v-else>
       <v-app>
-        <app-bar :data="user" type="admin"  @handleDialog="handleDialog" :dialog="dialog"/>
+        <v-snackbar value="true" text color="red" right bottom>
+          Contacted user was entered the campus please contact them immediately.
+        </v-snackbar>
+        <app-bar
+          :data="user"
+          type="admin"
+          @handleDialog="handleDialog"
+          :dialog="dialog"
+        />
         <router-view></router-view>
         <side-bar :dialog="dialog" />
       </v-app>
@@ -28,7 +36,7 @@ export default {
   },
   data() {
     return {
-      dialog:true
+      dialog: true,
     };
   },
   computed: {
@@ -38,8 +46,8 @@ export default {
     }),
   },
   methods: {
-    handleDialog(){
-      this.dialog = !this.dialog
+    handleDialog() {
+      this.dialog = !this.dialog;
     },
   },
 };

@@ -52,8 +52,11 @@ const predict = (req, res) => {
       const match = loadMatch.findBestMatch(result.descriptor);
       console.log("none", match._label);
       try {
+        // const response = await axios.get(
+        //   `https://laravel.lnucontacttracing.online/api/check-user/${req.params.station_id}/${match._label}`
+        // );
         const response = await axios.get(
-          `https://laravel.lnucontacttracing.online/api/check-user/${req.params.station_id}/${match._label}`
+          `http://192.168.254.118:9000/api/check-user/${req.params.station_id}/${match._label}`
         );
         console.log(response.data);
         res.json(response.data);

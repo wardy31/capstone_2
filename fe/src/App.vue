@@ -9,8 +9,14 @@ export default {
     socket.on("clinic-notify", (arg) => {
       console.log("onFunction", arg);
       this.$store.dispatch("notifications/getNotifications");
+      this.$store.state.notifications.dot = true
     });
-
+    socket.on("clinic-contact", (arg) => {
+      console.log("onFunction", arg);
+      this.$store.state.notifications.contact = true
+      this.$store.dispatch("notifications/getNotifications");
+    });
+    
     socket.on("connect", () => {
       console.log("isConnected", socket.connected); // x8WIv7-mJelg7on_ALbx
     });
