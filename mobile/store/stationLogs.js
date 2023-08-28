@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const store = create((set) => ({
   loading: false,
+  cameraLoading:false,
   error: false,
   data: [],
   daily:0,
@@ -13,7 +14,7 @@ const store = create((set) => ({
     try {
       const token = await AsyncStorage.getItem("token");
       const { data } = await axios.get(
-        "https://laravel.lnucontacttracing.online/api/user/visited-log-record",
+        "http://192.168.1.105:8000/api/user/visited-log-record",
         { headers: { Authorization: `Bearer ${token}` } }
       );
 
@@ -29,7 +30,7 @@ const store = create((set) => ({
     const token = await AsyncStorage.getItem("token");
     try {
       const res = await axios.post(
-        "https://laravel.lnucontacttracing.online/api/station/get-daily-visit",{location_id:data},
+        "http://192.168.1.105:8000/api/station/get-daily-visit",{location_id:data},
         { headers: { Authorization: `Bearer ${token}` } }
       );
       set({daily:res.data.data.length})

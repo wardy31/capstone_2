@@ -26,6 +26,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import DailyLogs from "../../../store/stationLogs";
 function StationCamera({ navigation }) {
   let cameraRef = useRef();
+  const link = "http://192.168.1.105:4000";
+  // const link = "https://node.lnucontacttracing.online"
   const [photo, setPhoto] = useState();
   const [faceDetected, setFaceDetected] = useState(false);
   const [hide, setHide] = useState(true);
@@ -42,8 +44,9 @@ function StationCamera({ navigation }) {
   const [isFaceInCenter, setIsFaceInCenter] = useState(false);
   const windowDimensions = useWindowDimensions();
   const [displayBorder, setDisplayBorder] = useState([]);
+  const [cameraLoad, setCameraLoad] = useState(false);
+  const { setDaily, daily, cameraLoading } = DailyLogs();
 
-  const { setDaily, daily } = DailyLogs();
   useEffect(() => {
     (async () => {
       const user = await AsyncStorage.getItem("user");
@@ -78,19 +81,18 @@ function StationCamera({ navigation }) {
         await setPhoto(getPhoto);
         await setLoaded(true);
 
-        const forms = new FormData();
-        forms.append("image", {
+        const forms = await new FormData();
+        await forms.append("image", {
           uri: getPhoto.uri,
           name: "face.jpg",
           type: "image/jpg",
         });
 
+        setHide(true);
         try {
           const user = await AsyncStorage.getItem("user");
           const { data } = await axios.post(
-            `https://node.lnucontacttracing.online/api/prediction/${
-              JSON.parse(user).id
-            }`,
+            `${link}/api/prediction/${JSON.parse(user).id}`,
             forms,
             { headers: { "Content-Type": "multipart/form-data" } }
           );
@@ -105,9 +107,9 @@ function StationCamera({ navigation }) {
             data.user_tagged[0]?.days_left
           ) {
             const res = await axios.get(
-              `https://node.lnucontacttracing.online/contact-notify/${
-                data.id
-              }/${JSON.parse(user).location_id}`
+              `${link}/contact-notify/${data.id}/${
+                JSON.parse(user).location_id
+              }`
             );
             Speech.speak("Successfully Recorded", { language: "en-US" });
             setSuccess(true);
@@ -123,11 +125,6 @@ function StationCamera({ navigation }) {
             setForm(true);
           } else {
             setSuccess(true);
-            const res = await axios.get(
-              `https://node.lnucontacttracing.online/contact-notify/${
-                data.id
-              }/${JSON.parse(user).location_id}`
-            );
             Speech.speak("Successfully Recorded", { language: "en-US" });
           }
 
@@ -136,6 +133,7 @@ function StationCamera({ navigation }) {
             setWarning(false);
             setForm(false);
             setSuccess(false);
+            setHide(false);
           }, 3000);
         } catch (error) {
           Speech.speak("Sorry Face Doesnt Recognize", { language: "en-US" });
@@ -143,8 +141,10 @@ function StationCamera({ navigation }) {
           setLoaded(false);
           setNoFace(true);
           setPhoto(null);
+
           setTimeout(() => {
             setFaceDetected(false);
+            setHide(false);
             setNoFace(false);
           }, 3000);
         }
@@ -153,7 +153,6 @@ function StationCamera({ navigation }) {
   }, [faceDetected]);
 
   const handleFaceDetection = async ({ faces }) => {
-    console.log(faces);
     if (faces.length > 0) {
       setDisplayBorder(faces[0]);
       // Get the coordinates of the first face detected
@@ -178,7 +177,6 @@ function StationCamera({ navigation }) {
         Math.abs(faceCenterY - screenCenterY) <= 50;
 
       setIsFaceInCenter(isFaceInCenter);
-      console.log(faces[0]);
       if (isFaceInCenter) {
         setFaceDetected(true);
       }

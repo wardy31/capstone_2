@@ -7,7 +7,8 @@ export default {
     data: [],
     loading: [],
     dot: false,
-    contact:false
+    contact:false,
+    snackContact:false
   }),
   mutations: {
     setData(state, data) {

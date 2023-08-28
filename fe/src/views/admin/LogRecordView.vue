@@ -2,7 +2,7 @@
   <v-app>
     <v-main class="accent">
       
-      <div class="ma-12">
+      <div class="mx-md-16 mx-sm-2">
       <h2 class="primary--text font-weight-bold mt-12 mb-1">Log Records</h2>
       <h5 class="secondary--text"> List of all student, personnels or visitors <br> location records</h5>
 
@@ -30,9 +30,9 @@
               </th>
 
 
-              <!-- <th class="text-left black--text text-center">
+              <th class="text-left black--text text-center">
                 Time Log
-              </th> -->
+              </th>
 
               <!-- <th class="text-left black--text text-center">
                 Time-In
@@ -56,7 +56,7 @@
             <tr v-for="record in records" :key="record.id" class="text-center text-capitalize">
               <td class="text-left">{{`${record.user_account.first_name} ${record.user_account.last_name}`}}</td>
               <td>{{record.location.name}}</td>
-              <!-- <td>{{record.time_in}}</td> -->
+              <td>{{record.created_at | time}}</td>
               <td>{{record.created_at | date}}</td>
               <!-- <td>
                   <v-tooltip bottom>
@@ -94,7 +94,10 @@ export default {
   filters:{
     date(val){
       return moment(val).format(`MMM. DD, YYYY`).toString()
-    } 
+    } ,
+    time(val){
+      return moment(val).format(`hh:mm A`).toString()
+    }
   },
   mounted(){
     this.$store.dispatch('record/allRecords')

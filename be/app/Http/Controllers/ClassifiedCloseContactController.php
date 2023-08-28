@@ -154,8 +154,16 @@ class ClassifiedCloseContactController extends Controller
 
     public function deletePatientContact($id)
     {
+        
+        $cac = ClassifiedAsContact::where('user_patient_id',$id)->get();
+        foreach($cac as $asContact){
+            UserTagged::find($asContact->user_tagged_id)->delete();
+        }
+        
         $contact = UserPatient::find($id);
         $contact->delete();
+
+        $cac = ClassifiedAsContact::where('user_patient_id',$id)->delete();
 
         return response()->json(['data' => $contact]);
     }

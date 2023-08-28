@@ -5,7 +5,7 @@
       <div v-if="roleData">
         <UpdateRoleDialogVue :role="roleData" @reset="reset" />
       </div>
-      <div class="ma-lg-12">
+      <div class="mx-md-16 mx-sm-2">
         <h2 class="primary--text font-weight-bold mt-12 mb-1">Clinic Staffs</h2>
         <h5 class="secondary--text">List of all Clinics</h5>
 

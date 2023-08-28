@@ -2,7 +2,7 @@
   <v-main class="accent">
     <v-container fluid>
       <addDialog />
-      <div class="ma-lg-12">
+      <div class="mx-md-16 mx-sm-2">
         <h2 class="primary--text font-weight-bold mt-12 mb-1">
           Stations Account
         </h2>

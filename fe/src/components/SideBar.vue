@@ -1,7 +1,7 @@
 <template>
 <v-navigation-drawer app width="240" color="primary" flat dark :value="dialog">
        <div class="text-left mb-10 mt-4 d-flex align-center">
-          <h2 class="ml-3 white--text">Unitrace</h2>
+          <h2 class="ml-3 white--text">UniTrace.</h2>
        </div>
       <v-list
         dense
@@ -34,6 +34,16 @@
               </v-list-item>
             </v-list-group>
             
+            <v-list-item to="/admin/manage-form" class="py-1"> 
+              <v-list-item-icon><v-icon>description</v-icon></v-list-item-icon>
+              <v-list-item-title>Manage Form</v-list-item-title>
+            </v-list-item>
+
+            <v-list-item to="/admin/station" class="py-1"> 
+              <v-list-item-icon><v-icon>location_on</v-icon></v-list-item-icon>
+              <v-list-item-title>Stations</v-list-item-title>
+            </v-list-item>
+
             <v-list-group :value="false" no-action color="warning" class="py-1">
               <template v-slot:activator>
                 <v-list-item-icon><v-icon>history_edu</v-icon></v-list-item-icon>
@@ -49,14 +59,9 @@
               </v-list-item>
             </v-list-group>
 
-            <v-list-item to="/admin/manage-form" class="py-1"> 
-              <v-list-item-icon><v-icon>description</v-icon></v-list-item-icon>
-              <v-list-item-title>Manage Form</v-list-item-title>
-            </v-list-item>
-
             <v-list-item to="/admin/manage-diseases" class="py-1"> 
               <v-list-item-icon><v-icon>coronavirus</v-icon></v-list-item-icon>
-              <v-list-item-title>Diseases Classification</v-list-item-title>
+              <v-list-item-title>Disease Classification</v-list-item-title>
             </v-list-item>
 
 
@@ -64,17 +69,12 @@
               <v-list-item-icon><v-icon>group</v-icon></v-list-item-icon>
               <v-list-item-title>Clinic Staffs</v-list-item-title>
             </v-list-item>
-
-            <v-list-item to="/admin/station" class="py-1"> 
-              <v-list-item-icon><v-icon>location_on</v-icon></v-list-item-icon>
-              <v-list-item-title>Stations</v-list-item-title>
-            </v-list-item>
          
             <v-list-item to="/admin/reportgeneration">
                 <v-list-item-icon>
                     <v-icon>file_copy</v-icon>
                 </v-list-item-icon>
-                <v-list-item-title>Report Generation</v-list-item-title>
+                <v-list-item-title>Generate Report</v-list-item-title>
             </v-list-item>
         </v-list-item-group>
       </v-list>

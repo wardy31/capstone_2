@@ -47,7 +47,7 @@ export default {
       return moment(val).format('MMM. DD, YYYY')
     },
     time(val) {
-      return moment(val).format('mm:hh A')
+      return moment(val).format('hh:mm A')
     }
   },
   computed: {

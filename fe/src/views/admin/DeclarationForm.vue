@@ -1,14 +1,14 @@
 <template>
   <v-app class="bg">
     <v-main class="bg">
-      <div class="ma-12">
+      <div class="mx-md-16 mx-sm-2">
         <h2 class="primary--text font-weight-bold mt-12 mb-1">
           Health Declaration Records
         </h2>
         <h5 class="secondary--text">user's health declaration responses</h5>
 
         <v-row justify="start" class="mt-8">
-          <v-col cols="3">
+          <v-col sm="6" lg="3" >
             <v-card class="rounded-lg">
               <v-card-title class="font-weight-bold primary--text"
                 >Today Responses</v-card-title
@@ -24,7 +24,7 @@
               </v-card-text>
             </v-card>
           </v-col>
-          <v-col cols="3">
+          <v-col sm="6" lg="3">
             <v-card class="rounded-lg">
               <v-card-title class="font-weight-bold primary--text"
                 >Total Responses</v-card-title
@@ -116,7 +116,7 @@
         ></v-pagination>
       </div>
     </v-main>
-    <v-dialog v-model="checkDialog" width="540">
+    <v-dialog v-model="checkDialog" width="620">
       <v-app-bar color="primary" >
         <v-app-bar-title class="white--text">
           <h5>Response</h5>

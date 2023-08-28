@@ -7,7 +7,7 @@
                     <h2 class="font-weight-bold">Personal Profile</h2>
                 </div>
                 <div class="my-8 d-flex" :class="{ 'justify-center': $vuetify.breakpoint.mobile }">
-                    <v-avatar color="primary" size="160" class="white--text elevation-2">
+                    <v-avatar color="primary" tile size="160" class="white--text elevation-2">
                         <img :src="`${BaseImage}${user.images_path}`" alt="" srcset="">
                     </v-avatar>
                 </div>

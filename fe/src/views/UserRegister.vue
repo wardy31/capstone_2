@@ -22,6 +22,7 @@
                   filled
                   dense
                   outlined
+                  maxlength="25"
                   :error-messages="message.first_name"
                   v-model="clinic.first_name"
                 ></v-text-field
@@ -33,6 +34,7 @@
                   filled
                   dense
                   outlined
+                  maxlength="25"
                   :error-messages="message.middle_name"
                   v-model="clinic.middle_name"
                 ></v-text-field
@@ -44,13 +46,14 @@
                   filled
                   dense
                   outlined
+                  maxlength="25"
                   :error-messages="message.last_name"
                   v-model="clinic.last_name"
                 ></v-text-field
               ></v-col>
             </v-row>
             <v-row dense>
-              <v-col cols="12" lg="6"
+              <v-col cols="12" lg="6" v-show="clinic.classification_id != 3"
                 ><v-text-field
                   label="Department"
                   hide-details="auto"
@@ -59,6 +62,7 @@
                   filled
                   dense
                   outlined
+                  maxlength="25"
                 ></v-text-field
               ></v-col>
               <v-col cols="12" lg="3">
@@ -102,6 +106,7 @@
                   dense
                   outlined
                   hide-details="auto"
+                  maxlength="100"
                   :error-messages="message.address"
                   v-model="clinic.address"
                 ></v-text-field
@@ -126,7 +131,8 @@
             <v-row dense>
               <v-col cols="12" lg="6"
                 ><v-text-field
-                  type="number"
+                  type="tel"
+                  maxlength="11"
                   label="Contact Number"
                   filled
                   dense
@@ -144,6 +150,7 @@
                   outlined
                   v-model="clinic.email"
                   hide-details="auto"
+                  type="email"
                   :error-messages="message.email"
                 ></v-text-field
               ></v-col>
@@ -325,7 +332,7 @@ export default {
         password_confirmation: "",
         email: "",
         vaccination_status: "",
-        classification_id: "",
+        classification_id: 1,
         upload_1: null,
         upload_2: null,
       },

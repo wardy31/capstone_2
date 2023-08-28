@@ -4,7 +4,7 @@
       color="primary"
       @click="$emit('handleDialog')"
     ></v-app-bar-nav-icon>
-    <v-app-bar-title>
+    <v-app-bar-title v-show="!$vuetify.breakpoint.mobile">
       <h4 class="primary--text mr-4 text-capitalize font-weight-bold">
         UniTrace.
       </h4>
@@ -12,6 +12,11 @@
 
     <v-spacer></v-spacer>
 
+    <v-alert v-model="$store.state.notifications.contact" transition="scroll-x-transition" type="error" text outlined border="left" dense class="my-auto mr-4" >
+      <label style="font-size: 13px;font-weight: 600;">
+      Contacted user was entered the campus. Check it !
+    </label>
+    </v-alert>
     <v-menu
       :rounded="rounded"
       offset-y
@@ -19,9 +24,10 @@
       max-width="280"
     >
       <template v-slot:activator="{ attrs, on }">
-        <v-badge color="red" left dot :value="contact">
+        <v-badge color="green" left dot :value="contact">
           <v-icon
             class="primary--text mr-8"
+            color="error"
             size="26"
             v-bind="attrs"
             v-on="on"
@@ -32,7 +38,7 @@
         </v-badge>
       </template>
       <v-list>
-        <v-list-item three-line v-for="notif in fiveNotif()" :key="notif.id">
+        <v-list-item three-line v-for="notif in fiveNotif(1)" :key="notif.id">
           <v-list-item-content>
             <v-list-item-title
               class="font-weight-bold text-capitalize"
@@ -46,7 +52,6 @@
             </v-list-item-title>
             <v-list-item-subtitle
               class="text-capitalize pt-2 pb-2 black--text"
-              :class="[notif.type == 3 ? 'error--text' : '']"
             >
               <h5 class="font-weight-thin">{{ notif.message }}</h5>
             </v-list-item-subtitle>
@@ -89,11 +94,10 @@
         </v-badge>
       </template>
       <v-list>
-        <v-list-item three-line v-for="notif in fiveNotif()" :key="notif.id">
+        <v-list-item three-line v-for="notif in fiveNotif(2)" :key="notif.id">
           <v-list-item-content>
             <v-list-item-title
               class="font-weight-bold text-capitalize"
-              :class="[notif.type == 3 ? 'error--text' : '']"
             >
               <h5>
                 {{
@@ -103,7 +107,6 @@
             </v-list-item-title>
             <v-list-item-subtitle
               class="text-capitalize pt-2 pb-2 black--text"
-              :class="[notif.type == 3 ? 'error--text' : '']"
             >
               <h5 class="font-weight-thin">{{ notif.message }}</h5>
             </v-list-item-subtitle>
@@ -150,8 +153,8 @@
           <v-list-item-title class="font-weight-bold">
             <h5>Edit Profile</h5>
           </v-list-item-title>
+          <v-divider></v-divider>
         </v-list-item>
-        <v-divider></v-divider>
         <v-list-item @click="logout">
           <v-list-item-icon class="mr-4"
             ><v-icon color="primary">logout</v-icon></v-list-item-icon
@@ -190,10 +193,17 @@ export default {
     }),
   },
   methods: {
-    fiveNotif() {
-      const slice = this.notify.slice(0, 4);
-      console.log("wa", slice);
-      return slice;
+    fiveNotif(type) {
+      if(type == 1){
+        const contact = this.notify.filter(f => f.type == "3").slice(0, 4); 
+        return contact
+      }
+      if(type == 2){
+        const contact = this.notify.filter(f => f.type != "3").slice(0,4) 
+
+        console.log('hmm',contact);
+        return contact
+      }
     },
     async logout() {
       this.$store.dispatch("user/logout");

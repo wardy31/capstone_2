@@ -1,33 +1,28 @@
 <template>
   <v-main class="accent">
     <v-container fluid>
-      <div class="mx-16">
+      <div class="mx-md-16 mx-sm-2">
         <v-container>
           <div>
             <div class="d-flex align-center">
               <div>
                 <h2 class="secondary--text">Welcome,</h2>
-                <h2 class="primary--text text-capitalize">
+                <h2 class="primary--text text-uppercase">
                   {{
                     `${user.first_name} ${user.middle_name} ${user.last_name}`
                   }}
                 </h2>
-                <v-chip
-                  label
-                  color="primary"
-                  class="font-weight-bold mt-2 text-capitalize"
-                  ><div>{{ user.role.name }}</div></v-chip
-                >
+                <h4 class="text-uppercase">{{ user.role.name }}</h4>
               </div>
-              <img :src="require('@/assets/undraw/dashboard.png')" />
+              <img class="d-none d-sm-none d-md-block d-lg-block d-xl-block" :src="require('@/assets/undraw/dashboard.png')" />
             </div>
           </div>
           <v-row justify="start" align="stretch" class="mt-8">
-            <v-col cols="4">
+            <v-col cols="12" sm="4" md="4" lg="4">
               <v-card class="rounded-lg">
                 <v-card-title class="font-weight-bold primary--text"
-                  >Clinic Staff</v-card-title
-                >
+                  ><h5>Clinic Staff</h5>
+                </v-card-title>
                 <v-card-text>
                   <v-row>
                     <v-col>
@@ -40,10 +35,10 @@
                 </v-card-text>
               </v-card>
             </v-col>
-            <v-col cols="4">
+            <v-col cols="12" sm="4" md="4" lg="4">
               <v-card class="rounded-lg">
                 <v-card-title class="font-weight-bold primary--text"
-                  >Stations</v-card-title
+                  ><h5>Stations</h5></v-card-title
                 >
                 <v-card-text>
                   <v-row>
@@ -59,10 +54,10 @@
                 </v-card-text>
               </v-card>
             </v-col>
-            <v-col cols="4">
+            <v-col cols="12" sm="4" md="4" lg="4">
               <v-card class="rounded-lg">
                 <v-card-title class="font-weight-bold primary--text"
-                  >Active Patients</v-card-title
+                  ><h5>Active Patients</h5></v-card-title
                 >
                 <v-card-text>
                   <v-row>
@@ -81,7 +76,7 @@
           </v-row>
 
           <v-row class="mt-8">
-            <v-col>
+            <v-col cols="12" sm="7" md="6" lg="6">
               <div class="mb-3">
                 <h3 class="font-weight-bold">
                   Monthly Summary of Classified Contacts
@@ -125,7 +120,8 @@
                 </template>
               </v-simple-table>
             </v-col>
-            <v-col>
+
+            <v-col cols="12" sm="5" md="6" lg="6">
               <div class="mb-3">
                 <h3 class="font-weight-bold">Daily User's Follow Up</h3>
               </div>

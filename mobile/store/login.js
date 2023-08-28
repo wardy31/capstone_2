@@ -1,6 +1,10 @@
 import { create } from "zustand";
 import axios from "../config/axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+
+// const link = "https://laravel.lnucontacttracing.online";
+const link = "http://192.168.1.105:8000"
+
 const store = create((set,get) => ({
   authCheck:false,
   loading: false,
@@ -12,7 +16,7 @@ const store = create((set,get) => ({
     set({ error: "" });
     try {
       const { data } = await axios.post(
-        "http://192.168.1.136:8000/api/login-user",
+        `${link}/api/login-user`,
         params
       );
       await AsyncStorage.setItem("token", data.token);
@@ -40,7 +44,7 @@ const store = create((set,get) => ({
       //   params
       // );
       const { data } = await axios.post(
-        "http://192.168.1.136:8000/api/login-station",
+        `${link}/api/login-station`,
         params
       );
       await AsyncStorage.setItem("token", data.token);
@@ -69,7 +73,7 @@ const store = create((set,get) => ({
     set({loading:true})
     try{
         const token = await AsyncStorage.getItem("token")
-        await axios.post("http://192.168.254.118:9000/api/logout",{},{headers:{"Authorization" : `Bearer ${token}`}})
+        await axios.post(`${link}/api/logout`,{},{headers:{"Authorization" : `Bearer ${token}`}})
         await AsyncStorage.clear()
         set({loading:false})
         set(state => ({authCheck:!state.authCheck}))

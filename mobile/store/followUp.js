@@ -11,7 +11,7 @@ const store = create((set, get) => ({
     try {
       const token = await AsyncStorage.getItem("token");
       await axios.post(
-        "http://192.168.1.136:8000/api/submit-follow-up",{form:data},
+        "http://192.168.1.105:8000/api/submit-follow-up",{form:data},
         {
           headers: { Authorization: `Bearer ${token}` },
         }
@@ -29,7 +29,7 @@ const store = create((set, get) => ({
     try {
       const token = await AsyncStorage.getItem("token");
       const { data } = await axios.get(
-        "http://192.168.1.136:8000/api/followup-exist",
+        "http://192.168.1.105:8000/api/followup-exist",
         { headers: { Authorization: `Bearer ${token}` } }
       );
       set({ exists: data.exist });

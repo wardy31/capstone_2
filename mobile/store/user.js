@@ -13,7 +13,7 @@ const store = create((set) => ({
   setCheckStatus:async() =>{
     try{
       const token = await AsyncStorage.getItem("token");
-      const {data} =await axios.get('http://192.168.1.136:8000/api/check-status',{headers:{Authorization:`Bearer ${token}`}})
+      const {data} =await axios.get('http://192.168.1.105:8000/api/check-status',{headers:{Authorization:`Bearer ${token}`}})
       set({userStatus:data.data})
       console.log('status',data);
     }catch(e){
@@ -26,7 +26,7 @@ const store = create((set) => ({
     try {
       const token = await AsyncStorage.getItem("token");
       await axios.put(
-        "http://192.168.1.136:8000/api/user/update-password",
+        "http://192.168.1.105:8000/api/user/update-password",
         params,
         { headers: { Authorization: `Bearer ${token}` } }
       );

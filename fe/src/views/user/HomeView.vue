@@ -4,19 +4,22 @@
       <div class="mx-auto mx-lg-16">
         <v-container>
           <div>
-            <div class="d-lg-flex align-center">
+            <div class="d-lg-flex align-center mt-6">
               <div>
                 <h2 class="secondary--text">Welcome,</h2>
-                <h2 class="primary--text text-capitalize">
-                  {{ `${user.first_name} ${user.last_name}` }}
+                <h2 class="primary--text text-uppercase">
+                  {{ `${user.first_name} ${user.last_name} ` }}
                 </h2>
-                <v-chip
+                <div class="text-uppercase">
+                  <h4>{{ user.classification.name }}</h4>
+                </div>
+
+                <!-- <v-chip
                   label
                   color="primary"
                   class="font-weight-bold mt-2 px-6 text-capitalize"
                 >
-                  <div>{{ user.classification.name }}</div>
-                </v-chip>
+                </v-chip> -->
               </div>
               <!-- <img :src="require('@/assets/undraw/home.png')" class="ml-8" /> -->
             </div>
@@ -47,7 +50,7 @@
           </v-row>
 
           <!-- announcecment -->
-          <h2 class="primary--text mt-10 mb-4">Bulletin Board</h2>
+          <h2 class="primary--text mt-10 mb-4">Activity Board</h2>
           <v-card width="480" color="transparent" flat>
             <div v-if="checkDays()">
               <v-alert

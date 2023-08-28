@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <div class="ma-12">
+    <div class="mx-md-16 mx-sm-2">
       <h2 class="primary--text font-weight-bold mt-12 mb-1">Trace Contacts</h2>
       <h5 class="secondary--text">Trace User's Contacts</h5>
 
@@ -44,7 +44,7 @@
               class="text-center text-capitalize"
             >
               <td class="text-left font-weight-bold primary--text">
-                {{ `${user.first_name} ${user.middle_name} ${user.last_name}` }}
+                {{ `${user.first_name} ${(user.middle_name != 'null' || user.middle_name.trim() != "" ) ? user.middle_name : " " } ${user.last_name}` }}
                 <div class="secondary--text font-weight-thin">
                   {{ user.classification.name }}
                 </div>

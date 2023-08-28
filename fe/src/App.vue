@@ -14,6 +14,7 @@ export default {
     socket.on("clinic-contact", (arg) => {
       console.log("onFunction", arg);
       this.$store.state.notifications.contact = true
+      this.$store.state.notifications.snackContact = true
       this.$store.dispatch("notifications/getNotifications");
     });
     

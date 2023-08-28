@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main class="accent">
-      <div class="ma-16">
+      <div class="mx-md-16 mx-sm-2">
         <h2 class="primary--text font-weight-bold mt-12 mb-1">
           Generate Reports
         </h2>

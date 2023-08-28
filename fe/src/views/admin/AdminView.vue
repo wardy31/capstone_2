@@ -5,9 +5,6 @@
     </div>
     <div v-else>
       <v-app>
-        <v-snackbar value="true" text color="red" right bottom>
-          Contacted user was entered the campus please contact them immediately.
-        </v-snackbar>
         <app-bar
           :data="user"
           type="admin"

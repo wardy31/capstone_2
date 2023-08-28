@@ -1,6 +1,6 @@
 <template>
   <v-container>
-    <div class="ma-12">
+    <div class="mx-md-16 mx-sm-2">
       <h2 class="primary--text font-weight-bold mt-12 mb-1">Trace Contacts</h2>
       <h5 class="secondary--text">Trace User's Contacts</h5>
 
