@@ -27,7 +27,8 @@ app.use("/api", predictRoute);
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: ["http://192.168.1.136:8080"],
+    // origin: ["http://192.168.1.136:8080"],
+    origin: ["http://localhost"],
     credentials: true
   }
 });
@@ -75,13 +76,13 @@ app.post("/ge", images(), (req, res) => {
 });
 
 app.get("/checking", async (req, res) => {
-  axios.get('http://192.168.1.136:8000/api/check').then((result) => {
-    console.log(result.data);
-    res.json({ message: result.data, host: req.host })
-  }).catch((err) => {
-    console.log(err);
-  });
-  // console.log(req.files);
+  // axios.get('http://192.168.1.136:8000/api/check').then((result) => {
+  //   console.log(result.data);
+  //   res.json({ message: result.data, host: req.host })
+  // }).catch((err) => {
+  //   console.log(err);
+  // });
+  console.log(req.files);
 });
 
 PORT = process.env.PORT || 3000;
@@ -92,6 +93,6 @@ console.log(`Running server at http://localhost:${PORT}`);
 //   console.log("running server at http://192.168.1.136:3000");
 // });
 
-httpServer.listen(3000, "192.168.1.136", () => {
-  console.log("running server at http://192.168.1.136:3000");
+httpServer.listen(3000, () => {
+  console.log("running server at http://localhost:3000");
 });
