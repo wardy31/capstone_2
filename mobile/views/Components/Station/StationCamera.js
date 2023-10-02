@@ -26,7 +26,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import DailyLogs from "../../../store/stationLogs";
 function StationCamera({ navigation }) {
   let cameraRef = useRef();
-  const link = "http://192.168.1.105:4000";
+  const link = "http://192.168.1.106:4000";
   // const link = "https://node.lnucontacttracing.online"
   const [photo, setPhoto] = useState();
   const [faceDetected, setFaceDetected] = useState(false);

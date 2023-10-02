@@ -332,7 +332,7 @@ export default {
         password_confirmation: "",
         email: "",
         vaccination_status: "",
-        classification_id: 1,
+        classification_id: null,
         upload_1: null,
         upload_2: null,
       },

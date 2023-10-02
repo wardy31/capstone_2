@@ -121,10 +121,10 @@ app.get("/contact-notify/:id/:location_id", async (req, res) => {
 
 PORT = process.env.PORT || 3000;
 
-// httpServer.listen(4000, process.env.NODE_HOST, () => {
-//   console.log(`running server at http://${process.env.NODE_HOST}:4000`);
-// });
-
-httpServer.listen(5000, () => {
-  console.log("running server at http://localhost:5000");
+httpServer.listen(4000, process.env.NODE_HOST, () => {
+  console.log(`running server at http://${process.env.NODE_HOST}:4000`);
 });
+
+// httpServer.listen(5000, () => {
+//   console.log("running server at http://localhost:5000");
+// });

@@ -77,8 +77,8 @@ class UserAccountController extends Controller
             'classification_id' => ['required'],
             'vaccination_status' => ['required'],
             // 'images_path' => ['required'],
-            'username' => ['required', 'unique:clinic_accounts,username', 'unique:user_accounts,username', 'unique:station_accounts,username','min:4'],
-            'password' => ['required', 'confirmed','min:8'],
+            'username' => ['required', 'unique:clinic_accounts,username', 'unique:user_accounts,username', 'unique:station_accounts,username', 'min:4'],
+            'password' => ['required', 'confirmed', 'min:8'],
             'upload_1' => ['required'],
             'upload_2' => ['required']
         ]);
@@ -94,7 +94,7 @@ class UserAccountController extends Controller
         $user->email = $request->email;
         $user->department = $request->department;
         $user->contact_number = $request->contact_number;
-        $user->classification_id = 1;
+        $user->classification_id = $request->classification_id;
         $user->vaccination_status = $request->vaccination_status;
         $user->images_path = $image;
         $user->username = $request->username;
@@ -165,13 +165,13 @@ class UserAccountController extends Controller
         return response()->json($user);
     }
 
-    public function userDetails(Request $request,$id)
+    public function userDetails(Request $request, $id)
     {
         $hdrResponse = UserResponse::with('answers.question')->where('user_account_id', $id)->get();
         $visitedStation = VisitedLocationRecord::with('location')->where('user_account_id', $id)->get();
         $followUps = FollowUp::where('user_account_id', $id)->get();
 
-        
-        return response()->json(['hdr'=> $hdrResponse, 'visited' => $visitedStation, 'followUps' => $followUps]);
+
+        return response()->json(['hdr' => $hdrResponse, 'visited' => $visitedStation, 'followUps' => $followUps]);
     }
 }
