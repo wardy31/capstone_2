@@ -50,11 +50,11 @@
               <td>{{ station.location.name }}</td>
               <td
                 v-if="station.is_active"
-                class="font-weight-bold primary--text"
+                class="font-weight-bold success--text"
               >
                 Active
               </td>
-              <td v-else class="font-weight-bold error--text">Not Active</td>
+              <td v-else class="font-weight-bold error--text">Inactive</td>
               <td>
                 <v-tooltip bottom>
                     <template v-slot:activator="{ on, attrs }">

@@ -3,8 +3,8 @@
     <v-card class="ma-auto " elevation="5" width="720" tile>
       <v-container>
         <v-row class="accent">
-          <v-col class="accent">
-            <h4 class="mt-3 ml-2 mb-16 primary--text">UniTrace.</h4>
+          <v-col class="accent text-center">
+            <h4 class="mt-3 ml-4 mb-16 primary--text">UniTrace.</h4>
             <img :src="require('@/assets/user_4.svg')" width="320" />
           </v-col>
           <v-col class="white" :class="$vuetify.breakpoint.mobile ? `rounded-t-xl` : ``">

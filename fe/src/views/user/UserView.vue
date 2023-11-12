@@ -6,8 +6,9 @@
     <div v-else>
       <app-bar :data="user" type="user" @handleDialog="handleDialog" />
       <router-view></router-view>
-      <side-bar  v-if="!$vuetify.breakpoint.mobile" :dialog="dialog" />
-      <bottom-bar v-if="$vuetify.breakpoint.mobile"></bottom-bar>
+      <bottom-bar></bottom-bar>
+      <!-- <side-bar  v-if="!$vuetify.breakpoint.mobile" :dialog="dialog" />
+      <bottom-bar v-if="$vuetify.breakpoint.mobile"></bottom-bar> -->
     </div>
   </v-app>
 </template>
@@ -16,10 +17,10 @@
 import Loading from '@/components/LoadingView.vue'
 import AppBar from "@/components/AppBar.vue";
 import BottomBar from "@/views/user/BottomNavigation.vue"
-import SideBar from "@/views/user/SideBar.vue";
+// import SideBar from "@/views/user/SideBar.vue";
 import { mapState } from "vuex";
 export default {
-  components: { AppBar, SideBar, Loading, BottomBar },
+  components: { AppBar, Loading, BottomBar },
   computed: {
     ...mapState({
       loading: (state) => state.user.credentials.loading,

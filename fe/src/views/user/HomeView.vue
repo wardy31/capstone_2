@@ -1,57 +1,51 @@
 <template>
   <v-app>
     <v-main class="accent">
-      <div class="mx-auto mx-lg-16">
-        <v-container>
+      <div class="d-flex justify-center">
+        <div class="">
           <div>
-            <div class="d-lg-flex align-center mt-6">
+            <div class="align-center mt-6">
               <div>
-                <h2 class="secondary--text">Welcome,</h2>
-                <h2 class="primary--text text-uppercase">
-                  {{ `${user.first_name} ${user.last_name} ` }}
-                </h2>
-                <div class="text-uppercase">
-                  <h4>{{ user.classification.name }}</h4>
+                <div class="d-flex align-center gap">
+                  <h4 class="secondary--text text-uppercase">Welcome Back !</h4>
+                  <v-chip
+                    class="ma-2 text-capitalize"
+                    color="primary"
+                    label
+                    outlined
+                    small
+                  >
+                    <v-icon left>label</v-icon>
+                    {{ user.classification.name }}
+                  </v-chip>
                 </div>
-
-                <!-- <v-chip
-                  label
-                  color="primary"
-                  class="font-weight-bold mt-2 px-6 text-capitalize"
-                >
-                </v-chip> -->
+                <h1 class="primary--text text-uppercase">
+                  {{ `${user.first_name} ${user.last_name} ` }}
+                </h1>
               </div>
-              <!-- <img :src="require('@/assets/undraw/home.png')" class="ml-8" /> -->
             </div>
           </div>
 
-          <v-row justify="start" align="end" class="mt-8">
-            <v-col sm="12" md="4" lg="4">
-              <v-card class="rounded-md">
-                <v-card-title class="font-weight-bold primary--text"
-                  >Contact Status</v-card-title
-                >
+          <v-row justify="start" class="mt-8">
+            <v-col>
+              <v-card class="rounded-lg">
                 <v-card-text>
-                  <v-row>
-                    <v-col>
-                      <div class="d-flex justify-center">
-                        <h2 class="error--text mr-4 my-6" v-if="checkDays()">
-                          Close Contact
-                        </h2>
-                        <h2 class="success--text mr-4 my-6" v-else>
-                          No Contact
-                        </h2>
-                      </div>
-                    </v-col>
-                  </v-row>
+                  <h3 class="text-center my-3">User Status</h3>
+                  <v-divider></v-divider>
+                  <div class="text-center">
+                    <h2 class="error--text my-6" v-if="checkDays()">
+                      Close Contact
+                    </h2>
+                    <h2 class="success--text my-6" v-else>No Contact</h2>
+                  </div>
                 </v-card-text>
               </v-card>
             </v-col>
           </v-row>
 
           <!-- announcecment -->
-          <h2 class="primary--text mt-10 mb-4">Activity Board</h2>
-          <v-card width="480" color="transparent" flat>
+          <h2 class="secondary--text mt-10 mb-4">Actions Board</h2>
+          <v-card width="480" color="transparent" flat class="rounded-lg">
             <div v-if="checkDays()">
               <v-alert
                 type="success"
@@ -125,17 +119,18 @@
                   enter the campus. have a nice day and keep safe.
                 </div>
               </v-alert>
-              <v-card width="620" class="mb-6 elevation-4" v-else>
-                <v-card-title class="primary--text">
+              <v-card width="620" class="mb-6 elevation-4 rounded-lg" v-else>
+                <v-card-title class="black--text">
                   <div class="text-body-1 font-weight-bold">
                     Health Declaration Form
                   </div>
                 </v-card-title>
                 <v-card-text>
-                  <div class="text-body-2">
-                    Fill up your health declaration form when entering the
-                    campus. (required)
+                  <div class="text-body-2 d-inline">
+                    Fill up your health declaration form before entering the
+                    campus.
                   </div>
+                  <div class="text-body-2 d-inline error--text">* (required)</div>
                 </v-card-text>
                 <v-card-actions>
                   <v-btn
@@ -143,14 +138,14 @@
                     to="/user/health-declaration-form"
                     class="mb-2 ml-2 px-7 text-capitalize"
                     small
-                    >Fill Up</v-btn
+                    >Fill up</v-btn
                   >
                 </v-card-actions>
               </v-card>
             </div>
           </v-card>
           <followUpDialogVue />
-        </v-container>
+        </div>
       </div>
     </v-main>
   </v-app>

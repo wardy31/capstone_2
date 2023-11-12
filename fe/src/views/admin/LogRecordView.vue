@@ -3,7 +3,7 @@
     <v-main class="accent">
       
       <div class="mx-md-16 mx-sm-2">
-      <h2 class="primary--text font-weight-bold mt-12 mb-1">Log Records</h2>
+      <h2 class="primary--text font-weight-bold mt-12 mb-1">Stations Records</h2>
       <h5 class="secondary--text"> List of all student, personnels or visitors <br> location records</h5>
 
       <div class="adj mt-8 d-flex">

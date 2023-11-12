@@ -8,10 +8,10 @@
       />
       <updateDialog
         :dialog="dialog['update']"
-        :updateData = "updateData"
-        @handleUpdateData = "updateData = null"
-        @handleDialog = "dialog['update'] = false"
-        @snackBar="snackBar['update']  = true"
+        :updateData="updateData"
+        @handleUpdateData="updateData = null"
+        @handleDialog="dialog['update'] = false"
+        @snackBar="snackBar['update'] = true"
       />
       <div class="ma-lg-12">
         <h2 class="primary--text font-weight-bold mt-12 mb-1">Manage Form</h2>
@@ -37,12 +37,85 @@
           >
         </div>
 
-        <v-card
+        <v-simple-table>
+          <template v-slot:default>
+            <thead>
+              <tr>
+                <th class="text-left">Questions</th>
+                <th class="text-left">Secondary Questions</th>
+                <th class="text-left">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="question in questions"
+                :key="question.id"
+                class="hover"
+              >
+                <td class="text-justify py-8">{{ question.question }}</td>
+                <td class="py-8">
+                  <ul v-if="question.sub_question">
+                    <li
+                      v-for="(list, index) in questionSplit(
+                        question.sub_question
+                      )"
+                      :key="index"
+                    >
+                      {{ list }}
+                    </li>
+                  </ul>
+                </td>
+                <td>
+                  <div class="">
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          class="text-capitalize mr-2 mb-2"
+                          color="primary"
+                          @click="handleUpdateDialog(question)"
+                          dark
+                          v-bind="attrs"
+                          v-on="on"
+                          block
+                          small
+                          text
+                          ><v-icon left>article</v-icon> Update
+                        </v-btn>
+                      </template>
+                      <span>Update Form</span>
+                    </v-tooltip>
+                    <v-tooltip bottom>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          block
+                          class="text-capitalize"
+                          color="error"
+                          dark
+                          v-bind="attrs"
+                          v-on="on"
+                          small
+                          text
+                          @click="openDeleteDialog(question)"
+                          ><v-icon left>delete_forever</v-icon> Remove</v-btn
+                        >
+                      </template>
+                      <span>Delete</span>
+                    </v-tooltip>
+                  </div>
+                </td>
+              </tr>
+            </tbody>
+          </template>
+        </v-simple-table>
+
+        <!-- <v-card
           v-for="question in questions"
           :key="question.id"
           class="mb-4 rounded-lg"
         >
-          <v-card-title class="font-weight-bold primary--text">Question</v-card-title>
+          <v-card-title class="font-weight-bold primary--text"
+            >Question</v-card-title
+          >
           <v-card-text>
             <div class="text-body-1 font-weight-bold black--text">
               {{ question.question }}
@@ -59,7 +132,7 @@
             </div>
           </v-card-text>
           <v-card-actions class="ml-4">
-            <v-tooltip bottom >
+            <v-tooltip bottom>
               <template v-slot:activator="{ on, attrs }">
                 <v-btn
                   class="text-capitalize mr-2"
@@ -88,7 +161,7 @@
               <span>Delete</span>
             </v-tooltip>
           </v-card-actions>
-        </v-card>
+        </v-card> -->
         <!-- <v-simple-table class="rounded-lg elevation-6">
           <thead>
             <tr class="text-center">
@@ -186,7 +259,13 @@
               @click="closeDeleteDialog"
               >Cancel</v-btn
             >
-            <v-btn color="error" :loading="deleteLoading" class="text-capitalize px-6" @click="deleteForm">Delete</v-btn>
+            <v-btn
+              color="error"
+              :loading="deleteLoading"
+              class="text-capitalize px-6"
+              @click="deleteForm"
+              >Delete</v-btn
+            >
           </v-card-actions>
         </v-card>
       </v-dialog>
@@ -212,23 +291,23 @@ import addDialog from "./Dialog/Form/AddDialog.vue";
 import updateDialog from "./Dialog/Form/UpdateDialog.vue";
 
 export default {
-  components: { updateDialog,addDialog },
+  components: { updateDialog, addDialog },
   mounted() {
     this.$store.dispatch("questions/getData");
   },
   computed: {
     ...mapState({
       questions: (state) => state.questions.all.data,
-      deleteLoading:(state) => state.questions.delete.loading
+      deleteLoading: (state) => state.questions.delete.loading,
     }),
   },
   data() {
     return {
       dialog: {
         add: false,
-        update:false
+        update: false,
       },
-      updateData:null,
+      updateData: null,
       deleteDialog: false,
       formData: null,
       page_number: 1,
@@ -257,15 +336,15 @@ export default {
       const res = await this.$store.dispatch("questions/delete", this.formData);
       if (res) {
         this.deleteDialog = false;
-        this.snackBar['delete'] = true
+        this.snackBar["delete"] = true;
       }
     },
     handleDialog() {
       this.dialog["add"] = true;
     },
-    handleUpdateDialog(data){
-      this.updateData = data
-      this.dialog['update'] = true
+    handleUpdateDialog(data) {
+      this.updateData = data;
+      this.dialog["update"] = true;
     },
     changeStatus(data) {
       this.$store.dispatch("station/changeStatus", data);
@@ -292,5 +371,8 @@ export default {
 }
 .adj {
   width: 280px;
+}
+tr:hover {
+  background-color: transparent !important;
 }
 </style>

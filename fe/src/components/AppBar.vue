@@ -1,7 +1,7 @@
 <template>
   <v-app-bar app color="accent">
-    <v-app-bar-nav-icon v-if="!$vuetify.breakpoint.mobile" color="primary"
-      @click="$emit('handleDialog')"></v-app-bar-nav-icon>
+    <!-- <v-app-bar-nav-icon v-if="!$vuetify.breakpoint.mobile" color="primary"
+      @click="$emit('handleDialog')"></v-app-bar-nav-icon> -->
 
     <v-app-bar-title>
       <h4 class="primary--text mr-4 text-capitalize font-weight-bold">

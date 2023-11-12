@@ -26,13 +26,17 @@
               <th class="text-left black--text">
                 <h3>Name</h3>
               </th>
-              
-              <th class="text-left black--text">
-                <h3>Department</h3>
+
+              <th class="text-center black--text">
+                <h3>Contact No.</h3>
+              </th>
+
+              <th class="text-center black--text">
+                <h3>Email</h3>
               </th>
 
               <th class="text-left black--text text-center">
-                <h3>Action</h3>
+                <h3>Actions</h3>
               </th>
             </tr>
           </thead>
@@ -44,18 +48,55 @@
               class="text-center text-capitalize"
             >
               <td class="text-left font-weight-bold primary--text">
-                {{ `${user.first_name} ${(user.middle_name != 'null' || user.middle_name.trim() != "" ) ? user.middle_name : " " } ${user.last_name}` }}
+                {{
+                  `${user.first_name} ${
+                    user.middle_name != "null" || user.middle_name.trim() != ""
+                      ? user.middle_name
+                      : " "
+                  } ${user.last_name}`
+                }}
                 <div class="secondary--text font-weight-thin">
                   {{ user.classification.name }}
                 </div>
               </td>
-              <td class="text-left text-uppercase font-weight-bold">
+              <td class="text-center text-lowercase">
                 <div class="mb-1 text-primary">
-                  {{ user.department }}
+                  {{ user.contact_number }}
                 </div>
               </td>
-              <td>
-                <v-menu
+              <td class="text-center text-lowercase">
+                <div class="mb-1 text-primary">
+                  {{ user?.email }}
+                </div>
+              </td>
+              <td class="text-center">
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      icon
+                      :to="`/admin/manage/trace-user/${user.id}`"
+                      v-bind="attrs"
+                      v-on="on"
+                      ><v-icon color="success">reduce_capacity</v-icon></v-btn
+                    >
+                  </template>
+                  <span>Trace Contacts</span>
+                </v-tooltip>
+
+                <v-tooltip bottom>
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      icon
+                      :to="`/admin/checkprofile/${user.id}`"
+                      v-bind="attrs"
+                      v-on="on"
+                      ><v-icon color="primary">account_circle</v-icon></v-btn
+                    >
+                  </template>
+                  <span>Check Profile</span>
+                </v-tooltip>
+
+                <!-- <v-menu
                   offset-y
                   bottom
                   transition="slide-y-transition"
@@ -96,7 +137,7 @@
                       >
                     </v-list-item>
                   </v-list>
-                </v-menu>
+                </v-menu> -->
               </td>
             </tr>
           </tbody>

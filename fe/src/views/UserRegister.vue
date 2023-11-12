@@ -52,19 +52,21 @@
                 ></v-text-field
               ></v-col>
             </v-row>
+
             <v-row dense>
-              <v-col cols="12" lg="6" v-show="clinic.classification_id != 3"
-                ><v-text-field
-                  label="Department"
-                  hide-details="auto"
-                  :error-messages="message.department"
-                  v-model="clinic.department"
-                  filled
-                  dense
+              <v-col cols="12" lg="3">
+                <v-select
+                  :items="['Male', 'Female']"
+                  v-model="clinic.gender"
                   outlined
-                  maxlength="25"
-                ></v-text-field
-              ></v-col>
+                  dense
+                  filled
+                  hide-details="auto"
+                  :error-messages="message.gender"
+                  label="Gender"
+                />
+              </v-col>
+
               <v-col cols="12" lg="3">
                 <v-select
                   class="text-capitalize"
@@ -84,18 +86,19 @@
                   label="Classification"
                 />
               </v-col>
-              <v-col cols="12" lg="3">
-                <v-select
-                  :items="['Male', 'Female']"
-                  v-model="clinic.gender"
-                  outlined
-                  dense
-                  filled
+
+              <v-col cols="12" lg="6" v-show="clinic.classification_id != 3"
+                ><v-text-field
+                  label="Department"
                   hide-details="auto"
-                  :error-messages="message.gender"
-                  label="Gender"
-                />
-              </v-col>
+                  :error-messages="message.department"
+                  v-model="clinic.department"
+                  filled
+                  dense
+                  outlined
+                  maxlength="25"
+                ></v-text-field
+              ></v-col>
             </v-row>
 
             <v-row dense>

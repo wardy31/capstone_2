@@ -5,9 +5,9 @@ const fs = require("fs");
 
 const load = async () => {
   await faceapi.nets.ssdMobilenetv1.loadFromDisk("./weights");
-  await faceapi.nets.tinyFaceDetector.loadFromDisk("./weights");
   await faceapi.nets.faceRecognitionNet.loadFromDisk("./weights");
   await faceapi.nets.faceLandmark68Net.loadFromDisk("./weights");
+  await faceapi.nets.tinyFaceDetector.loadFromDisk("./weights");
 };
 
 const loadImages = async () => {

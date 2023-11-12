@@ -21,16 +21,17 @@
                 <v-list-item-title>Manage <br> Contacts</v-list-item-title>
               </template>
 
-              <v-list-item to="/admin/manage/contact-user" class="py-1">
-                <v-list-item-title>User Close Contacts</v-list-item-title>
-              </v-list-item>
-
               <v-list-item to="/admin/manage/check-users" class="py-1">
                 <v-list-item-title>Trace Contacts</v-list-item-title>
               </v-list-item>
 
+              <v-list-item to="/admin/manage/contact-user" class="py-1">
+                <v-list-item-title>Monitor Users</v-list-item-title>
+                <!-- <v-list-item-title>User Close Contacts</v-list-item-title> -->
+              </v-list-item>
+
               <v-list-item to="/admin/manage/follow-ups" class="py-1">
-                <v-list-item-title>User Follow Up</v-list-item-title>
+                <v-list-item-title>Follow Ups</v-list-item-title>
               </v-list-item>
             </v-list-group>
             
@@ -55,7 +56,7 @@
               </v-list-item>
 
               <v-list-item to="/admin/logrecords" class="py-1">
-                <v-list-item-title>Log Records</v-list-item-title>
+                <v-list-item-title>Station Records</v-list-item-title>
               </v-list-item>
             </v-list-group>
 

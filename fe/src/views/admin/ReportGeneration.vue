@@ -348,7 +348,7 @@
           </ul>
 
           <div class="mt-4">
-            <v-text-field outlined readonly label="Answer" :value="response.answer == 1 ? `True` : `False`"></v-text-field>
+            <v-text-field outlined readonly label="Answer" :value="response.answer == 1 ? `Yes` : `No`"></v-text-field>
           </div>
         </v-card-text>
       </v-card>
@@ -610,7 +610,7 @@ export default {
 
         for (const key of m.answers) {
           num += 1;
-          obj[`Question No. ${num}`] = key.answer ? "True" : "False";
+          obj[`Question No. ${num}`] = key.answer ? "Yes" : "No";
         }
         obj["time"] = moment(m.created_at).format("hh:mm a").toString();
         obj["date"] = moment(m.created_at).format("MMM. DD, YYYY").toString();
