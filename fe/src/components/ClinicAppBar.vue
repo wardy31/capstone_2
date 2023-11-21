@@ -12,11 +12,21 @@
 
     <v-spacer></v-spacer>
 
-    <v-alert v-model="$store.state.notifications.contact" transition="scroll-x-transition" type="error" text outlined border="left" dense class="my-auto mr-4" >
-      <label style="font-size: 13px;font-weight: 600;">
-      Contacted user was entered the campus. Check it !
-    </label>
+    <v-alert
+      v-model="$store.state.notifications.contact"
+      transition="scroll-x-transition"
+      type="error"
+      text
+      outlined
+      border="left"
+      dense
+      class="my-auto mr-4"
+    >
+      <label style="font-size: 13px; font-weight: 600">
+        Contacted user was entered the campus. Check it !
+      </label>
     </v-alert>
+    
     <v-menu
       :rounded="rounded"
       offset-y
@@ -25,7 +35,16 @@
     >
       <template v-slot:activator="{ attrs, on }">
         <v-badge color="green" left dot :value="contact">
-          <v-icon
+          <span
+            class="material-symbols-outlined error--text mr-6 mt-2"
+            v-bind="attrs"
+            v-on="on"
+            @click="$store.state.notifications.contact = false"
+          >
+            zone_person_alert
+          </span>
+
+          <!-- <v-icon
             class="primary--text mr-8"
             color="error"
             size="26"
@@ -33,8 +52,7 @@
             v-on="on"
             @click="$store.state.notifications.contact = false"
           >
-            sick
-          </v-icon>
+          </v-icon> -->
         </v-badge>
       </template>
       <v-list>
@@ -50,9 +68,7 @@
                 }}
               </h5>
             </v-list-item-title>
-            <v-list-item-subtitle
-              class="text-capitalize pt-2 pb-2 black--text"
-            >
+            <v-list-item-subtitle class="text-capitalize pt-2 pb-2 black--text">
               <h5 class="font-weight-thin">{{ notif.message }}</h5>
             </v-list-item-subtitle>
             <v-list-item-subtitle>
@@ -96,18 +112,14 @@
       <v-list>
         <v-list-item three-line v-for="notif in fiveNotif(2)" :key="notif.id">
           <v-list-item-content>
-            <v-list-item-title
-              class="font-weight-bold text-capitalize"
-            >
+            <v-list-item-title class="font-weight-bold text-capitalize">
               <h5>
                 {{
                   `${notif.user_account.first_name} ${notif.user_account.last_name}`
                 }}
               </h5>
             </v-list-item-title>
-            <v-list-item-subtitle
-              class="text-capitalize pt-2 pb-2 black--text"
-            >
+            <v-list-item-subtitle class="text-capitalize pt-2 pb-2 black--text">
               <h5 class="font-weight-thin">{{ notif.message }}</h5>
             </v-list-item-subtitle>
             <v-list-item-subtitle>
@@ -194,15 +206,15 @@ export default {
   },
   methods: {
     fiveNotif(type) {
-      if(type == 1){
-        const contact = this.notify.filter(f => f.type == "3").slice(0, 4); 
-        return contact
+      if (type == 1) {
+        const contact = this.notify.filter((f) => f.type == "3").slice(0, 4);
+        return contact;
       }
-      if(type == 2){
-        const contact = this.notify.filter(f => f.type != "3").slice(0,4) 
+      if (type == 2) {
+        const contact = this.notify.filter((f) => f.type != "3").slice(0, 4);
 
-        console.log('hmm',contact);
-        return contact
+        console.log("hmm", contact);
+        return contact;
       }
     },
     async logout() {

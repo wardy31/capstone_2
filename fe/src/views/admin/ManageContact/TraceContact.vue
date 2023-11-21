@@ -156,7 +156,34 @@
             <td>{{ visited.created_at | filterTime }}</td>
             <td>{{ visited.created_at | filterDate }}</td>
             <td>
-              <v-menu
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    v-bind="attrs"
+                    v-on="on"
+                    icon
+                    @click="markContact(visited)"
+                    color="error"
+                    ><v-icon color="error">reduce_capacity</v-icon></v-btn
+                  >
+                </template>
+                <span>Mark as close contact</span>
+              </v-tooltip>
+
+              <v-tooltip bottom>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    v-bind="attrs"
+                    v-on="on"
+                    icon
+                    :to="`/admin/checkprofile/${visited.user_account.id}`"
+                    ><v-icon color="primary">account_circle</v-icon></v-btn
+                  >
+                </template>
+                <span>Check Profile</span>
+              </v-tooltip>
+
+              <!-- <v-menu
                 offset-y
                 bottom
                 transition="slide-y-transition"
@@ -199,7 +226,7 @@
                     >
                   </v-list-item>
                 </v-list>
-              </v-menu>
+              </v-menu> -->
             </td>
           </tr>
         </tbody>
@@ -241,7 +268,7 @@ export default {
       return moment(val).format("MMM. DD,YYYY").toString();
     },
     filterTime(val) {
-      return moment(val).format("h:m:ss a").toString();
+      return moment(val).format("h:m a").toString();
     },
   },
   computed: {

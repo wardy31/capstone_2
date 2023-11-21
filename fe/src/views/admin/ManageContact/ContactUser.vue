@@ -86,7 +86,12 @@
             <td class="text-left">{{ contact.disease.name }}</td>
             <td>
               {{ contact.days_left }}
-              {{ (contact.days_left == 1 || contact.days_left == 0) ? "day" : "days" }} left
+              {{
+                contact.days_left == 1 || contact.days_left == 0
+                  ? "day"
+                  : "days"
+              }}
+              left
             </td>
             <td>
               {{
@@ -131,15 +136,6 @@
                     >
                   </v-list-item>
                   <v-divider></v-divider>
-                  <v-list-item @click="handleDuration(contact)">
-                    <v-list-item-icon class="mr-4"
-                      ><v-icon color="primary">timer</v-icon></v-list-item-icon
-                    >
-                    <v-list-item-title class="font-weight-bold"
-                      ><h5>Edit Duration</h5></v-list-item-title
-                    >
-                  </v-list-item>
-                  <v-divider></v-divider>
                   <v-list-item
                     :to="`/admin/manage/viewtrace/${contact.user_account.id}/${contact.id}`"
                   >
@@ -153,6 +149,16 @@
                     >
                   </v-list-item>
                   <v-divider></v-divider>
+                  <v-list-item @click="handleDuration(contact)">
+                    <v-list-item-icon class="mr-4"
+                      ><v-icon color="primary">timer</v-icon></v-list-item-icon
+                    >
+                    <v-list-item-title class="font-weight-bold"
+                      ><h5>Edit Duration</h5></v-list-item-title
+                    >
+                  </v-list-item>
+                  <v-divider></v-divider>
+
                   <v-list-item @click="handleDeleteDialog(contact)">
                     <v-list-item-icon class="mr-4"
                       ><v-icon color="error">delete</v-icon></v-list-item-icon
@@ -247,12 +253,7 @@
         </v-card>
       </v-dialog>
 
-      <v-snackbar
-        v-model="deleteSnackBar"
-        bottom
-        right
-        color="error"
-      >
+      <v-snackbar v-model="deleteSnackBar" bottom right color="error">
         <v-icon>check</v-icon>
         Patient Deleted Successfully
       </v-snackbar>
