@@ -1,5 +1,5 @@
 <template>
-  <v-main class="accent">
+  <v-main  >
     <v-container fluid>
       <div class="mx-md-16 mx-sm-2">
         <v-container>

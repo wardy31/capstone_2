@@ -120,6 +120,7 @@
                     'Partially Vaccinated',
                     'Fully Vaccinated',
                     'Booster',
+                    `No Vaccine`,
                   ]"
                   v-model="clinic.vaccination_status"
                   hide-details="auto"

@@ -1,17 +1,19 @@
-require("@tensorflow/tfjs-node");
 const faceapi = require("face-api.js");
+const tf = require("@tensorflow/tfjs-node");
 const fs = require("fs");
 const canvas = require("canvas");
+const { rsqrt } = require("@tensorflow/tfjs-core");
 
-const load = async () => {
+const loadModels = async () => {
+  console.log("Loading Model...");
   await faceapi.nets.ssdMobilenetv1.loadFromDisk("./weights");
   await faceapi.nets.tinyFaceDetector.loadFromDisk("./weights");
   await faceapi.nets.faceRecognitionNet.loadFromDisk("./weights");
   await faceapi.nets.faceLandmark68Net.loadFromDisk("./weights");
-  await console.log("loading predections");
+  console.log("Load Completed");
 };
 
-const startNow = async () => {
+const loadImages = async () => {
   const referenceDescriptors = await fs.readFileSync(
     "./descriptors/descriptors.json",
     "utf-8"
@@ -27,40 +29,38 @@ const startNow = async () => {
     })
   );
 };
-const predict = (req, res) => {
-  (async () => {
-    await load();
+
+const predict = (stationId) => {
+  return new Promise(async (resolve, reject) => {
+    // await loadModels();
+
     const { Canvas, Image, ImageData } = canvas;
     faceapi.env.monkeyPatch({ Canvas, Image, ImageData });
 
-    const img = await canvas.loadImage(`./station_faces/${3}/image.jpg`);
+    const img = await canvas.loadImage(
+      `./station_faces/${stationId}/image.jpg`
+    );
+
     const result = await faceapi
       .detectSingleFace(img)
       .withFaceLandmarks()
       .withFaceDescriptor();
 
-    const labeledImages = await startNow();
+    const labeledImages = await loadImages();
 
     const loadMatch = new faceapi.FaceMatcher(labeledImages);
 
     if (result) {
       const match = loadMatch.findBestMatch(result.descriptor);
-      return res.send(match);
-      // try {
-      //   const response = await axios.get(
-      //     `${process.env.BE_HOST}/check-user/${req.params.station_id}/${match._label}`
-      //   );
-      //   console.log("match", match._label);
-      //   res.json(match._label);
-      //   return;
-      // } catch (error) {
-      //   console.log(error);
-      //   res.status(400).json(error);
-      //   return;
-      // }
+      console.log("Face Result:", match);
+      resolve(match._label);
+    } else {
+      reject({
+        message: "No Face Detected",
+        status: 2,
+      });
     }
-    res.status(400).json({ message: "No Face Detected" });
-  })();
+  });
 };
 
-module.exports = predict;
+module.exports = { predict, loadImages, loadModels };
