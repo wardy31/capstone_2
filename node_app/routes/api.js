@@ -93,6 +93,8 @@ router.post("questions", createQuestion);
 router.put("questions/:id", updateQuestion);
 router.delete("questions/:id", deleteQuestion);
 
+router.get('/users/:id/trace-contacts',)
+
 router.get("/check", (req, res) => {
   sockets().emit("clinic-contact", { message: "clnic" });
   console.log(sockets());
