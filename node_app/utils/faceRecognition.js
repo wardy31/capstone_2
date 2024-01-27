@@ -63,4 +63,74 @@ const predict = (stationId) => {
   });
 };
 
-module.exports = { predict, loadImages, loadModels };
+const checkFaces = (filename) =>
+  new Promise(async (resolve, reject) => {
+    const { Canvas, Image, ImageData } = canvas;
+    faceapi.env.monkeyPatch({ Canvas, Image, ImageData });
+
+    const img = await canvas.loadImage(`./uploads/${filename}`);
+
+    const result = await faceapi
+      .detectSingleFace(img)
+      .withFaceLandmarks()
+      .withFaceDescriptor();
+
+    if (result) {
+      resolve(true);
+    } else {
+      reject(false);
+    }
+  });
+
+const createDescriptors = (files, userId) =>
+  new Promise(async (resolve, reject) => {
+    const { Canvas, Image, ImageData } = canvas;
+    faceapi.env.monkeyPatch({ Canvas, Image, ImageData });
+
+    console.log("files",JSON.stringify(files));
+    const labeledDescriptors = [];
+    for (const key in files) {
+      const ref = await canvas.loadImage(`./${files[key][0]["path"]}`);
+      const face = await faceapi
+        .detectSingleFace(ref)
+        .withFaceLandmarks()
+        .withFaceDescriptor();
+      labeledDescriptors.push(face.descriptor);
+    }
+
+    fs.readFile("./descriptors/descriptors.json", "utf8", (err, data) => {
+      if (err) {
+        return res.status(400).send(err);
+      }
+      const jsonData = JSON.parse(data);
+      jsonData.push(
+        new faceapi.LabeledFaceDescriptors(
+          userId.toString(),
+          labeledDescriptors
+        )
+      );
+      const updatedJsonData = JSON.stringify(jsonData, null, 2);
+      fs.writeFile(
+        "./descriptors/descriptors.json",
+        updatedJsonData,
+        "utf8",
+        (err) => {
+          if (err) {
+            console.error("Error writing file:", err);
+            reject("Error Update");
+          } else {
+            console.log("Data added to JSON file successfully!");
+            resolve("Data Updated");
+          }
+        }
+      );
+    });
+  });
+
+module.exports = {
+  createDescriptors,
+  predict,
+  loadImages,
+  loadModels,
+  checkFaces,
+};

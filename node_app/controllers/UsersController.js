@@ -4,6 +4,7 @@ const hash = require("bcrypt");
 const prisma = new PrismaClient();
 const LoginValidation = require("../validations/LoginValidation");
 const CreateUserValidation = require("../validations/CreateUserValidation");
+const { checkFaces, createDescriptors } = require("../utils/faceRecognition");
 
 const authUser = async (req, res) => {
   try {
@@ -17,6 +18,7 @@ const authUser = async (req, res) => {
 
     res.json(result);
   } catch (error) {
+    console.log(error);
     res.status(400).send(error);
   }
 };
@@ -81,14 +83,43 @@ const createUser = async (req, res) => {
     } = await CreateUserValidation.validateAsync(req.body, {
       abortEarly: false,
     });
+
+    const hashPassword = await hash.hash(password, 10);
+
+    const { id } = await prisma.user.create({
+      data: {
+        firstName,
+        middleName,
+        lastName,
+        gender,
+        role,
+        department,
+        address,
+        vaccineStatus,
+        contactNumber,
+        email,
+        username,
+        password: hashPassword,
+      },
+    });
+
+    console.log(req.files);
+    const resultDescriptor = await createDescriptors(req.files, id);
+
+    res.send(resultDescriptor);
   } catch (error) {
+    console.log(error);
     res.status(400).send(error);
   }
 };
 
 const getUsers = async (req, res) => {
   try {
-    const result = await prisma.user.findMany({});
+    const result = await prisma.user.findMany({
+      where: {
+        isClinicStaff: false,
+      },
+    });
     return res.json(result);
   } catch (error) {
     return res.sendStatus(400);
@@ -100,6 +131,10 @@ const getUserById = async (req, res) => {
     const result = await prisma.user.findFirst({
       where: {
         id: parseInt(req.params.id),
+      },
+      include: {
+        ExposedUser: true,
+        InfectedUser: true,
       },
     });
     return res.json(result);
@@ -116,7 +151,6 @@ const getUserHistoriesById = async (req, res) => {
       },
       include: {
         station: true,
-        disease: true,
         user: true,
       },
     });
@@ -284,7 +318,40 @@ const deleteExposedUserById = async (req, res) => {
   }
 };
 
+const traceContacts = async (req, res) => {};
+
+const getCloseContact = async (req, res) => {
+  const id = parseInt(req.params.id);
+
+  try {
+    const result = await prisma.userLocationHistory.findMany({
+      where: {
+        userId: {
+          not: id,
+        },
+      },
+    });
+
+    res.json(result);
+  } catch (error) {
+    res.sendStatus(400);
+  }
+};
+
+const getFace = async (req, res) => {
+  try {
+    const result = await checkFaces(req.file.filename);
+    console.log(result);
+    res.send(req.file);
+  } catch (error) {
+    res.send(error);
+  }
+};
+
 module.exports = {
+  getCloseContact,
+  getFace,
+  traceContacts,
   loginUser,
   getUsers,
   createUser,

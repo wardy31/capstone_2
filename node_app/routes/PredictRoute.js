@@ -54,7 +54,7 @@ const createUser = require("../controllers/UserController");
 router.post("/profile_1", upload.single("image_1"), CheckImageController);
 router.post("/profile_2", upload.single("image_2"), CheckImageController);
 
-router.post("/predict", upload.single("avatar"), predictController);
+router.post("/predict", upload.single("avatar"), predictController); 
 router.get("/load-images", loadImageController);
 router.post("/create-account/:id", images(), createUser);
 router.post("/prediction/:station_id", predictImage(), predictController);

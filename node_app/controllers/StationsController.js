@@ -52,7 +52,7 @@ const loginStation = async (req, res) => {
 const getStations = async (req, res) => {
   let queries = {};
 
-  if (req.query.search.trim().length) {
+  if (req.query?.search?.trim().length) {
     queries = {
       name: {
         contains: req.query.search,
@@ -75,7 +75,7 @@ const getStations = async (req, res) => {
 const getLocationHistoriesByStationId = async (req, res) => {
   let queries = {};
 
-  if (req.query.search.trim().length) {
+  if (req.query?.search?.trim().length) {
     queries = {
       name: {
         contains: req.query.search,
@@ -91,12 +91,12 @@ const getLocationHistoriesByStationId = async (req, res) => {
       },
       include: {
         user: true,
-        disease: true,
         station: true,
       },
     });
     return res.json(result);
   } catch (error) {
+    console.log(error);
     return res.status(400).send(error);
   }
 };
@@ -106,12 +106,25 @@ const createStation = async (req, res) => {
     const { name, username, password } = await schema.validateAsync(req.body, {
       abortEarly: false,
     });
-    const hashedPassword = await hash.hash(password, 10);
+
+    const stationExist = await prisma.station.findFirst({ take: -1 });
+    const hashedPassword = await hash.hash(
+      stationExist
+        ? `STATION-${(parseInt(stationExist.username.slice(8)) + 1)
+            .toString()
+            .padStart(5, "0")}`
+        : "STATION-00001",
+      10
+    );
 
     const result = await prisma.station.create({
       data: {
         name,
-        username,
+        username: stationExist
+          ? `STATION-${(parseInt(stationExist.username.slice(8)) + 1)
+              .toString()
+              .padStart(5, "0")}`
+          : "STATION-00001",
         password: hashedPassword,
       },
     });

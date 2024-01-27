@@ -13,7 +13,7 @@ export const year = (date) => {
 };
 
 export const time = (date) => {
-  return moment(date).format("hh:mm:ss A").toString();
+  return moment(date).format("hh:mm A").toString();
 };
 
 export default dateFormat;

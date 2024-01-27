@@ -19,7 +19,6 @@ const getLocations = async (req, res) => {
       include: {
         station: true,
         user: true,
-        disease: true,
       },
     });
 
@@ -75,17 +74,10 @@ const createUserLocation = async (req, res) => {
       });
     }
 
-    const { id: diseaseId } = await prisma.disease.findFirst({
-      where: {
-        isActive: true,
-      },
-    });
-
     const result = await prisma.userLocationHistory.create({
       data: {
         userId,
         stationId,
-        diseaseId,
       },
     });
 

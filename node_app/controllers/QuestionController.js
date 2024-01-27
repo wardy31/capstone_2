@@ -6,7 +6,6 @@ const getResponses = async (req, res) => {
     const result = await prisma.userResponse.findMany({
       include: {
         user: true,
-        disease: true,
         UserAnswer: {
           include: {
             questionnaire: true,
@@ -27,7 +26,6 @@ const getResponseByUserId = async (req, res) => {
       where: { userId: parseInt(req.params.id) },
       include: {
         user: true,
-        disease: true,
         UserAnswer: {
           include: {
             questionnaire: true,
@@ -53,36 +51,38 @@ const getQuestions = async (req, res) => {
 };
 
 const createQuestion = async (req, res) => {
-  const { title, subtitles } = req.body;
+  const { title, subtitle } = req.body;
   try {
     const result = await prisma.questionnaire.create({
       data: {
-        tite: title,
-        subtitle: subtitles,
+        title: title,
+        subtitle: subtitle,
       },
     });
 
     res.json(result);
   } catch (error) {
+    console.log(error);
     res.sendStatus(400);
   }
 };
 
 const updateQuestion = async (req, res) => {
-  const { title, subtitles } = req.body;
+  const { title, subtitle } = req.body;
   try {
     const result = await prisma.questionnaire.update({
       where: {
         id: parseInt(req.params.id),
       },
       data: {
-        tite: title,
-        subtitle: subtitles,
+        title: title,
+        subtitle: subtitle,
       },
     });
 
     res.json(result);
   } catch (error) {
+    console.log(error);
     res.sendStatus(400);
   }
 };
@@ -101,6 +101,26 @@ const deleteQuestion = async (req, res) => {
   }
 };
 
+const createResponse = async (req, res) => {
+  const { id } = req.params;
+  const { response } = req.body;
+  console.log(id);
+  try {
+    const userResponse = await prisma.userResponse.create({
+      data: {
+        userId: parseInt(id),
+        UserAnswer: {
+          create: response,
+        },
+      },
+    });
+    res.send(userResponse);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(400);
+  }
+};
+
 module.exports = {
   getResponses,
   getResponseByUserId,
@@ -108,4 +128,5 @@ module.exports = {
   createQuestion,
   updateQuestion,
   deleteQuestion,
+  createResponse,
 };

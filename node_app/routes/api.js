@@ -16,6 +16,8 @@ const {
   createExposedUsers,
   updateExposedUserById,
   deleteExposedUserById,
+  getFace,
+  getCloseContact,
 } = require("../controllers/UsersController");
 const {
   getDisease,
@@ -42,10 +44,41 @@ const {
   updateQuestion,
   deleteQuestion,
   getResponseByUserId,
+  createResponse,
 } = require("../controllers/QuestionController");
 const { userImage, predictImage } = require("../utils/uploadImage");
 const { loadModels } = require("../utils/faceRecognition");
 const { sockets } = require("../utils/sockets");
+const multer = require("multer");
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+const upload = multer({ storage });
+
+const images = () => {
+  const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, `image`);
+    },
+    filename: function (req, file, cb) {
+      // cb(null, file.fieldname + "-" + uniqueSuffix);
+      cb(null, file.fieldname + "-" + Date.now() + ".jpg");
+    },
+  });
+  const upload = multer({ storage: storage });
+
+  return upload.fields([
+    { name: "upload1", maxCount: 1 },
+    { name: "upload2", maxCount: 1 },
+  ]);
+};
+
 router.use(bodyParser.json());
 
 router.get("/load-models", async (req, res) => {
@@ -53,15 +86,16 @@ router.get("/load-models", async (req, res) => {
   res.send("Load Completed");
 });
 
-router.get("auth-user", authUser);
+router.get("/auth-user", authUser);
 router.post("/login", loginUser);
 router.post("/login-station", loginStation);
-router.post("/create-user", createUser);
+router.post("/create-user", images(), createUser);
 
 router.get("/users", getUsers);
 router.get("/users/:id", getUserById);
 router.get("/users/:id/location-histories", getUserHistoriesById);
 router.get("/users/:id/responses", getResponseByUserId);
+router.post("/users/:id/responses", createResponse);
 router.get("/users/:id/exposed-users", getExposedUserByInfectedId);
 
 router.get("/infected-users", getInfectedUsers);
@@ -88,17 +122,19 @@ router.put("/stations/:id", updateStations);
 router.delete("/stations/:id", deleteStation);
 
 router.get("/responses", getResponses);
-router.get("questions", getQuestions);
-router.post("questions", createQuestion);
-router.put("questions/:id", updateQuestion);
-router.delete("questions/:id", deleteQuestion);
+router.get("/questions", getQuestions);
+router.post("/questions", createQuestion);
+router.put("/questions/:id", updateQuestion);
+router.delete("/questions/:id", deleteQuestion);
 
-router.get('/users/:id/trace-contacts',)
+router.get("/users/:id/trace-contacts", getCloseContact);
 
 router.get("/check", (req, res) => {
   sockets().emit("clinic-contact", { message: "clnic" });
   console.log(sockets());
   res.json(sockets);
 });
+
+router.post("/scan-face", upload.single("face"), getFace);
 
 module.exports = router;

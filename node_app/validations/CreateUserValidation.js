@@ -22,7 +22,7 @@ const schema = Joi.object({
   vaccineStatus: Joi.string().required().messages({
     "any.required": "vaccine is required",
   }),
-  contactNumber: Joi.string().length(12).required().messages({
+  contactNumber: Joi.string().length(11).required().messages({
     "any.required": "role is required",
   }),
   email: Joi.string().email().required().messages({

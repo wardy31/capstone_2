@@ -2,10 +2,12 @@ const Joi = require("joi");
 
 const schema = Joi.object({
   username: Joi.string().required().messages({
-    'any.required':"Username is required"
+    "string.empty": "username is required",
+    "any.required": "username is required",
   }),
   password: Joi.string().required().messages({
-    'any.required':"Password is required"
+    "string.empty": "password is required",
+    "any.required": "password is required",
   }),
 });
 
