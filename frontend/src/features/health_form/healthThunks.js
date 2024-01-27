@@ -77,3 +77,34 @@ export const updateQuestion = (form) => async (dispatch) => {
     dispatch(SET_ERROR({ type: "updateQuestion", payload: true }));
   }
 };
+
+export const getUserResponse = (id, hasForm) => async (dispatch) => {
+  dispatch(SET_LOADING({ type: "userResponse", payload: true }));
+  dispatch(SET_ERROR({ type: "userResponse", payload: false }));
+
+  try {
+    const { data } = await axios.get(
+      `/users/${id}/responses?hasForm=${hasForm}`
+    );
+    dispatch(SET_DATA({ type: "userResponse", payload: data }));
+    dispatch(SET_LOADING({ type: "userResponse", payload: false }));
+    await dispatch(getQuestions());
+  } catch (error) {
+    dispatch(SET_LOADING({ type: "userResponse", payload: false }));
+    dispatch(SET_ERROR({ type: "userResponse", payload: true }));
+  }
+};
+
+export const submitForm = (id, form) => async (dispatch) => {
+  dispatch(SET_LOADING({ type: "formSubmit", payload: true }));
+  dispatch(SET_ERROR({ type: "formSubmit", payload: false }));
+
+  try {
+    const { data } = await axios.post(`/users/${id}/responses`, form);
+    dispatch(SET_LOADING({ type: "formSubmit", payload: false }));
+    await dispatch(getQuestions());
+  } catch (error) {
+    dispatch(SET_LOADING({ type: "formSubmit", payload: false }));
+    dispatch(SET_ERROR({ type: "formSubmit", payload: true }));
+  }
+};

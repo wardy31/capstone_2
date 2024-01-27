@@ -14,6 +14,7 @@ import useDialog from "../../../hooks/useDialog";
 import ConfirmationDialog from "../../../components/dialogs/ConfirmationDialog";
 import FormDialog from "../components/Dialogs/FormDialog";
 import Header from "../../../components/header/Header";
+import { Box, Container } from "@mui/material";
 
 function ManageForm() {
   const { data, loading, error } = useSelector(
@@ -59,12 +60,13 @@ function ManageForm() {
 
   useFetch(() => store.dispatch(getQuestions()));
   return (
-    <>
+    <Container>
       <Header
         title={"Manage Form"}
         addTitleButton={"Question"}
         addHandleClick={() => handleDialog(true, "create")}
       ></Header>
+      <Box mb={4}></Box>
 
       <FormDialog
         titleButton={"Create"}
@@ -107,7 +109,7 @@ function ManageForm() {
           handleAll(data);
         }}
       ></FormTable>
-    </>
+    </Container>
   );
 }
 

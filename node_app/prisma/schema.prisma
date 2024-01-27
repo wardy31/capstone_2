@@ -117,7 +117,7 @@ model UserResponse {
 
 model Questionnaire {
   id         Int          @id @default(autoincrement())
-  title      String
+  title      String       @db.LongText
   subtitle   String
   createdAt  DateTime     @default(now())
   UserAnswer UserAnswer[]
@@ -133,7 +133,7 @@ model UserAnswer {
   createdAt       DateTime @default(now()) @map("created_at")
 
   userResponse  UserResponse  @relation(fields: [userResponseId], references: [id])
-  questionnaire Questionnaire @relation(fields: [questionnaireId], references: [id])
+  questionnaire Questionnaire @relation(fields: [questionnaireId], references: [id], onDelete: Cascade)
 
   @@map("user_answers")
 }

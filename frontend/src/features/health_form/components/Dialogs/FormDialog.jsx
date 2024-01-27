@@ -28,15 +28,17 @@ function FormDialog({
       </DialogTitle>
       <DialogContent>
         <Box my={2}>
-          <Typography sx={{ fontSize: 14 }}>Title</Typography>
+          <Typography sx={{ fontSize: 14,mb:1 }}>Question</Typography>
           <TextField
             size="small"
             fullWidth
+            rows={4}
+            multiline
             value={data.title}
             onChange={(e) => handleForm(e.target.value, "title")}
           ></TextField>
         </Box>
-        <Box>
+        {/* <Box>
           <Typography sx={{ fontSize: 14 }}>Subtitle</Typography>
           <TextField
             size="small"
@@ -44,7 +46,7 @@ function FormDialog({
             value={data.subtitle}
             onChange={(e) => handleForm(e.target.value, "subtitle")}
           ></TextField>
-        </Box>
+        </Box> */}
       </DialogContent>
       <DialogActions>
         <Button onClick={handleClose}>

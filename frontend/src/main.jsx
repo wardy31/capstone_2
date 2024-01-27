@@ -9,8 +9,6 @@ import store from "./store/store.js";
 import { registerSW } from "virtual:pwa-register";
 
 import { ThemeProvider, createTheme } from "@mui/material/styles";
-import { pdfjs } from "react-pdf";
-pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
 
 import "@fontsource-variable/sora";
 

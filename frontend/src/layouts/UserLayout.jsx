@@ -7,15 +7,13 @@ import UserNav from "./BottomNav/UserNav";
 
 function UserLayout() {
   return (
-    <Box display={"flex"}>
-      <Box flexGrow={1}>
-        <UserBar role="user"></UserBar>
-        <Box mx={4}>
-          <Outlet></Outlet>
-        </Box>
+    <>
+      <UserBar role="user"></UserBar>
+      <Box pb={10}>
+        <Outlet></Outlet>
         <UserNav></UserNav>
       </Box>
-    </Box>
+    </>
   );
 }
 

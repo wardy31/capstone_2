@@ -1,5 +1,6 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
+const moment = require("moment");
 
 const getResponses = async (req, res) => {
   try {
@@ -21,9 +22,26 @@ const getResponses = async (req, res) => {
 };
 
 const getResponseByUserId = async (req, res) => {
+  const { hasForm = "" } = req.query;
+
+  let filter = {};
+
+  if (hasForm) {
+    const startOfDay = moment().startOf("day").toDate();
+    const endOfDay = moment().endOf("day").toDate();
+
+    filter = {
+      ...filter,
+      createdAt: {
+        gte: startOfDay,
+        lte: endOfDay,
+      },
+    };
+  }
+
   try {
     const result = await prisma.userResponse.findMany({
-      where: { userId: parseInt(req.params.id) },
+      where: { ...filter, userId: parseInt(req.params.id) },
       include: {
         user: true,
         UserAnswer: {
@@ -82,6 +100,7 @@ const updateQuestion = async (req, res) => {
 
     res.json(result);
   } catch (error) {
+
     console.log(error);
     res.sendStatus(400);
   }
@@ -97,6 +116,7 @@ const deleteQuestion = async (req, res) => {
 
     res.json(result);
   } catch (error) {
+    console.log(error);
     res.sendStatus(400);
   }
 };
@@ -104,13 +124,14 @@ const deleteQuestion = async (req, res) => {
 const createResponse = async (req, res) => {
   const { id } = req.params;
   const { response } = req.body;
-  console.log(id);
   try {
+    const parse = JSON.parse(response);
+
     const userResponse = await prisma.userResponse.create({
       data: {
         userId: parseInt(id),
         UserAnswer: {
-          create: response,
+          create: parse,
         },
       },
     });

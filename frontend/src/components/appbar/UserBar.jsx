@@ -2,6 +2,7 @@ import { AppBar, Button, IconButton, Toolbar, Typography } from "@mui/material";
 import MenuIcon from "@mui/icons-material/Menu";
 import React from "react";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 function UserBar({ role = "clinic" }) {
   const { data } = useSelector((state) => state.auth.getUser);
@@ -45,9 +46,14 @@ function UserBar({ role = "clinic" }) {
           </Typography>
         )}
         <Button
+          LinkComponent={Link}
+          to="/login"
           color="primary"
           sx={{ textTransform: "capitalize", borderRadius: 4 }}
           variant="contained"
+          onClick={() => {
+            localStorage.removeItem("token");
+          }}
         >
           Logout
         </Button>

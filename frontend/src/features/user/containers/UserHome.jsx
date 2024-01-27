@@ -3,8 +3,11 @@ import {
   AlertTitle,
   Avatar,
   Box,
+  Button,
   Card,
+  CardActionArea,
   CardContent,
+  CardHeader,
   CardMedia,
   Container,
   List,
@@ -16,7 +19,8 @@ import {
 } from "@mui/material";
 import React from "react";
 import { useSelector } from "react-redux";
-import HandshakeTwoToneIcon from "@mui/icons-material/HandshakeTwoTone";
+import Profile from "../components/user_home/Profile";
+import CheckForm from "../components/user_home/CheckForm";
 
 function UserHome() {
   const { data } = useSelector((state) => state.auth.getUser);
@@ -30,34 +34,8 @@ function UserHome() {
           justifyContent: "center",
         }}
       >
-        <Box textAlign={"center"} my={4}>
-          <Typography variant="h6" sx={{ color: "text.secondary" }}>
-            Welcome
-          </Typography>
-          <Typography
-            variant="h4"
-            fontWeight={"bold"}
-            color="primary"
-          >{`${data.firstName} ${data.lastName}`}</Typography>
-        </Box>
-        <List
-          component={Paper}
-          sx={{ boxShadow: 2, width: 350 }}
-          disablePadding
-        >
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar sx={{ bgcolor: "primary.main" }}>
-                <HandshakeTwoToneIcon fontSize="medium"></HandshakeTwoToneIcon>
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary="No Contact"
-              secondary="as of today"
-              primaryTypographyProps={{ fontSize: 18, fontWeight: "bold" }}
-            ></ListItemText>
-          </ListItem>
-        </List>
+        <Profile data={data}></Profile>
+        <CheckForm></CheckForm>
       </Box>
     </Container>
   );

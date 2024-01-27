@@ -5,6 +5,7 @@ import { useSelector } from "react-redux";
 import { useFetch } from "../../../hooks/useFetch";
 import store from "../../../store/store";
 import { getUser } from "../contactThunks";
+import { Box, Container } from "@mui/material";
 
 function TraceContacts() {
   const { users } = useSelector((state) => state.contact);
@@ -12,7 +13,7 @@ function TraceContacts() {
   useFetch(() => store.dispatch(getUser()));
 
   return (
-    <>
+    <Container>
       <Header
         title={"Trace Contacts"}
         subTitle={
@@ -20,8 +21,9 @@ function TraceContacts() {
         }
         hideButton={true}
       ></Header>
+      <Box mb={4}></Box>
       <UserTable {...users}></UserTable>
-    </>
+    </Container>
   );
 }
 

@@ -17,25 +17,21 @@ function FormTable({ data, handleUpdate, handleDelete }) {
   console.log(data);
   return (
     <TableContainer component={Paper}>
-      <Table>
+      <Table sx={{ minWidth: 650 }} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>
-              <Typography fontSize={14}>Title</Typography>
-            </TableCell>
-            <TableCell>
-              <Typography fontSize={14}>Subtitle</Typography>
-            </TableCell>
-            <TableCell align="right">
-              <Typography fontSize={14}>Actions</Typography>
-            </TableCell>
+            <TableCell sx={{color:"text.secondary"}}>Question</TableCell>
+            {/* <TableCell>
+              <Typography >Subtitle</Typography>
+            </TableCell> */}
+          <TableCell align="right" sx={{color:"text.secondary"}}>Actions</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {data.map((m) => (
             <TableRow>
-              <TableCell>{m.title}</TableCell>
-              <TableCell>{m.subtitle}</TableCell>
+              <TableCell sx={{maxWidth:120,wordBreak:"break-all"}}>{m.title}</TableCell>
+              {/* <TableCell>{m.subtitle}</TableCell> */}
               <TableCell align="right">
                 <IconButton color="primary" onClick={() => handleUpdate(m)}>
                   <ModeEditTwoToneIcon></ModeEditTwoToneIcon>

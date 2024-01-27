@@ -25,6 +25,14 @@ const healthSlice = createSlice({
       loading: false,
       error: false,
     },
+    userResponse: {
+      data: [],
+      loading: true,
+    },
+    formSubmit: {
+      data: [],
+      loading: false,
+    },
   },
   reducers: {
     SET_DATA: (state, { payload: { type, payload } }) => {

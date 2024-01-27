@@ -16,7 +16,7 @@ import CloseContact from "../features/contacts/containers/CloseContact";
 import UserLayout from "../layouts/UserLayout";
 import UserHome from "../features/user/containers/UserHome";
 import UserRecord from "../features/user/containers/UserRecord";
-import UserForm from "../features/user/containers/UserForm";
+import Form from "../features/health_form/containers/Form";
 
 export default createBrowserRouter([
   {
@@ -75,7 +75,7 @@ export default createBrowserRouter([
           },
           {
             path: "form",
-            element: <UserForm></UserForm>,
+            element: <Form></Form>,
           },
           {
             path: "visited-logs",

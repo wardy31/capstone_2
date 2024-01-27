@@ -6,7 +6,8 @@ import { getUserById } from "../../user/userThunks";
 import { useParams } from "react-router-dom";
 import store from "../../../store/store";
 import CloseContactProfile from "../components/CloseContactProfile";
-import { Box } from "@mui/material";
+import { Box, Container } from "@mui/material";
+import FilterContacts from "../components/FilterContacts";
 
 function CloseContact() {
   const { userById } = useSelector((state) => state.user);
@@ -15,15 +16,16 @@ function CloseContact() {
   useFetch(() => store.dispatch(getUserById(id)));
 
   return (
-    <>
-      <Box mt={4}>
+    <Container>
+      <Box mt={4} mb={4}>
         <CloseContactProfile {...userById}></CloseContactProfile>
       </Box>
 
-      <Box>
+      <Box sx={{display:"flex",flexDirection:"column",rowGap:2}}>
+        <FilterContacts ></FilterContacts>
         <CloseContactTable></CloseContactTable>
       </Box>
-    </>
+    </Container>
   );
 }
 

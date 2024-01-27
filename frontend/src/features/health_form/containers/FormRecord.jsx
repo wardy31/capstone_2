@@ -8,6 +8,7 @@ import { getHealthRecords } from "../healthThunks";
 import ViewDialog from "../components/Dialogs/ViewDialog";
 import useDialog from "../../../hooks/useDialog";
 import useData from "../../../hooks/useData";
+import { Box, Container } from "@mui/material";
 
 function FormRecord() {
   const { data, loading, error } = useSelector(
@@ -18,19 +19,20 @@ function FormRecord() {
   useFetch(() => store.dispatch(getHealthRecords()));
 
   return (
-    <>
-      <Header title={"Health Declaration Logs"} hideButton={true}></Header>
+    <Container>
+      <Header title={"Health Declaration Records"} hideButton={true}></Header>
       <ViewDialog
         open={dialog.view}
         data={form}
         handleClose={() => handleDialog(false, "view")}
       ></ViewDialog>
+      <Box mb={4}></Box>
       <RecordTable
         data={data}
         handleView={() => handleDialog(true, "view")}
         handleData={(data) => handleChange(data)}
       ></RecordTable>
-    </>
+    </Container>
   );
 }
 

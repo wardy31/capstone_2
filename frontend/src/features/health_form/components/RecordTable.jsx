@@ -19,9 +19,14 @@ function RecordTable({ data, handleView, handleData }) {
       <Table>
         <TableHead>
           <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Date Submitted</TableCell>
-            <TableCell align="right">Action</TableCell>
+            <TableCell sx={{ color: "text.secondary" }}>Name</TableCell>
+            <TableCell sx={{ color: "text.secondary" }} align="left">Role</TableCell>
+            <TableCell sx={{ color: "text.secondary" }} align="center">
+              Date Submitted
+            </TableCell>
+            <TableCell align="right" sx={{ color: "text.secondary" }}>
+              Action
+            </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
@@ -33,13 +38,9 @@ function RecordTable({ data, handleView, handleData }) {
                   fontSize={14}
                   fontWeight={"bold"}
                 >{`${user.firstName} ${user.lastName} `}</Typography>
-                <Typography
-                  textTransform={"Capitalize"}
-                  fontSize={12}
-                  sx={{ color: "text.secondary" }}
-                >{`${user.role} `}</Typography>
               </TableCell>
-              <TableCell>
+              <TableCell sx={{textTransform:"capitalize"}} align="left">{`${user.role} `}</TableCell>
+              <TableCell align="center">
                 <Typography fontSize={14}>{dateFormat(createdAt)}</Typography>
               </TableCell>
               <TableCell align="right">

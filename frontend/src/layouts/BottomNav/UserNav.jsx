@@ -1,5 +1,5 @@
 import { BottomNavigation, BottomNavigationAction, Paper } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useLocation } from "react-router-dom";
 import useData from "../../hooks/useData";
 import CottageTwoToneIcon from "@mui/icons-material/CottageTwoTone";
@@ -10,8 +10,12 @@ import { useTheme } from "@emotion/react";
 function UserNav() {
   const theme = useTheme();
   const location = useLocation();
+
   const { state, handleChange } = useData(location.pathname);
-  console.log(state);
+
+  useEffect(() => {
+    handleChange(location.pathname);
+  }, [location.pathname]);
 
   return (
     <Paper
@@ -23,14 +27,13 @@ function UserNav() {
         showLabels
         value={state}
         onChange={(e, newVal) => {
-          console.log(newVal);
           handleChange(newVal);
         }}
       >
         <BottomNavigationAction
           sx={{
-            bgcolor: location.pathname == "/user/home" ? "white" : "",
-            color: location.pathname == "/user/home" ? "" : "white",
+            bgcolor: state == "/user/home" ? "white" : "",
+            color: state == "/user/home" ? "" : "white",
             transition: theme.transitions.create(),
           }}
           label="Home"
@@ -41,8 +44,8 @@ function UserNav() {
         />
         <BottomNavigationAction
           sx={{
-            bgcolor: location.pathname == "/user/form" ? "white" : "",
-            color: location.pathname == "/user/form" ? "" : "white",
+            bgcolor: state == "/user/form" ? "white" : "",
+            color: state == "/user/form" ? "" : "white",
             transition: theme.transitions.create(),
           }}
           label="Form"
@@ -53,8 +56,8 @@ function UserNav() {
         />
         <BottomNavigationAction
           sx={{
-            bgcolor: location.pathname == "/user/visited-logs" ? "white" : "",
-            color: location.pathname == "/user/visited-logs" ? "" : "white",
+            bgcolor: state == "/user/visited-logs" ? "white" : "",
+            color: state == "/user/visited-logs" ? "" : "white",
             transition: theme.transitions.create(),
           }}
           label="Logs"

@@ -1,4 +1,11 @@
-import { Avatar, Box, Chip, IconButton, Typography } from "@mui/material";
+import {
+  Avatar,
+  Box,
+  Button,
+  Chip,
+  IconButton,
+  Typography,
+} from "@mui/material";
 import React from "react";
 import ArrowBackTwoToneIcon from "@mui/icons-material/ArrowBackTwoTone";
 import ArrowBackIosNewIcon from "@mui/icons-material/ArrowBackIosNew";
@@ -15,31 +22,29 @@ function ProfileHeader({ data, loading }) {
 
   return (
     <>
-      <Box display={"flex"} alignItems={"center"} columnGap={2} my={6}>
-        <IconButton
+      <Box display={"flex"} alignItems={"center"} columnGap={2} mt={2} mb={4}>
+        <Button
           onClick={() => navigate(-1)}
           size="large"
           color="primary"
           sx={{
-            bgcolor: "primary.main",
-            color: "white",
+            // bgcolor: "primary.main",
+            // color: "white",
             borderRadius: 1,
-            ":hover": {
-              bgcolor: "primary.main",
-            },
           }}
+          startIcon={
+            <ArrowBackTwoToneIcon fontSize="small"></ArrowBackTwoToneIcon>
+          }
         >
-          <ArrowBackTwoToneIcon fontSize="inherit"></ArrowBackTwoToneIcon>
-        </IconButton>
-        <Typography
-          textTransform={"uppercase"}
-          variant="h5"
-          fontWeight={"bold"}
-          letterSpacing={1.5}
-          color={"primary"}
-        >
-          User's Profile
-        </Typography>
+          <Typography
+            textTransform={"uppercase"}
+            variant="caption"
+            fontWeight={"bold"}
+            letterSpacing={1.5}
+          >
+            User's Profile
+          </Typography>
+        </Button>
       </Box>
 
       <Box>

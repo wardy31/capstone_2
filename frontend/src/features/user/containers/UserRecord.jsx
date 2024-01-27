@@ -5,6 +5,7 @@ import { useFetch } from "../../../hooks/useFetch";
 import { getUserLocations } from "../userThunks";
 import store from "../../../store/store";
 import { useSelector } from "react-redux";
+import { Box, Container } from "@mui/material";
 
 function UserRecord() {
   const {
@@ -15,10 +16,11 @@ function UserRecord() {
   useFetch(() => store.dispatch(getUserLocations(id)));
 
   return (
-    <>
+    <Container>
       <Header title={"Visited Location Logs"} hideButton={true}></Header>
+      <Box mt={4}></Box>
       <UserRecordTable data={data}></UserRecordTable>
-    </>
+    </Container>
   );
 }
 

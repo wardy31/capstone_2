@@ -10,7 +10,15 @@ import {
   updateStation,
 } from "./stationThunk";
 import Header from "../../components/header/Header";
-import { Box, Button, Card, Paper, TextField, Typography } from "@mui/material";
+import {
+  Box,
+  Button,
+  Card,
+  Container,
+  Paper,
+  TextField,
+  Typography,
+} from "@mui/material";
 import useForm from "../../hooks/useForm";
 import useDialog from "../../hooks/useDialog";
 import ConfirmationDialog from "../../components/dialogs/ConfirmationDialog";
@@ -53,7 +61,7 @@ function Station() {
   useFetch(() => store.dispatch(getStation()));
 
   return (
-    <>
+    <Container>
       <Header
         title={"Stations"}
         // subTitle={"This is subtitle"}
@@ -115,7 +123,7 @@ function Station() {
         handleUpdate={() => handleDialog(true, "update")}
         handleViewUser={handleViewUser}
       ></StationTable>
-    </>
+    </Container>
   );
 }
 
