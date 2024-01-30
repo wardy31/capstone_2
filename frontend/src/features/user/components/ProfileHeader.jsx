@@ -42,7 +42,7 @@ function ProfileHeader({ data, loading }) {
             fontWeight={"bold"}
             letterSpacing={1.5}
           >
-            User's Profile
+            Go Back
           </Typography>
         </Button>
       </Box>

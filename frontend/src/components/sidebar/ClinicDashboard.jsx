@@ -157,72 +157,6 @@ function ClinicDashboard({ open, handleOpen }) {
               <ListItemText primary="Monitor Contacts"></ListItemText>
             </ListItemButton>
           </ListItem>
-
-          <ListItem
-            disablePadding
-            sx={{
-              transition: theme.transitions.create(),
-              bgcolor: checkNavigation(/trace-contacts/, pathname)
-                ? "white"
-                : "primary.main",
-              color: checkNavigation(/trace-contacts/, pathname)
-                ? "primary.main"
-                : "white",
-              borderRadius: 1.5,
-              my: 0.8,
-            }}
-            onClick={() => handleNavigate("trace-contacts")}
-          >
-            {/* <ListItemButton onClick={() => setOpen(false)}> */}
-            <ListItemButton
-              selected={checkNavigation(/trace-contacts/, pathname)}
-              onClick={() => setSelected("/clinic/trace-contacts")}
-              sx={{}}
-            >
-              <ListItemIcon>
-                <PersonSearchTwoToneIcon
-                  sx={{
-                    color: checkNavigation(/trace-contacts/, pathname)
-                      ? "primary.main"
-                      : "white",
-                  }}
-                />
-              </ListItemIcon>
-              <ListItemText primary="Trace Contacts"></ListItemText>
-            </ListItemButton>
-          </ListItem>
-
-          <ListItem>
-            <ListItemText
-              primaryTypographyProps={{ typography: "caption", color: "white" }}
-              primary="Manage Accounts"
-            ></ListItemText>
-          </ListItem>
-
-          <ListItem
-            disablePadding
-            sx={{
-              transition: theme.transitions.create(),
-              bgcolor:
-                "/clinic/stations" == pathname ? "white" : "primary.main",
-              color: "/clinic/stations" == pathname ? "primary.main" : "white",
-              borderRadius: 1.5,
-              my: 0.8,
-            }}
-          >
-            <ListItemButton LinkComponent={Link} to="/clinic/stations" sx={{}}>
-              <ListItemIcon>
-                <MeetingRoomTwoToneIcon
-                  sx={{
-                    color:
-                      "/clinic/stations" == pathname ? "primary.main" : "white",
-                  }}
-                />
-              </ListItemIcon>
-              <ListItemText primary="Stations"></ListItemText>
-            </ListItemButton>
-          </ListItem>
-
           <ListItem
             disablePadding
             sx={{
@@ -337,6 +271,30 @@ function ClinicDashboard({ open, handleOpen }) {
               primaryTypographyProps={{ typography: "caption", color: "white" }}
               primary="Settings"
             ></ListItemText>
+          </ListItem>
+
+          <ListItem
+            disablePadding
+            sx={{
+              transition: theme.transitions.create(),
+              bgcolor:
+                "/clinic/stations" == pathname ? "white" : "primary.main",
+              color: "/clinic/stations" == pathname ? "primary.main" : "white",
+              borderRadius: 1.5,
+              my: 0.8,
+            }}
+          >
+            <ListItemButton LinkComponent={Link} to="/clinic/stations" sx={{}}>
+              <ListItemIcon>
+                <MeetingRoomTwoToneIcon
+                  sx={{
+                    color:
+                      "/clinic/stations" == pathname ? "primary.main" : "white",
+                  }}
+                />
+              </ListItemIcon>
+              <ListItemText primary="Stations"></ListItemText>
+            </ListItemButton>
           </ListItem>
 
           <ListItem

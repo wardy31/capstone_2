@@ -24,9 +24,9 @@ import { getStation } from "../../station/stationThunk";
 import PersonSearchTwoToneIcon from "@mui/icons-material/PersonSearchTwoTone";
 import { LoadingButton } from "@mui/lab";
 
-function FilterContacts() {
+function FilterContacts({ data }) {
   const [value, setValue] = useState({
-    start: "",
+    start: moment(data.dateInfected).format("YYYY-MM-DD").toString(),
     window: "",
     duration: "",
     stationId: "",
@@ -35,8 +35,8 @@ function FilterContacts() {
     (state) => state.station.getStation
   );
 
-  useFetch(() => store.dispatch(getStation()));
   console.log(value);
+  useFetch(() => store.dispatch(getStation()));
   return (
     <Paper sx={{ px: 1, py: 1 }}>
       <Box>
@@ -55,6 +55,7 @@ function FilterContacts() {
                 <DatePicker
                   sx={{ bgcolor: "primary.light" }}
                   label="Date Started"
+                  defaultValue={moment(data.dateInfected)}
                   onChange={(date, context) =>
                     setValue({
                       ...value,

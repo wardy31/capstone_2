@@ -18,9 +18,10 @@ function ConfirmationDialog({
   open,
   handleClose,
   handleSubmit,
+  isDelete = true,
 }) {
   return (
-    <Dialog open={open} onClose={handleClose}>
+    <Dialog open={open} onClose={handleClose} fullWidth={true} maxWidth="xs">
       <DialogTitle sx={{ bgcolor: "primary.main", color: "white" }}>
         <Typography>{title}</Typography>
       </DialogTitle>
@@ -42,11 +43,11 @@ function ConfirmationDialog({
         <LoadingButton
           loading={loading}
           variant="contained"
-          color="error"
+          color="primary"
           onClick={handleSubmit}
         >
           <Typography variant="button" textTransform={"capitalize"}>
-            Delete
+            {isDelete ? "Delete" : titleButton}
           </Typography>
         </LoadingButton>
       </DialogActions>

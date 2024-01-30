@@ -8,21 +8,27 @@ import store from "../../../store/store";
 import CloseContactProfile from "../components/CloseContactProfile";
 import { Box, Container } from "@mui/material";
 import FilterContacts from "../components/FilterContacts";
+import { getInfectedUsersById } from "../contactThunks";
 
 function CloseContact() {
-  const { userById } = useSelector((state) => state.user);
+  const { infectedUserById } = useSelector((state) => state.contact);
   const { id } = useParams();
 
-  useFetch(() => store.dispatch(getUserById(id)));
+  console.log(infectedUserById);
+  useFetch(() => store.dispatch(getInfectedUsersById(id)));
+
+  if (infectedUserById.loading) {
+    return <></>;
+  }
 
   return (
     <Container>
       <Box mt={4} mb={4}>
-        <CloseContactProfile {...userById}></CloseContactProfile>
+        <CloseContactProfile {...infectedUserById}></CloseContactProfile>
       </Box>
 
-      <Box sx={{display:"flex",flexDirection:"column",rowGap:2}}>
-        <FilterContacts ></FilterContacts>
+      <Box sx={{ display: "flex", flexDirection: "column", rowGap: 2 }}>
+        <FilterContacts {...infectedUserById}></FilterContacts>
         <CloseContactTable></CloseContactTable>
       </Box>
     </Container>

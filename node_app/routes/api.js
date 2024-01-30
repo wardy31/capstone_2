@@ -18,6 +18,8 @@ const {
   deleteExposedUserById,
   getFace,
   getCloseContact,
+  createUserAsInfectedUser,
+  getInfectedUserbyUserId,
 } = require("../controllers/UsersController");
 const {
   getDisease,
@@ -99,6 +101,7 @@ router.post("/users/:id/responses", createResponse);
 router.get("/users/:id/exposed-users", getExposedUserByInfectedId);
 
 router.get("/infected-users", getInfectedUsers);
+router.get("/infected-users/:userId", getInfectedUserbyUserId);
 router.post("/infected-users", createInfectedUsers);
 router.put("/infected-users/:id", updateInfectedUser);
 router.delete("/infected-users/:id", deleteInfectedUser);

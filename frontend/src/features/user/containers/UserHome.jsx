@@ -24,6 +24,7 @@ import CheckForm from "../components/user_home/CheckForm";
 
 function UserHome() {
   const { data } = useSelector((state) => state.auth.getUser);
+  
   return (
     <Container>
       <Box

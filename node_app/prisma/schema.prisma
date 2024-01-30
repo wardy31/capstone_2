@@ -75,12 +75,11 @@ model UserLocationHistory {
 }
 
 model InfectedUser {
-  id        Int      @id @default(autoincrement())
-  userId    Int      @map("user_id")
-  status    String?
-  // duration  Int      @map("duration")
-  // isActive  Boolean  @default(true) @map("is_active")
-  createdAt DateTime @default(now()) @map("created_at")
+  id           Int      @id @default(autoincrement())
+  userId       Int      @map("user_id")
+  status       Status   @default(infected)
+  dateInfected String?  @map("date_infected")
+  createdAt    DateTime @default(now()) @map("created_at")
 
   user        User          @relation(fields: [userId], references: [id])
   ExposedUser ExposedUser[]
@@ -92,9 +91,7 @@ model ExposedUser {
   id             Int      @id @default(autoincrement())
   userId         Int      @map("user_id")
   infectedUserId Int      @map("infected_user_id")
-  status         String?
-  // duration       Int      @map("duration")
-  // isActive       Boolean  @default(true) @map("is_active")
+  status         Status   @default(contact)
   createdAt      DateTime @default(now()) @map("created_at")
 
   user         User         @relation(fields: [userId], references: [id])
@@ -143,4 +140,10 @@ enum Role {
   student
   employee
   visitor
+}
+
+enum Status {
+  infected
+  contact
+  recovered
 }

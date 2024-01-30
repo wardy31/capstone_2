@@ -2,8 +2,9 @@ import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import { useNavigate } from "react-router-dom";
+import dateFormat from "../../../utils/moment";
 
-function CloseContactProfile({ data }) {
+function CloseContactProfile({ data: { user, dateInfected } }) {
   const navigate = useNavigate();
   return (
     <>
@@ -28,7 +29,13 @@ function CloseContactProfile({ data }) {
           fontWeight={"bold"}
           variant="h5"
           letterSpacing={1.2}
-        >{`${data?.firstName} ${data?.lastName}`}</Typography>
+        >{`${user?.firstName} ${user?.lastName}`}</Typography>
+
+        <Typography fontWeight="bold">-</Typography>
+
+        <Typography fontWeight={"bold"} variant="h5" letterSpacing={1.2}>
+          {dateFormat(dateInfected)}
+        </Typography>
       </Box>
     </>
   );

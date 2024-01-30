@@ -40,7 +40,7 @@ export default createBrowserRouter([
             element: <User></User>,
           },
           {
-            path: "users/:id",
+            path: "profile/:id",
             element: <UserProfile></UserProfile>,
           },
           {
@@ -52,16 +52,12 @@ export default createBrowserRouter([
             element: <ManageForm></ManageForm>,
           },
           {
-            path: "trace-contacts",
-            element: <TraceContacts></TraceContacts>,
-          },
-          {
-            path: "trace-contacts/:id/close-contact",
-            element: <CloseContact></CloseContact>,
-          },
-          {
             path: "monitor-contacts",
             element: <MonitorContacts></MonitorContacts>,
+          },
+          {
+            path: "monitor-contacts/:id/trace-contacts",
+            element: <CloseContact></CloseContact>,
           },
         ],
       },

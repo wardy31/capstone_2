@@ -11,8 +11,9 @@ import {
 import RemoveRedEyeTwoToneIcon from "@mui/icons-material/RemoveRedEyeTwoTone";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import PersonAddAltTwoToneIcon from "@mui/icons-material/PersonAddAltTwoTone";
 
-function UserTable({ data }) {
+function UserTable({ data, handleExposedUser }) {
   const navigate = useNavigate();
 
   return (
@@ -39,7 +40,13 @@ function UserTable({ data }) {
               <TableCell align="center">
                 <IconButton
                   color={"primary"}
-                  onClick={() => navigate(`/clinic/users/${m?.id}`)}
+                  onClick={() => handleExposedUser(m?.id)}
+                >
+                  <PersonAddAltTwoToneIcon></PersonAddAltTwoToneIcon>
+                </IconButton>
+                <IconButton
+                  color={"primary"}
+                  onClick={() => navigate(`/clinic/profile/${m?.id}`)}
                 >
                   <RemoveRedEyeTwoToneIcon></RemoveRedEyeTwoToneIcon>
                 </IconButton>

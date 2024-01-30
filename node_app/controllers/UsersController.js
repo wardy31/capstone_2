@@ -5,6 +5,7 @@ const prisma = new PrismaClient();
 const LoginValidation = require("../validations/LoginValidation");
 const CreateUserValidation = require("../validations/CreateUserValidation");
 const { checkFaces, createDescriptors } = require("../utils/faceRecognition");
+const moment = require("moment");
 
 const authUser = async (req, res) => {
   try {
@@ -164,58 +165,87 @@ const getUserHistoriesById = async (req, res) => {
 const getInfectedUsers = async (req, res) => {
   try {
     const result = await prisma.infectedUser.findMany({
-      orderBy: {
-        createdAt: "desc",
-      },
+      orderBy: [
+        {
+          status: "asc",
+        },
+        {
+          createdAt: "desc",
+        },
+      ],
       include: {
         user: true,
-        disease: true,
+        ExposedUser: {
+          include: {
+            user: true,
+          },
+        },
       },
     });
 
     res.json(result);
   } catch (error) {
+    console.log(error);
+    res.sendStatus(400);
+  }
+};
+
+const getInfectedUserbyUserId = async (req, res) => {
+  try {
+    const result = await prisma.infectedUser.findFirst({
+      where: {
+        id: parseInt(req.params.userId),
+      },
+      include: {
+        user: true,
+        ExposedUser: {
+          include: {
+            user: true,
+          },
+        },
+      },
+    });
+
+    res.json(result);
+  } catch (error) {
+    console.log(error);
     res.sendStatus(400);
   }
 };
 
 const createInfectedUsers = async (req, res) => {
-  const { id: userId } = req.body;
+  const { id: userId, dateInfected } = req.body;
   try {
-    const { id: diseaseId } = await prisma.disease.findFirst({
-      where: { isActive: true },
-      select: {
-        id: true,
-      },
-    });
-
     const result = await prisma.infectedUser.create({
       data: {
         userId: parseInt(userId),
-        diseaseId: parseInt(diseaseId),
-        duration: 14,
+        dateInfected: dateInfected,
       },
     });
 
     res.json(result);
   } catch (error) {
+    console.log(error);
     res.sendStatus(400);
   }
 };
 
 const updateInfectedUser = async (req, res) => {
+  const { status } = req.body;
+
   try {
     const result = await prisma.infectedUser.update({
       where: {
         id: parseInt(req.params.id),
       },
       data: {
-        ...req.body,
+        status,
       },
     });
 
     res.json(result);
   } catch (error) {
+    console.log(error);
     res.sendStatus(400);
   }
 };
@@ -243,6 +273,21 @@ const getExposedUserByInfectedId = async (req, res) => {
       include: {
         user: true,
         disease: true,
+      },
+    });
+
+    res.json(result);
+  } catch (error) {
+    res.sendStatus(400);
+  }
+};
+
+const createUserAsInfectedUser = async (req, res) => {
+  try {
+    const result = await prisma.infectedUser.create({
+      data: {
+        userId: parseInt(req.params.id),
+        status: "infected",
       },
     });
 
@@ -322,18 +367,83 @@ const traceContacts = async (req, res) => {};
 
 const getCloseContact = async (req, res) => {
   const id = parseInt(req.params.id);
+  const { positiveDate, windowDate, stationId = null } = req.query;
+
+  const positiveDateFormat = moment(positiveDate).format();
+  const windowDateFormat = moment(windowDate).format();
+
+  let mergeQuery = {};
+
+  if (stationId) {
+    mergeQuery = { ...mergeQuery, stationId: stationId };
+  }
 
   try {
-    const result = await prisma.userLocationHistory.findMany({
+    // get the user visited location
+    const getUserVisitedLocation = await prisma.userLocationHistory.findMany({
       where: {
+        ...mergeQuery,
         userId: {
-          not: id,
+          equals: id,
+        },
+        createdAt: {
+          gte: windowDateFormat,
+          lte: positiveDateFormat,
         },
       },
     });
 
-    res.json(result);
+    const users = await prisma.user.findMany({
+      where: {
+        id: {
+          not: id,
+        },
+        isClinicStaff: false,
+        UserLocationHistory: {
+          some: {
+            createdAt: {
+              gte: windowDateFormat,
+              lte: positiveDateFormat,
+            },
+          },
+        },
+      },
+      include: {
+        UserLocationHistory: true,
+      },
+    });
+
+    const filterLocationHistoryByDate = (users) => {
+      // Filter users and modify UserLocationHistory for each user
+      return users.map((user) => {
+        // Pwede ghap gamitan hin FOR OF pag incase gusto imodify an value didat sakob it array
+        // Filter UserLocationHistory for this user based on location and date
+        const filteredHistory = user.UserLocationHistory.filter((history) => {
+          // Checkf if infecteed user visited locations was equals on the locaiton and date either same or after the visited location
+          const userDateLocation = getUserVisitedLocation.find(
+            (f) =>
+              history.stationId === f.stationId &&
+              moment(history.createdAt).isSameOrAfter(moment(f.createdAt))
+          );
+
+          return userDateLocation ? true : false;
+        });
+
+        // Return the user with filtered UserLocationHistory
+        return {
+          ...user,
+          UserLocationHistory: filteredHistory,
+        };
+      });
+    };
+    // res.json(getUserVisitedLocation);
+    res.json(
+      filterLocationHistoryByDate(users).filter(
+        (f) => f.UserLocationHistory.length
+      )
+    );
   } catch (error) {
+    console.log(error);
     res.sendStatus(400);
   }
 };
@@ -344,6 +454,7 @@ const getFace = async (req, res) => {
     console.log(result);
     res.send(req.file);
   } catch (error) {
+    console.log(error);
     res.send(error);
   }
 };
@@ -366,4 +477,6 @@ module.exports = {
   createExposedUsers,
   updateExposedUserById,
   deleteExposedUserById,
+  createUserAsInfectedUser,
+  getInfectedUserbyUserId,
 };

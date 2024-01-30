@@ -30,6 +30,10 @@ const userSlice = createSlice({
       data: null,
       loading: true,
     },
+    createInfected: {
+      data: null,
+      loading: false,
+    },
   },
   reducers: {
     SET_DATA: (state, { payload: { type, payload } }) => {
