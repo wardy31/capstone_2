@@ -69,3 +69,53 @@ export const updateStatusInfected = (form) => async (dispatch) => {
     dispatch(SET_LOADING({ type: "editInfected", payload: false }));
   }
 };
+
+export const updateStatusContacts = (form, infectedId) => async (dispatch) => {
+  dispatch(SET_LOADING({ type: "editContacts", payload: true }));
+  dispatch(SET_ERROR({ type: "editContacts", payload: false }));
+  try {
+    const { data } = await axios.put(`exposed-users/${form.id}`, form);
+    dispatch(SET_LOADING({ type: "editContacts", payload: false }));
+
+    await dispatch(getInfectedUsersById(infectedId));
+  } catch (error) {
+    dispatch(SET_ERROR({ type: "editContacts", payload: true }));
+    dispatch(SET_LOADING({ type: "editContacts", payload: false }));
+  }
+};
+
+export const getContactUsers =
+  (id, { positiveDate, windowDate, stationId }) =>
+  async (dispatch) => {
+    dispatch(SET_LOADING({ type: "contactUsers", payload: true }));
+    dispatch(SET_ERROR({ type: "contactUsers", payload: false }));
+    try {
+      const {
+        data: { usersContact, userVisit },
+      } = await axios.get(
+        `/users/${id}/trace-contacts?positiveDate=${positiveDate}&windowDate=${windowDate}&stationId=${stationId}`
+      );
+
+      console.log(userVisit);
+      dispatch(SET_DATA({ type: "contactUsers", payload: usersContact }));
+      dispatch(SET_DATA({ type: "contactVisited", payload: userVisit }));
+      dispatch(SET_LOADING({ type: "contactUsers", payload: false }));
+    } catch (error) {
+      dispatch(SET_ERROR({ type: "contactUsers", payload: true }));
+      dispatch(SET_LOADING({ type: "contactUsers", payload: false }));
+    }
+  };
+
+export const addContactUsers = (id, form) => async (dispatch) => {
+  dispatch(SET_LOADING({ type: "createContactUser", payload: true }));
+  dispatch(SET_ERROR({ type: "createContactUser", payload: false }));
+  try {
+    const { data } = await axios.post(`/infected-users/${id}/users`, form);
+    dispatch(SET_LOADING({ type: "createContactUser", payload: false }));
+
+    await dispatch(getInfectedUsers());
+  } catch (error) {
+    dispatch(SET_ERROR({ type: "createContactUser", payload: true }));
+    dispatch(SET_LOADING({ type: "createContactUser", payload: false }));
+  }
+};

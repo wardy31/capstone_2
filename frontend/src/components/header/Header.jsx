@@ -1,6 +1,7 @@
 import { Box, Button, Typography } from "@mui/material";
 import React from "react";
 import AddIcon from "@mui/icons-material/Add";
+import ArrowBackTwoToneIcon from "@mui/icons-material/ArrowBackTwoTone";
 
 function Header({
   title,
@@ -9,14 +10,22 @@ function Header({
   addTitleButton,
   addHandleClick,
   hideButton = false,
+  isBackButton = false,
+  handleBackButton,
 }) {
   return (
     <Box
       display={"flex"}
       justifyContent="space-between"
       alignItems={"center"}
+      columnGap={2}
       mt={4}
     >
+      {isBackButton && (
+        <Button size="medium" variant="contained" onClick={handleBackButton}>
+          <ArrowBackTwoToneIcon fontSize="large" />
+        </Button>
+      )}
       <Box>
         <Typography
           color={"primary"}

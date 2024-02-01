@@ -24,18 +24,10 @@ import { getStation } from "../../station/stationThunk";
 import PersonSearchTwoToneIcon from "@mui/icons-material/PersonSearchTwoTone";
 import { LoadingButton } from "@mui/lab";
 
-function FilterContacts({ data }) {
-  const [value, setValue] = useState({
-    start: moment(data.dateInfected).format("YYYY-MM-DD").toString(),
-    window: "",
-    duration: "",
-    stationId: "",
-  });
+function FilterContacts({ data, loading, form, handleChange, handlleFilter }) {
   const { data: stationData } = useSelector(
     (state) => state.station.getStation
   );
-
-  console.log(value);
   useFetch(() => store.dispatch(getStation()));
   return (
     <Paper sx={{ px: 1, py: 1 }}>
@@ -55,16 +47,17 @@ function FilterContacts({ data }) {
                 <DatePicker
                   sx={{ bgcolor: "primary.light" }}
                   label="Date Started"
-                  defaultValue={moment(data.dateInfected)}
+                  defaultValue={moment(data?.dateInfected)}
                   onChange={(date, context) =>
-                    setValue({
-                      ...value,
-                      start: moment(date._d).format("YYYY-MM-DD").toString(),
-                    })
+                    handleChange(
+                      moment(date._d).format("YYYY-MM-DD").toString(),
+                      "positiveDate"
+                    )
                   }
                   disableFuture
                 />
               </FormControl>
+
               <Typography fontWeight={"bold"}>-</Typography>
 
               <FormControl fullWidth>
@@ -72,26 +65,24 @@ function FilterContacts({ data }) {
                   sx={{ bgcolor: "primary.light" }}
                   label="Date Window"
                   onChange={(date, context) =>
-                    setValue({
-                      ...value,
-                      window: moment(date._d).format("YYYY-MM-DD").toString(),
-                    })
+                    handleChange(
+                      moment(date._d).format("YYYY-MM-DD").toString(),
+                      "windowDate"
+                    )
                   }
                   disableFuture
                 />
               </FormControl>
             </LocalizationProvider>
           </Grid>
-          <Grid item xs={3}>
+          <Grid item xs={4} display={"flex"} justifyContent={"space-between"} columnGap={2}>
             <FormControl fullWidth>
               <InputLabel id="demo-simple-select-label">Station</InputLabel>
               <Select
                 sx={{ bgcolor: "primary.light" }}
-                value={value.stationId}
+                value={form.stationId}
                 label="Station"
-                onChange={(e) =>
-                  setValue({ ...value, stationId: e.target.value })
-                }
+                onChange={(e) => handleChange(e.target.value, "stationId")}
               >
                 <MenuItem value={""}>All</MenuItem>
                 {stationData.map((m) => (
@@ -101,13 +92,13 @@ function FilterContacts({ data }) {
                 ))}
               </Select>
             </FormControl>
-          </Grid>
-          <Grid item xs={1} alignSelf={"center"}>
             <LoadingButton
               size="large"
               color="primary"
               variant="contained"
-              sx={{ height: "auto", px: 2, py: 2, borderRadius: 1 }}
+              sx={{ height: "auto", borderRadius: 1 }}
+              loading={loading}
+              onClick={handlleFilter}
             >
               <PersonSearchTwoToneIcon size="large"></PersonSearchTwoToneIcon>
             </LoadingButton>

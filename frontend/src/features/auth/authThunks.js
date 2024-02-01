@@ -20,6 +20,24 @@ export const getAuth = () => async (dispatch) => {
   }
 };
 
+export const getNotifications = () => async (dispatch) => {
+  try {
+    dispatch(SET_ERROR({ type: "notifications", payload: false }));
+    dispatch(SET_LOADING({ type: "notifications", payload: true }));
+    const { data } = await axios.get("notifications", {
+      headers: {
+        Authorization: getStorage(),
+      },
+    });
+
+    dispatch(SET_DATA({ type: "notifications", payload: data }));
+    dispatch(SET_LOADING({ type: "notifications", payload: false }));
+  } catch (error) {
+    dispatch(SET_ERROR({ type: "notifications", payload: true }));
+    dispatch(SET_LOADING({ type: "notifications", payload: false }));
+  }
+};
+
 export const loginUser = (form) => async (dispatch) => {
   try {
     dispatch(SET_ERROR({ type: "login", payload: false }));

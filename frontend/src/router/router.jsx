@@ -17,6 +17,8 @@ import UserLayout from "../layouts/UserLayout";
 import UserHome from "../features/user/containers/UserHome";
 import UserRecord from "../features/user/containers/UserRecord";
 import Form from "../features/health_form/containers/Form";
+import CheckContacts from "../features/contacts/containers/CheckContacts";
+import ClinicDashboard from "../features/dashboard/ClinicDashboard";
 
 export default createBrowserRouter([
   {
@@ -40,6 +42,10 @@ export default createBrowserRouter([
             element: <User></User>,
           },
           {
+            path: "dashboard",
+            element: <ClinicDashboard></ClinicDashboard>,
+          },
+          {
             path: "profile/:id",
             element: <UserProfile></UserProfile>,
           },
@@ -58,6 +64,10 @@ export default createBrowserRouter([
           {
             path: "monitor-contacts/:id/trace-contacts",
             element: <CloseContact></CloseContact>,
+          },
+          {
+            path: "monitor-contacts/:id/check-contacts",
+            element: <CheckContacts></CheckContacts>,
           },
         ],
       },

@@ -4,7 +4,11 @@ const hash = require("bcrypt");
 const prisma = new PrismaClient();
 const LoginValidation = require("../validations/LoginValidation");
 const CreateUserValidation = require("../validations/CreateUserValidation");
-const { checkFaces, createDescriptors } = require("../utils/faceRecognition");
+const {
+  checkFaces,
+  createDescriptors,
+  loadModels,
+} = require("../utils/faceRecognition");
 const moment = require("moment");
 
 const authUser = async (req, res) => {
@@ -85,6 +89,11 @@ const createUser = async (req, res) => {
       abortEarly: false,
     });
 
+    if (!Object.keys(req.files).length) {
+      res.status(400).send("No Files Detected");
+      return;
+    }
+
     const hashPassword = await hash.hash(password, 10);
 
     const { id } = await prisma.user.create({
@@ -106,7 +115,6 @@ const createUser = async (req, res) => {
 
     console.log(req.files);
     const resultDescriptor = await createDescriptors(req.files, id);
-
     res.send(resultDescriptor);
   } catch (error) {
     console.log(error);
@@ -190,6 +198,32 @@ const getInfectedUsers = async (req, res) => {
   }
 };
 
+const getContactsByInfectedUserId = async (req, res) => {
+  try {
+    const result = await prisma.exposedUser.findMany({
+      where: {
+        infectedUserId: parseInt(req.params.infectedId),
+      },
+      orderBy: [
+        {
+          status: "asc",
+        },
+        {
+          createdAt: "desc",
+        },
+      ],
+      include: {
+        user: true,
+      },
+    });
+
+    res.json(result);
+  } catch (error) {
+    console.log(error);
+    res.sendStatus(400);
+  }
+};
+
 const getInfectedUserbyUserId = async (req, res) => {
   try {
     const result = await prisma.infectedUser.findFirst({
@@ -199,6 +233,14 @@ const getInfectedUserbyUserId = async (req, res) => {
       include: {
         user: true,
         ExposedUser: {
+          orderBy: [
+            {
+              status: "asc",
+            },
+            {
+              createdAt: "desc",
+            },
+          ],
           include: {
             user: true,
           },
@@ -333,13 +375,14 @@ const createExposedUsers = async (req, res) => {
 };
 
 const updateExposedUserById = async (req, res) => {
+  const { status } = req.body;
   try {
     const result = await prisma.exposedUser.update({
       where: {
         id: parseInt(req.params.id),
       },
       data: {
-        ...req.body,
+        status: status,
       },
     });
 
@@ -372,10 +415,13 @@ const getCloseContact = async (req, res) => {
   const positiveDateFormat = moment(positiveDate).format();
   const windowDateFormat = moment(windowDate).format();
 
+  console.log("positiveDate", positiveDateFormat);
+  console.log("windowDateFormat", windowDateFormat);
   let mergeQuery = {};
 
   if (stationId) {
-    mergeQuery = { ...mergeQuery, stationId: stationId };
+    console.log("Station");
+    mergeQuery = { ...mergeQuery, stationId: parseInt(stationId) };
   }
 
   try {
@@ -390,6 +436,9 @@ const getCloseContact = async (req, res) => {
           gte: windowDateFormat,
           lte: positiveDateFormat,
         },
+      },
+      include: {
+        station: true,
       },
     });
 
@@ -409,7 +458,11 @@ const getCloseContact = async (req, res) => {
         },
       },
       include: {
-        UserLocationHistory: true,
+        UserLocationHistory: {
+          include: {
+            station: true,
+          },
+        },
       },
     });
 
@@ -437,14 +490,32 @@ const getCloseContact = async (req, res) => {
       });
     };
     // res.json(getUserVisitedLocation);
-    res.json(
-      filterLocationHistoryByDate(users).filter(
+    res.json({
+      usersContact: filterLocationHistoryByDate(users).filter(
         (f) => f.UserLocationHistory.length
-      )
-    );
+      ),
+      userVisit: getUserVisitedLocation,
+    });
   } catch (error) {
     console.log(error);
     res.sendStatus(400);
+  }
+};
+
+const createContactUser = async (req, res) => {
+  const { id: userId } = req.body;
+  try {
+    const result = await prisma.exposedUser.create({
+      data: {
+        infectedUserId: parseInt(req.params.infectedId),
+        userId: userId,
+      },
+    });
+    console.log(result);
+    res.send(result);
+  } catch (error) {
+    console.log(error);
+    res.send(error);
   }
 };
 
@@ -455,6 +526,20 @@ const getFace = async (req, res) => {
     res.send(req.file);
   } catch (error) {
     console.log(error);
+    res.send(error);
+  }
+};
+
+const getNotifications = async (req, res) => {
+  try {
+    const result = await prisma.userAlertNotification.findMany({
+      include: {
+        station: true,
+        user: true,
+      },
+    });
+    res.json(result);
+  } catch (error) {
     res.send(error);
   }
 };
@@ -479,4 +564,7 @@ module.exports = {
   deleteExposedUserById,
   createUserAsInfectedUser,
   getInfectedUserbyUserId,
+  createContactUser,
+  getContactsByInfectedUserId,
+  getNotifications,
 };

@@ -19,6 +19,7 @@ function UpdateStatusDIalog({
   loading,
   value,
   handleValue,
+  isContact = false,
 }) {
   return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
@@ -28,11 +29,10 @@ function UpdateStatusDIalog({
       <DialogContent>
         <Typography sx={{ fontSize: 14, mb: 1, mt: 3 }}>Status</Typography>
         <FormControl fullWidth>
-          <Select
-            value={value}
-            onChange={(e) => handleValue(e.target.value)}
-          >
-            <MenuItem value={"infected"}>Infected</MenuItem>
+          <Select value={value} onChange={(e) => handleValue(e.target.value)}>
+            <MenuItem value={isContact ? "contact" : "infected"}>
+              {isContact ? "Contact" : "Infected"}
+            </MenuItem>
             <MenuItem value={"recovered"}>Recovered</MenuItem>
           </Select>
         </FormControl>

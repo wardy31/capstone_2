@@ -13,6 +13,7 @@ import DeleteForeverTwoToneIcon from "@mui/icons-material/DeleteForeverTwoTone";
 import PersonSearchTwoToneIcon from "@mui/icons-material/PersonSearchTwoTone";
 import VisibilityTwoToneIcon from "@mui/icons-material/VisibilityTwoTone";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
+import GroupsTwoToneIcon from "@mui/icons-material/GroupsTwoTone";
 import dateFormat from "../../../../utils/moment";
 
 function ContactTable({
@@ -21,6 +22,7 @@ function ContactTable({
   handleRemove,
   handleUpdateStatus,
   handleTrace,
+  checkContacts
 }) {
   const countActiveContact = (data) => {
     return data.filter((f) => f.status == "contact").length;
@@ -66,6 +68,9 @@ function ContactTable({
               <TableCell sx={{ textTransform: "capitalize" }} align="right">
                 <IconButton color="primary" onClick={() => handleTrace(u.id)}>
                   <PersonSearchTwoToneIcon></PersonSearchTwoToneIcon>
+                </IconButton>
+                <IconButton color="primary" onClick={() => checkContacts(u.id)}>
+                  <GroupsTwoToneIcon></GroupsTwoToneIcon>
                 </IconButton>
                 <IconButton
                   color="primary"

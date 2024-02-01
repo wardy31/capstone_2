@@ -53,7 +53,8 @@ model UserAlertNotification {
   id        Int      @id @default(autoincrement())
   userId    Int      @map("user_id")
   stationId Int      @map("station_id")
-  message   String
+  message   String?
+  type      notification
   createdAt DateTime @default(now()) @map("created_at")
 
   user    User    @relation(fields: [userId], references: [id])
@@ -146,4 +147,9 @@ enum Status {
   infected
   contact
   recovered
+}
+
+enum notification {
+  form
+  contact
 }

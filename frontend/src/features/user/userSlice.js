@@ -14,6 +14,12 @@ const userSlice = createSlice({
       error: false,
       success: false,
     },
+    allUsers: {
+      data: [],
+      loading: true,
+      error: false,
+      success: false,
+    },
     userHealthRecord: {
       data: [],
       loading: false,

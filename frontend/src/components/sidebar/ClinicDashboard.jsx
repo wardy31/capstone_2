@@ -90,24 +90,24 @@ function ClinicDashboard({ open, handleOpen }) {
             disablePadding
             sx={{
               transition: theme.transitions.create(),
-              bgcolor: checkNavigation(/home/, pathname) ? "white" : "",
-              color: checkNavigation(/home/, pathname)
+              bgcolor: checkNavigation(/dashboard/, pathname) ? "white" : "",
+              color: checkNavigation(/dashboard/, pathname)
                 ? "primary.main"
                 : "white",
               borderRadius: 1.5,
               my: 0.8,
             }}
-            onClick={() => handleNavigate("home")}
+            onClick={() => handleNavigate("dashboard")}
           >
             {/* <ListItemButton onClick={() => setOpen(false)}> */}
             <ListItemButton
-              selected={checkNavigation(/home/, pathname)}
-              onClick={() => setSelected(/home/, pathname)}
+              selected={checkNavigation(/dashboard/, pathname)}
+              onClick={() => setSelected(/dashboard/, pathname)}
             >
               <ListItemIcon>
                 <DashboardTwoToneIcon
                   sx={{
-                    color: checkNavigation(/home/, pathname)
+                    color: checkNavigation(/dashboard/, pathname)
                       ? "primary.main"
                       : "white",
                   }}

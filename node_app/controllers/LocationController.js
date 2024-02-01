@@ -2,6 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const { predict } = require("../utils/faceRecognition");
 const moment = require("moment");
 const prisma = new PrismaClient();
+const { sockets } = require("../utils/sockets");
 
 const getLocations = async (req, res) => {
   const { search = "" } = req.query;
@@ -38,7 +39,15 @@ const createUserLocation = async (req, res) => {
 
     const users = await prisma.user.findFirst({
       where: {
-        id: userId,
+        id: parseInt(userId),
+        UserResponse: {
+          some: {
+            createdAt: {
+              gte: startCurrentDay,
+              lte: endtCurrentDay,
+            },
+          },
+        },
       },
       include: {
         UserResponse: {
@@ -51,38 +60,49 @@ const createUserLocation = async (req, res) => {
         },
         ExposedUser: {
           where: {
-            isActive: true,
+            status: "contact",
           },
         },
         InfectedUser: {
           where: {
-            isActive: true,
+            status: "infected",
           },
         },
       },
     });
 
-    if (exposedUser.length || infectedUser.length) {
-      // alert socket inin bubutang
-    }
-
+    console.log("user", users);
     // 1 = no form , 2 = no face
-    if (!checkForm) {
+    if (!users) {
       return res.json({
         message: "No Declaration Form",
         status: 1,
       });
     }
 
+    if (users.ExposedUser.length || users.InfectedUser.length) {
+      const notification = await prisma.userAlertNotification.create({
+        data: {
+          userId: parseInt(userId),
+          stationId: parseInt(stationId),
+          type: "contact",
+        },
+      });
+      sockets().emit("clinic", notification, () => {
+        console.log("notified");
+      });
+    }
+
     const result = await prisma.userLocationHistory.create({
       data: {
-        userId,
-        stationId,
+        userId: parseInt(userId),
+        stationId: parseInt(stationId),
       },
     });
 
     return res.send(result);
   } catch (error) {
+    console.log(error);
     res.status(400).send(error);
   }
 };

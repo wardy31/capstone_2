@@ -23,9 +23,28 @@ const contactSlice = createSlice({
       loading: false,
       error: false,
     },
+    editContacts: {
+      data: [],
+      loading: false,
+      error: false,
+    },
     infectedUserById: {
       data: null,
       loading: true,
+      error: false,
+    },
+    contactUsers: {
+      data: [],
+      loading: false,
+      error: false,
+    },
+    contactVisited: {
+      data: [],
+      loading: false,
+      error: false,
+    },
+    createContactUser: {
+      loading: false,
       error: false,
     },
   },

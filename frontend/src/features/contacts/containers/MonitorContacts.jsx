@@ -22,6 +22,7 @@ function MonitorContacts() {
   const { removeInfected, editInfected } = useSelector(
     (state) => state.contact
   );
+
   const {
     state: form,
     handleChange,
@@ -46,7 +47,7 @@ function MonitorContacts() {
 
   useFetch(() => store.dispatch(getInfectedUsers()));
   return (
-    <Container>
+    <Box>
       <Header
         title="Monitor Contacts"
         subTitle={"monitor and identify infected user's  close contacts."}
@@ -89,8 +90,9 @@ function MonitorContacts() {
         }}
         handleTrace={(userId) => navigate(`${userId}/trace-contacts`)}
         handleView={(userId) => navigate(`/clinic/profile/${userId}`)}
+        checkContacts={(userId) => navigate(`${userId}/check-contacts`)}
       ></ContactTable>
-    </Container>
+    </Box>
   );
 }
 

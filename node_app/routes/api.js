@@ -20,6 +20,9 @@ const {
   getCloseContact,
   createUserAsInfectedUser,
   getInfectedUserbyUserId,
+  createContactUser,
+  getContactsByInfectedUserId,
+  getNotifications,
 } = require("../controllers/UsersController");
 const {
   getDisease,
@@ -102,7 +105,9 @@ router.get("/users/:id/exposed-users", getExposedUserByInfectedId);
 
 router.get("/infected-users", getInfectedUsers);
 router.get("/infected-users/:userId", getInfectedUserbyUserId);
+router.get("/infected-users/:infectedId/contacts", getContactsByInfectedUserId);
 router.post("/infected-users", createInfectedUsers);
+router.post("/infected-users/:infectedId/users", createContactUser);
 router.put("/infected-users/:id", updateInfectedUser);
 router.delete("/infected-users/:id", deleteInfectedUser);
 
@@ -131,11 +136,13 @@ router.put("/questions/:id", updateQuestion);
 router.delete("/questions/:id", deleteQuestion);
 
 router.get("/users/:id/trace-contacts", getCloseContact);
+router.get("/notifications", getNotifications);
 
-router.get("/check", (req, res) => {
-  sockets().emit("clinic-contact", { message: "clnic" });
+router.get("/check", async (req, res) => {
+  sockets().emit("clinic", { message: "Clinic Notify" });
+
   console.log(sockets());
-  res.json(sockets);
+  res.json("Tesst Sockect");
 });
 
 router.post("/scan-face", upload.single("face"), getFace);

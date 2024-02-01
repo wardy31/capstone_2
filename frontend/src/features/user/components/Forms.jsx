@@ -20,10 +20,16 @@ function Forms() {
   const { loading, success, error } = useSelector(
     (state) => state.model.loadModel
   );
-  const { faceResult: faceResult1, handleFaceDetection: handleFaceDetection1 } =
-    useFace(false);
-  const { faceResult: faceResult2, handleFaceDetection: handleFaceDetection2 } =
-    useFace(false);
+  const {
+    faceResult: faceResult1,
+    loading: face1Loading,
+    handleFaceDetection: handleFaceDetection1,
+  } = useFace(false);
+  const {
+    faceResult: faceResult2,
+    loading: face2Loading,
+    handleFaceDetection: handleFaceDetection2,
+  } = useFace(false);
 
   const { state, handleChange } = useForm({
     firstName: "",
@@ -52,11 +58,11 @@ function Forms() {
     await dispatch(createUser(formData));
   };
 
-    useFetch(() => dispatch(getModel()));
+  useFetch(() => dispatch(getModel()));
 
-    if (loading && !success) {
-      return <></>;
-    }
+  if (loading && !success) {
+    return <></>;
+  }
 
   return (
     <>
@@ -149,11 +155,11 @@ function Forms() {
           fullWidth
           size="small"
           type="number"
-          onInput={(e) => {
-            e.target.value = Math.max(0, parseInt(e.target.value))
-              .toString()
-              .slice(0, 12);
-          }}
+          // onInput={(e) => {
+          //   e.target.value = Math.max(-1, parseInt(e.target.value))
+          //     .toString()
+          //     .slice(0, 12);
+          // }}
           value={state.contactNumber}
           onChange={(e) => handleChange(e.target.value, "contactNumber")}
         ></TextField>
@@ -193,13 +199,14 @@ function Forms() {
             fullWidth
             size="small"
             type="file"
-            disabled={loading}
+            disabled={face1Loading}
             inputProps={{ accept: "image/*" }}
             onChange={async (e) => {
               const formData = new FormData();
               formData.append("face", e.target.files[0]);
               await handleFaceDetection1(formData);
               if (faceResult1) {
+                console.log("face1 Load");
                 state.upload1 = e.target.files[0];
               }
             }}
@@ -208,12 +215,14 @@ function Forms() {
             fullWidth
             size="small"
             type="file"
+            disabled={face2Loading}
             inputProps={{ accept: "image/*" }}
             onChange={async (e) => {
               const formData = new FormData();
               formData.append("face", e.target.files[0]);
               await handleFaceDetection2(formData);
               if (faceResult2) {
+                console.log("face2 Load");
                 state.upload2 = e.target.files[0];
               }
             }}

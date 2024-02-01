@@ -87,7 +87,7 @@ const createDescriptors = (files, userId) =>
     const { Canvas, Image, ImageData } = canvas;
     faceapi.env.monkeyPatch({ Canvas, Image, ImageData });
 
-    console.log("files",JSON.stringify(files));
+    console.log("files", JSON.stringify(files));
     const labeledDescriptors = [];
     for (const key in files) {
       const ref = await canvas.loadImage(`./${files[key][0]["path"]}`);

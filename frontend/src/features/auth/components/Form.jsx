@@ -6,9 +6,11 @@ import TextInputPassword from "../../../components/text/TextInputPassword";
 import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "../authThunks";
 import validate from "../../../utils/validation";
+import { Link, useNavigate } from "react-router-dom";
 
 function Form() {
   const dispatch = useDispatch();
+  const navigate = useNavigate()
   const { state, handleChange } = useForm({ username: "", password: "" });
   const { loading, data, error } = useSelector((state) => state.auth.login);
 
@@ -48,8 +50,8 @@ function Form() {
       >
         <Typography textTransform={"capitalize"}>Login Account</Typography>
       </LoadingButton>
-      <Button fullWidth>
-        <Typography textTransform={"capitalize"}>Create Account</Typography>
+      <Button fullWidth LinkComponent={Link} to="/create-account">
+        <Typography textTransform={"capitalize"} >Create Account</Typography>
       </Button>
     </>
   );

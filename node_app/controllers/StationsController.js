@@ -65,6 +65,9 @@ const getStations = async (req, res) => {
       where: {
         ...queries,
       },
+      include: {
+        UserLocationHistory: true,
+      },
     });
     return res.json(result);
   } catch (error) {
@@ -88,6 +91,9 @@ const getLocationHistoriesByStationId = async (req, res) => {
       where: {
         stationId: parseInt(req.params.id),
         ...queries,
+      },
+      orderBy:{
+        createdAt:"desc"
       },
       include: {
         user: true,

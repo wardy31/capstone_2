@@ -87,6 +87,20 @@ export const getUserLogs = (id) => async (dispatch) => {
   }
 };
 
+export const getAllUsers = (id) => async (dispatch) => {
+  try {
+    dispatch(SET_LOADING({ type: "allUsers", payload: true }));
+    dispatch(SET_ERROR({ type: "allUsers", payload: false }));
+
+    const { data } = await axios.get(`/users`);
+    dispatch(SET_DATA({ type: "allUsers", payload: data }));
+    dispatch(SET_LOADING({ type: "allUsers", payload: false }));
+  } catch (error) {
+    dispatch(SET_LOADING({ type: "allUsers", payload: false }));
+    dispatch(SET_ERROR({ type: "allUsers", payload: true }));
+  }
+};
+
 export const createInfectedUser = (form) => async (dispatch) => {
   try {
     dispatch(SET_LOADING({ type: "createInfected", payload: true }));
