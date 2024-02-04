@@ -194,8 +194,18 @@ const getUserHistoriesById = async (req, res) => {
 };
 
 const getInfectedUsers = async (req, res) => {
+  const { status = "" } = req.query;
+  let query = {};
+
+  if (status.length) {
+    query = { ...query, status: status };
+  }
+
   try {
     const result = await prisma.infectedUser.findMany({
+      where: {
+        ...query,
+      },
       orderBy: [
         {
           status: "asc",

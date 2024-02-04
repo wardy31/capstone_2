@@ -9,6 +9,12 @@ const stationSlice = createSlice({
       error: false,
       success: false,
     },
+    getLocations: {
+      data: [],
+      loading: true,
+      error: false,
+      success: false,
+    },
     create: {
       loading: false,
       error: false,

@@ -7,7 +7,7 @@ import {
   Paper,
 } from "@mui/material";
 import React from "react";
-import dateFormat from "../../../utils/moment";
+import dateFormat, { time } from "../../../utils/moment";
 
 function StationLogsList({ data }) {
   return (
@@ -16,7 +16,7 @@ function StationLogsList({ data }) {
         <ListItem key={id}>
           <ListItemText
             primary={`${user.firstName} ${user.lastName}`}
-            secondary={dateFormat(createdAt)}
+            secondary={`${dateFormat(createdAt)} • ${time(createdAt)}`}
             primaryTypographyProps={{
               fontWeight: "bold",
               fontSize: 15,

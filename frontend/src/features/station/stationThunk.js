@@ -19,6 +19,28 @@ export const getStation = () => async (dispatch) => {
   }
 };
 
+export const getLocations =
+  (stationId = "") =>
+  async (dispatch) => {
+    try {
+      dispatch(SET_LOADING({ type: "getLocations", payload: true }));
+      dispatch(SET_ERROR({ type: "getLocations", payload: false }));
+      dispatch(SET_SUCCESS({ type: "getLocations", payload: false }));
+
+      const { data } = await axios.get(
+        `location-histories?search=${stationId}`
+      );
+      console.log(data);
+
+      dispatch(SET_LOADING({ type: "getLocations", payload: false }));
+      dispatch(SET_SUCCESS({ type: "getLocations", payload: true }));
+      dispatch(SET_DATA({ type: "getLocations", payload: data }));
+    } catch (error) {
+      dispatch(SET_LOADING({ type: "getLocations", payload: false }));
+      dispatch(SET_ERROR({ type: "getLocations", payload: true }));
+    }
+  };
+
 export const createStation = (forms) => async (dispatch) => {
   try {
     dispatch(SET_LOADING({ type: "create", payload: true }));

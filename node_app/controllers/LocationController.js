@@ -10,7 +10,7 @@ const getLocations = async (req, res) => {
 
   if (search.trim().length) {
     queries = {
-      stationId: search,
+      stationId: parseInt(search),
     };
   }
 
@@ -21,10 +21,16 @@ const getLocations = async (req, res) => {
         station: true,
         user: true,
       },
+      orderBy:{
+        station:{
+          name:"asc"
+        }
+      }
     });
 
     res.json(result);
   } catch (error) {
+    console.log(error);
     res.status(400).send(error);
   }
 };

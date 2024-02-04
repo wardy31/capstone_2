@@ -12,6 +12,7 @@ import React from "react";
 import SimCardDownloadTwoToneIcon from "@mui/icons-material/SimCardDownloadTwoTone";
 import dateFormat from "../../../../utils/moment";
 import usePDF from "../../../../hooks/usePDF";
+import DownloadButton from "./button/DownloadButton";
 
 function FormResponsePanel({
   healthRecords: { data = [], loading },
@@ -39,13 +40,7 @@ function FormResponsePanel({
             onChange={onResponse}
           ></TextField>
         </Box>
-        <Button
-          onClick={toPDF}
-          variant="contained"
-          startIcon={<SimCardDownloadTwoToneIcon></SimCardDownloadTwoToneIcon>}
-        >
-          Download PDF
-        </Button>
+        <DownloadButton onClick={toPDF}></DownloadButton>
       </Box>
 
       <Box mb={4}></Box>

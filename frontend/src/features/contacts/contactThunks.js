@@ -15,18 +15,20 @@ export const getUser = () => async (dispatch) => {
   }
 };
 
-export const getInfectedUsers = () => async (dispatch) => {
-  dispatch(SET_LOADING({ type: "infectedUsers", payload: true }));
-  dispatch(SET_ERROR({ type: "infectedUsers", payload: false }));
-  try {
-    const { data } = await axios.get("infected-users");
-    dispatch(SET_DATA({ type: "infectedUsers", payload: data }));
-    dispatch(SET_LOADING({ type: "infectedUsers", payload: false }));
-  } catch (error) {
-    dispatch(SET_ERROR({ type: "infectedUsers", payload: true }));
-    dispatch(SET_LOADING({ type: "infectedUsers", payload: false }));
-  }
-};
+export const getInfectedUsers =
+  (status = "") =>
+  async (dispatch) => {
+    dispatch(SET_LOADING({ type: "infectedUsers", payload: true }));
+    dispatch(SET_ERROR({ type: "infectedUsers", payload: false }));
+    try {
+      const { data } = await axios.get(`infected-users?status=${status}`);
+      dispatch(SET_DATA({ type: "infectedUsers", payload: data }));
+      dispatch(SET_LOADING({ type: "infectedUsers", payload: false }));
+    } catch (error) {
+      dispatch(SET_ERROR({ type: "infectedUsers", payload: true }));
+      dispatch(SET_LOADING({ type: "infectedUsers", payload: false }));
+    }
+  };
 
 export const getInfectedUsersById = (id) => async (dispatch) => {
   dispatch(SET_LOADING({ type: "infectedUserById", payload: true }));
