@@ -196,7 +196,7 @@ function UserBar({ role = "clinic", handleOpen }) {
           </Button>
         </Box>
       </Toolbar>
-      {notify && (
+      {notify && role === "clinic" && (
         <Alert
           icon={<CampaignTwoToneIcon></CampaignTwoToneIcon>}
           severity="error"
