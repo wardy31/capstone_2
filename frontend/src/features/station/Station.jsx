@@ -24,6 +24,7 @@ import useDialog from "../../hooks/useDialog";
 import ConfirmationDialog from "../../components/dialogs/ConfirmationDialog";
 import FormDialog from "./components/Dialogs/FormDialog";
 import { useNavigate } from "react-router-dom";
+import toast from "../../utils/toast";
 
 function Station() {
   const navigate = useNavigate();
@@ -48,18 +49,34 @@ function Station() {
   } = useForm({ name: "" });
 
   const handleDelete = async () => {
-    await store.dispatch(deleteStation(form.id));
+    const result = await store.dispatch(deleteStation(form.id));
+    if (result) {
+      handleDialog(false, "delete");
+      toast("Station Deleted", "error");
+    }
   };
   const handleCreate = async () => {
-    await store.dispatch(createStation(form));
+    const res = await store.dispatch(createStation(form));
+    if (res) {
+      handleDialog(false, "create");
+      toast("Station Created");
+    }
   };
   const handleUpdate = async () => {
-    await store.dispatch(updateStation(form));
+    const res = await store.dispatch(updateStation(form));
+    if (res) {
+      handleDialog(false, "update");
+      toast("Station Updated");
+    }
   };
   const handleViewUser = (data) => navigate(`${data.id}/logs`);
 
   useFetch(() => store.dispatch(getStation()));
 
+  if (get.loading) {
+    return <></>;
+  }
+  
   return (
     <Container>
       <Header

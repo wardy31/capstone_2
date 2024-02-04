@@ -19,6 +19,8 @@ import UserRecord from "../features/user/containers/UserRecord";
 import Form from "../features/health_form/containers/Form";
 import CheckContacts from "../features/contacts/containers/CheckContacts";
 import ClinicDashboard from "../features/dashboard/ClinicDashboard";
+import Redirect from "../features/auth/Redirect";
+import GenerateReports from "../features/reports/GenerateReports";
 
 export default createBrowserRouter([
   {
@@ -26,9 +28,17 @@ export default createBrowserRouter([
     element: <App />,
     children: [
       {
+        path: "",
+        element: <Redirect></Redirect>,
+      },
+      {
         path: "clinic",
         element: <ClinicLayout />,
         children: [
+          {
+            path: "",
+            element: <Redirect />,
+          },
           {
             path: "stations",
             element: <Station />,
@@ -69,12 +79,20 @@ export default createBrowserRouter([
             path: "monitor-contacts/:id/check-contacts",
             element: <CheckContacts></CheckContacts>,
           },
+          {
+            path: "generate-reports",
+            element: <GenerateReports></GenerateReports>,
+          },
         ],
       },
       {
         path: "user",
         element: <UserLayout></UserLayout>,
         children: [
+          {
+            path: "",
+            element: <Redirect />,
+          },
           {
             path: "home",
             element: <UserHome></UserHome>,

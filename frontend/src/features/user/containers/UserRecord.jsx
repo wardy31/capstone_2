@@ -15,6 +15,10 @@ function UserRecord() {
 
   useFetch(() => store.dispatch(getUserLocations(id)));
 
+  if (loading) {
+    return <></>;
+  }
+  
   return (
     <Container>
       <Header title={"Visited Location Logs"} hideButton={true}></Header>

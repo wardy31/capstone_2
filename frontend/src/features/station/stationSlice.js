@@ -5,7 +5,7 @@ const stationSlice = createSlice({
   initialState: {
     getStation: {
       data: [],
-      loading: false,
+      loading: true,
       error: false,
       success: false,
     },

@@ -31,6 +31,7 @@ app.use((res, req, next) => {
   next();
 });
 
+app.use('/profiles',express.static('profiles'))
 app.use("/api", predictRoute);
 app.use("/api/v2", api);
 

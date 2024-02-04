@@ -15,6 +15,7 @@ import ConfirmationDialog from "../../../components/dialogs/ConfirmationDialog";
 import useDialog from "../../../hooks/useDialog";
 import useForm from "../../../hooks/useForm";
 import UpdateStatusDIalog from "../components/dialogs/UpdateStatusDIalog";
+import notify from "../../../utils/toast";
 
 function MonitorContacts() {
   const navigate = useNavigate();
@@ -38,14 +39,27 @@ function MonitorContacts() {
   });
 
   const handleRemove = async () => {
-    await store.dispatch(removeInfectedUsers(form));
+    const res = await store.dispatch(removeInfectedUsers(form));
+    if (res) {
+      handleDialog(false, "remove");
+      notify("Infected User Deleted", "error");
+    }
   };
 
   const handleUpdateStatus = async () => {
-    await store.dispatch(updateStatusInfected(form));
+    const res = await store.dispatch(updateStatusInfected(form));
+    if (res) {
+      handleDialog(false, "edit");
+      notify("Infected User  Status Updated");
+    }
   };
 
   useFetch(() => store.dispatch(getInfectedUsers()));
+
+  if (loading) {
+    return <></>;
+  }
+  
   return (
     <Box>
       <Header

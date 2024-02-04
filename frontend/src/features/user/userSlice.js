@@ -10,7 +10,7 @@ const userSlice = createSlice({
     },
     getUser: {
       data: [],
-      loading: false,
+      loading: true,
       error: false,
       success: false,
     },
@@ -26,7 +26,7 @@ const userSlice = createSlice({
     },
     userLocation: {
       data: [],
-      loading: false,
+      loading: true,
     },
     userById: {
       data: null,
@@ -39,6 +39,11 @@ const userSlice = createSlice({
     createInfected: {
       data: null,
       loading: false,
+    },
+    notification: {
+      notify: false,
+      data: [],
+      loading: true,
     },
   },
   reducers: {
@@ -54,9 +59,12 @@ const userSlice = createSlice({
     SET_SUCCESS: (state, { payload: { type, payload } }) => {
       state[type].success = payload;
     },
+    SET_NOTIFY: (state, { payload: { type, payload } }) => {
+      state[type].notify = payload;
+    },
   },
 });
 
-export const { SET_DATA, SET_ERROR, SET_LOADING, SET_SUCCESS } =
+export const { SET_NOTIFY, SET_DATA, SET_ERROR, SET_LOADING, SET_SUCCESS } =
   userSlice.actions;
 export default userSlice.reducer;

@@ -6,6 +6,9 @@ import { useFetch } from "./hooks/useFetch";
 import store from "./store/store";
 import { getAuth } from "./features/auth/authThunks";
 import { socket } from "./utils/socket";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { notifyClinic } from "./features/user/userThunks";
 
 function App() {
   const { loading } = useSelector((state) => state.auth.getUser);
@@ -17,17 +20,19 @@ function App() {
 
     socket.on("clinic", (arg) => {
       console.log(arg);
+      store.dispatch(notifyClinic(true));
     });
   }, []);
 
   useFetch(() => store.dispatch(getAuth()));
 
   if (loading) {
-    return;
+    return <></>;
   }
 
   return (
     <>
+      <ToastContainer></ToastContainer>
       <Outlet />
     </>
   );

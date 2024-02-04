@@ -5,12 +5,12 @@ const healthSlice = createSlice({
   initialState: {
     getRecords: {
       data: [],
-      loading: false,
+      loading: true,
       error: false,
     },
     getQuestions: {
       data: [],
-      loading: false,
+      loading: true,
       error: false,
     },
     createQuestion: {

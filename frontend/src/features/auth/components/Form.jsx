@@ -7,23 +7,29 @@ import { useSelector, useDispatch } from "react-redux";
 import { loginUser } from "../authThunks";
 import validate from "../../../utils/validation";
 import { Link, useNavigate } from "react-router-dom";
+import toast from "../../../utils/toast";
 
 function Form() {
   const dispatch = useDispatch();
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   const { state, handleChange } = useForm({ username: "", password: "" });
   const { loading, data, error } = useSelector((state) => state.auth.login);
 
   const handleLogin = async () => {
-    await dispatch(loginUser(state));
+    const res = await dispatch(loginUser(state));
+    if (res) {
+      navigate("/");
+      toast("User Logged In");
+    }
   };
 
   return (
     <>
-      <Box>
-        <Typography>Username</Typography>
+      <Box mb={2}>
+        <Typography sx={{fontSize:14,mb:0.5}}>Username</Typography>
 
         <TextField
+          sx={{ bgcolor: "primary.light" }}
           fullWidth
           value={state.username}
           onChange={(e) => handleChange(e.target.value, "username")}
@@ -32,8 +38,8 @@ function Form() {
         ></TextField>
       </Box>
 
-      <Box>
-        <Typography>Password</Typography>
+      <Box mb={2}>
+        <Typography sx={{fontSize:14,mb:0.5}}>Password</Typography>
         <TextInputPassword
           error={Boolean(validate("password", error))}
           helperText={validate("password", error)}
@@ -43,15 +49,22 @@ function Form() {
       </Box>
 
       <LoadingButton
+        sx={{ mb: 0.5, py: 1.1 }}
         variant="contained"
         fullWidth
         loading={loading}
         onClick={handleLogin}
       >
-        <Typography textTransform={"capitalize"}>Login Account</Typography>
+        <Typography textTransform={"capitalize"}>Login </Typography>
       </LoadingButton>
-      <Button fullWidth LinkComponent={Link} to="/create-account">
-        <Typography textTransform={"capitalize"} >Create Account</Typography>
+      <Button
+        sx={{ py: 1.1 }}
+        fullWidth
+        LinkComponent={Link}
+        to="/create-account"
+        variant="outlined"
+      >
+        <Typography textTransform={"capitalize"}>Create Account</Typography>
       </Button>
     </>
   );

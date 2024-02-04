@@ -16,9 +16,11 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { deleteStorage } from "../../utils/storage";
 import HelpOutlineTwoToneIcon from "@mui/icons-material/HelpOutlineTwoTone";
+import { deleteAuth, getAuth } from "../../features/auth/authThunks";
+import store from "../../store/store";
 
 function AppBarUser({ handleOpen }) {
-//   const { data } = useSelector((state) => state.user.auth);
+  //   const { data } = useSelector((state) => state.user.auth);
   const [anchorEl, setAnchorEl] = useState(null);
   const navigate = useNavigate();
   const handleMenu = (event) => {
@@ -96,9 +98,12 @@ function AppBarUser({ handleOpen }) {
             </MenuItem>
             <MenuItem
               sx={{ display: "flex", columnGap: 2 }}
-              onClick={() => {
-                deleteStorage();
-                navigate("/");
+              onClick={async () => {
+                const res = await store.dispatch(deleteAuth());
+                if (res) {
+                  // console.log(res);
+                  navigate("/login");
+                }
               }}
             >
               <LogoutIcon sx={{ fontSize: 20 }} />

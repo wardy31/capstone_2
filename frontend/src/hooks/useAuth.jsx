@@ -1,10 +1,10 @@
-import React from 'react'
-
+import { useSelector } from "react-redux";
 
 function useAuth() {
-  return (
-    <div>useAuth</div>
-  )
+  const { data } = useSelector((state) => state.auth.getUser);
+
+  console.log("data",data);
+  return Object.keys(data).length ? true : false;
 }
 
-export default useAuth
+export default useAuth;

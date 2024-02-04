@@ -73,7 +73,7 @@ function ClinicDashboard() {
             </Grid>
           </Grid>
 
-          <Grid container spacing={5}>
+          <Grid container spacing={2}>
             <Grid item xs={6}>
               <UserChart
                 loading={allUsers.loading}

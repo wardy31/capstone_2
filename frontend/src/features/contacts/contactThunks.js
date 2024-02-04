@@ -50,9 +50,11 @@ export const removeInfectedUsers = (form) => async (dispatch) => {
     dispatch(SET_LOADING({ type: "removeInfected", payload: false }));
 
     await dispatch(getInfectedUsers());
+    return true;
   } catch (error) {
     dispatch(SET_ERROR({ type: "removeInfected", payload: true }));
     dispatch(SET_LOADING({ type: "removeInfected", payload: false }));
+    return false;
   }
 };
 
@@ -64,9 +66,12 @@ export const updateStatusInfected = (form) => async (dispatch) => {
     dispatch(SET_LOADING({ type: "editInfected", payload: false }));
 
     await dispatch(getInfectedUsers());
+
+    return true;
   } catch (error) {
     dispatch(SET_ERROR({ type: "editInfected", payload: true }));
     dispatch(SET_LOADING({ type: "editInfected", payload: false }));
+    return false;
   }
 };
 
@@ -78,9 +83,11 @@ export const updateStatusContacts = (form, infectedId) => async (dispatch) => {
     dispatch(SET_LOADING({ type: "editContacts", payload: false }));
 
     await dispatch(getInfectedUsersById(infectedId));
+    return true;
   } catch (error) {
     dispatch(SET_ERROR({ type: "editContacts", payload: true }));
     dispatch(SET_LOADING({ type: "editContacts", payload: false }));
+    return false;
   }
 };
 
@@ -113,9 +120,29 @@ export const addContactUsers = (id, form) => async (dispatch) => {
     const { data } = await axios.post(`/infected-users/${id}/users`, form);
     dispatch(SET_LOADING({ type: "createContactUser", payload: false }));
 
-    await dispatch(getInfectedUsers());
+    await dispatch(getInfectedUsersById(id));
+
+    return true;
   } catch (error) {
     dispatch(SET_ERROR({ type: "createContactUser", payload: true }));
     dispatch(SET_LOADING({ type: "createContactUser", payload: false }));
+    return false;
+  }
+};
+
+export const deleteContactUsers = (form, id) => async (dispatch) => {
+  dispatch(SET_LOADING({ type: "deleteContactUser", payload: true }));
+  dispatch(SET_ERROR({ type: "deleteContactUser", payload: false }));
+  try {
+    const { data } = await axios.delete(`/exposed-users/${form.id}`);
+    dispatch(SET_LOADING({ type: "deleteContactUser", payload: false }));
+
+    await dispatch(getInfectedUsersById(id));
+
+    return true;
+  } catch (error) {
+    dispatch(SET_ERROR({ type: "deleteContactUser", payload: true }));
+    dispatch(SET_LOADING({ type: "deleteContactUser", payload: false }));
+    return false;
   }
 };

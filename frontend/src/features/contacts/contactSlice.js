@@ -47,6 +47,10 @@ const contactSlice = createSlice({
       loading: false,
       error: false,
     },
+    deleteContactUser: {
+      loading: false,
+      error: false,
+    },
   },
   reducers: {
     SET_DATA: (state, { payload: { payload, type } }) => {

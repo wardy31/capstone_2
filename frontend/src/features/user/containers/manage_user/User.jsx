@@ -10,6 +10,7 @@ import ConfirmationDialog from "../../../../components/dialogs/ConfirmationDialo
 import useDialog from "../../../../hooks/useDialog";
 import useForm from "../../../../hooks/useForm";
 import ConfirmInfectedDialog from "../../components/Dialogs/ConfirmInfectedDialog";
+import notify from "../../../../utils/toast";
 
 function User() {
   const { data, loading } = useSelector((state) => state.user.getUser);
@@ -22,11 +23,19 @@ function User() {
   const { state: form, handleChange } = useForm({ id: "", dateInfected: "" });
 
   const handleSubmit = async () => {
-    await store.dispatch(createInfectedUser(form));
+    const res = await store.dispatch(createInfectedUser(form));
+    if (res) {
+      handleDialog(false, "add");
+      notify("Submitted as infected user");
+    }
   };
 
   useFetch(() => store.dispatch(getUsers()));
 
+  if (loading) {
+    return <></>;
+  }
+  
   return (
     <Container>
       <Header title={"Users"} hideButton={true}></Header>

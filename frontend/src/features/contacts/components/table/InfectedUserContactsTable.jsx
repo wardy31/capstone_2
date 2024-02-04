@@ -11,8 +11,17 @@ import {
 import React from "react";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
 import VisibilityTwoToneIcon from "@mui/icons-material/VisibilityTwoTone";
+import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 
-function InfectedUserContactsTable({ data, handleStatus, handleView }) {
+function InfectedUserContactsTable({
+  data,
+  handleStatus,
+  handleDelete,
+  handleView,
+}) {
+  if (!data.length) {
+    return <></>;
+  }
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -39,6 +48,9 @@ function InfectedUserContactsTable({ data, handleStatus, handleView }) {
                 sx={{ textTransform: "capitalize" }}
               >{`${m.status}`}</TableCell>
               <TableCell align="right">
+                <IconButton onClick={() => handleDelete(m)} color="primary">
+                  <DeleteTwoToneIcon></DeleteTwoToneIcon>
+                </IconButton>
                 <IconButton onClick={() => handleStatus(m)} color="primary">
                   <EditTwoToneIcon></EditTwoToneIcon>
                 </IconButton>

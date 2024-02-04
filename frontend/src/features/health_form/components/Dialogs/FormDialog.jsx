@@ -10,6 +10,7 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
+import validate from "../../../../utils/validation";
 
 function FormDialog({
   data,
@@ -20,6 +21,7 @@ function FormDialog({
   handleForm,
   handleClose,
   handleSubmit,
+  error,
 }) {
   return (
     <Dialog open={open} onClose={handleClose} fullWidth maxWidth="xs">
@@ -28,14 +30,16 @@ function FormDialog({
       </DialogTitle>
       <DialogContent>
         <Box my={2}>
-          <Typography sx={{ fontSize: 14,mb:1 }}>Question</Typography>
+          <Typography sx={{ fontSize: 14, mb: 1 }}>Question</Typography>
           <TextField
+            error={Boolean(validate("title", error))}
             size="small"
             fullWidth
             rows={4}
             multiline
             value={data.title}
             onChange={(e) => handleForm(e.target.value, "title")}
+            helperText={validate("title", error)}
           ></TextField>
         </Box>
         {/* <Box>

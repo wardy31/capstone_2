@@ -31,9 +31,15 @@ export const createStation = (forms) => async (dispatch) => {
     dispatch(SET_SUCCESS({ type: "create", payload: true }));
 
     await dispatch(getStation());
+
+    return true;
   } catch (error) {
     dispatch(SET_LOADING({ type: "create", payload: false }));
-    dispatch(SET_ERROR({ type: "create", payload: true }));
+    dispatch(
+      SET_ERROR({ type: "create", payload: error.response.data.details })
+    );
+
+    return false;
   }
 };
 
@@ -50,9 +56,15 @@ export const updateStation = (forms) => async (dispatch) => {
     dispatch(SET_SUCCESS({ type: "update", payload: true }));
 
     await dispatch(getStation());
+
+    return true;
   } catch (error) {
     dispatch(SET_LOADING({ type: "update", payload: false }));
-    dispatch(SET_ERROR({ type: "update", payload: true }));
+    dispatch(
+      SET_ERROR({ type: "update", payload: error.response.data.details })
+    );
+
+    return false;
   }
 };
 
@@ -68,9 +80,11 @@ export const deleteStation = (id) => async (dispatch) => {
     dispatch(SET_SUCCESS({ type: "delete", payload: true }));
 
     await dispatch(getStation());
+    return true;
   } catch (error) {
     dispatch(SET_LOADING({ type: "delete", payload: false }));
     dispatch(SET_ERROR({ type: "delete", payload: true }));
+    return false;
   }
 };
 
@@ -90,5 +104,3 @@ export const getStationLogsById = (id) => async (dispatch) => {
     dispatch(SET_ERROR({ type: "getLogs", payload: true }));
   }
 };
-
-

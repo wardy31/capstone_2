@@ -12,6 +12,7 @@ import {
   Typography,
 } from "@mui/material";
 import React from "react";
+import validate from "../../../../utils/validation";
 
 function FormDialog({
   open,
@@ -24,6 +25,7 @@ function FormDialog({
   handleClose,
   handleSubmit,
 }) {
+  console.log(error);
   return (
     <Dialog open={open} onClose={handleClose} maxWidth="xs" fullWidth={true}>
       <DialogTitle sx={{ bgcolor: "primary.main", color: "white" }}>
@@ -34,10 +36,12 @@ function FormDialog({
           Name
         </Typography>
         <TextField
+          error={Boolean(validate("name", error))}
           fullWidth={true}
           size="small"
           value={forms.name}
           onChange={(e) => handleForm(e.target.value, "name")}
+          helperText={validate("name", error)}
         ></TextField>
       </DialogContent>
       <DialogActions>

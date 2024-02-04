@@ -17,6 +17,10 @@ function FormRecord() {
   const { dialog, handleDialog } = useDialog({ view: false });
   const { state: form, handleChange } = useData([]);
   useFetch(() => store.dispatch(getHealthRecords()));
+console.log(loading);
+  if (loading) {
+    return <></>;
+  }
 
   return (
     <Container>

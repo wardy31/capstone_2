@@ -15,6 +15,7 @@ import ConfirmationDialog from "../../../components/dialogs/ConfirmationDialog";
 import FormDialog from "../components/Dialogs/FormDialog";
 import Header from "../../../components/header/Header";
 import { Box, Container } from "@mui/material";
+import toast from "../../../utils/toast";
 
 function ManageForm() {
   const { data, loading, error } = useSelector(
@@ -46,12 +47,24 @@ function ManageForm() {
     switch (mode) {
       case "post":
         res = await store.dispatch(createQuestion(form));
+        if (res) {
+          handleDialog(false, "create");
+          toast("Form Created");
+        }
         break;
       case "update":
         res = await store.dispatch(updateQuestion(form));
+        if (res) {
+          handleDialog(false, "update");
+          toast("Form Updated");
+        }
         break;
       case "delete":
         res = await store.dispatch(deleteQuestion(form));
+        if (res) {
+          handleDialog(false, "delete");
+          toast("Form Deleted", "error");
+        }
         break;
       default:
         break;
@@ -59,6 +72,11 @@ function ManageForm() {
   };
 
   useFetch(() => store.dispatch(getQuestions()));
+
+  if (loading) {
+    return <></>;
+  }
+  
   return (
     <Container>
       <Header
@@ -69,6 +87,7 @@ function ManageForm() {
       <Box mb={4}></Box>
 
       <FormDialog
+        error={post.error}
         titleButton={"Create"}
         title={"Create"}
         data={form}
@@ -80,6 +99,7 @@ function ManageForm() {
       ></FormDialog>
 
       <FormDialog
+        error={put.error}
         loading={put.loading}
         titleButton={"Update"}
         title={"Update"}

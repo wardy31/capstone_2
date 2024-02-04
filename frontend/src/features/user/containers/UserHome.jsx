@@ -23,7 +23,11 @@ import Profile from "../components/user_home/Profile";
 import CheckForm from "../components/user_home/CheckForm";
 
 function UserHome() {
-  const { data } = useSelector((state) => state.auth.getUser);
+  const { data, loading } = useSelector((state) => state.auth.getUser);
+
+  if (loading) {
+    return <></>;
+  }
   
   return (
     <Container>

@@ -1,10 +1,26 @@
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
 const moment = require("moment");
+const schema = require("../validations/FormValidation");
 
 const getResponses = async (req, res) => {
+  const { date = "" } = req.query;
+  let query = {};
+
+  if (date?.length)
+    query = {
+      ...query,
+      createdAt: {
+        gte: moment(date).startOf("day").format(),
+        lte: moment(date).endOf("day").format(),
+      },
+    };
+
   try {
     const result = await prisma.userResponse.findMany({
+      where: {
+        ...query,
+      },
       include: {
         user: true,
         UserAnswer: {
@@ -13,8 +29,13 @@ const getResponses = async (req, res) => {
           },
         },
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
+    console.log(moment(date).startOf("day").format());
+    console.log(moment(date).endOf("day").format());
     res.json(result);
   } catch (error) {
     res.sendStatus(400);
@@ -60,7 +81,11 @@ const getResponseByUserId = async (req, res) => {
 
 const getQuestions = async (req, res) => {
   try {
-    const result = await prisma.questionnaire.findMany({});
+    const result = await prisma.questionnaire.findMany({
+      where: {
+        isDeleted: false,
+      },
+    });
 
     res.json(result);
   } catch (error) {
@@ -69,48 +94,54 @@ const getQuestions = async (req, res) => {
 };
 
 const createQuestion = async (req, res) => {
-  const { title, subtitle } = req.body;
   try {
+    const { title } = await schema.validateAsync(req.body, {
+      abortEarly: false,
+    });
+
     const result = await prisma.questionnaire.create({
       data: {
         title: title,
-        subtitle: subtitle,
       },
     });
 
     res.json(result);
   } catch (error) {
     console.log(error);
-    res.sendStatus(400);
+    res.status(400).send(error);
   }
 };
 
 const updateQuestion = async (req, res) => {
-  const { title, subtitle } = req.body;
   try {
+    const { title } = await schema.validateAsync(req.body, {
+      abortEarly: false,
+    });
+
     const result = await prisma.questionnaire.update({
       where: {
         id: parseInt(req.params.id),
       },
       data: {
         title: title,
-        subtitle: subtitle,
       },
     });
 
     res.json(result);
   } catch (error) {
-
     console.log(error);
-    res.sendStatus(400);
+    res.status(400).send(error);
   }
 };
 
 const deleteQuestion = async (req, res) => {
   try {
-    const result = await prisma.questionnaire.delete({
+    const result = await prisma.questionnaire.update({
       where: {
         id: parseInt(req.params.id),
+      },
+      data: {
+        isDeleted: true,
       },
     });
 

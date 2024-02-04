@@ -6,7 +6,7 @@ import { useFetch } from "../../../hooks/useFetch";
 import { getQuestions, getUserResponse, submitForm } from "../healthThunks";
 import store from "../../../store/store";
 import FormList from "../components/FormList";
-import useForm from "../../../hooks/useForm";
+import toast from "../../../utils/toast";
 
 function Form() {
   const { data: user } = useSelector((state) => state.auth.getUser);
@@ -22,7 +22,6 @@ function Form() {
   );
 
   const [form, setForm] = useState([]);
-  console.log("form", user);
 
   const handleForm = (id, data) => {
     const spreadForm = [...form];
@@ -37,12 +36,19 @@ function Form() {
     }
   };
 
-  const handleSubmit = () => {
-    store.dispatch(submitForm(user.id, { response: JSON.stringify(form) }));
+  const handleSubmit = async () => {
+    await store.dispatch(
+      submitForm(user.id, { response: JSON.stringify(form) })
+    );
+    toast("Form Submitted");
   };
 
   useFetch(() => store.dispatch(getUserResponse(user.id, true)));
   useFetch(() => store.dispatch(getQuestions()));
+
+  if (loading) {
+    return <></>;
+  }
 
   return (
     <Container>

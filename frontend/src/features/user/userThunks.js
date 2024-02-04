@@ -1,5 +1,5 @@
 import axios from "../../utils/axios";
-import { SET_DATA, SET_ERROR, SET_LOADING } from "./userSlice";
+import { SET_DATA, SET_ERROR, SET_LOADING, SET_NOTIFY } from "./userSlice";
 
 export const createUser = (forms) => async (dispatch) => {
   try {
@@ -10,9 +10,11 @@ export const createUser = (forms) => async (dispatch) => {
 
     console.log(data);
     dispatch(SET_LOADING({ type: "createUser", payload: false }));
+    return true;
   } catch (error) {
     dispatch(SET_LOADING({ type: "createUser", payload: false }));
-    dispatch(SET_ERROR({ type: "createUser", payload: true }));
+    dispatch(SET_ERROR({ type: "createUser", payload: error.response.data.details }));
+    return false;
   }
 };
 
@@ -108,8 +110,28 @@ export const createInfectedUser = (form) => async (dispatch) => {
 
     const { data } = await axios.post(`/infected-users`, form);
     dispatch(SET_LOADING({ type: "createInfected", payload: false }));
+    return true;
   } catch (error) {
     dispatch(SET_LOADING({ type: "createInfected", payload: false }));
     dispatch(SET_ERROR({ type: "createInfected", payload: true }));
+    return false;
   }
+};
+
+export const getNotifications = (id) => async (dispatch) => {
+  try {
+    dispatch(SET_LOADING({ type: "notification", payload: true }));
+    dispatch(SET_ERROR({ type: "notification", payload: false }));
+
+    const { data } = await axios.get(`/notifications`);
+    dispatch(SET_DATA({ type: "notification", payload: data }));
+    dispatch(SET_LOADING({ type: "notification", payload: false }));
+  } catch (error) {
+    dispatch(SET_LOADING({ type: "notification", payload: false }));
+    dispatch(SET_ERROR({ type: "notification", payload: true }));
+  }
+};
+
+export const notifyClinic = (isActive) => async (dispatch) => {
+  dispatch(dispatch(SET_NOTIFY({ type: "notification", payload: isActive })));
 };

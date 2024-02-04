@@ -36,10 +36,11 @@ export const postDetectFace = (image) => async (dispatch) => {
 
     dispatch(SET_LOADING({ type: "detectFace", payload: false }));
     dispatch(SET_SUCCESS({ type: "detectFace", payload: true }));
-    console.log(data);
+    console.log("has face");
 
     return true;
   } catch (error) {
+    console.log("no face");
     dispatch(SET_ERROR({ type: "detectFace", payload: true }));
     return false;
   }

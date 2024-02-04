@@ -17,6 +17,7 @@ import useForm from "../../../hooks/useForm";
 import ConfirmationDialog from "../../../components/dialogs/ConfirmationDialog";
 import useDialog from "../../../hooks/useDialog";
 import ListData from "../components/ListData";
+import notify from "../../../utils/toast";
 
 function CloseContact() {
   const navigate = useNavigate();
@@ -43,7 +44,12 @@ function CloseContact() {
   };
 
   const submitCloseContact = async () => {
-    await store.dispatch(addContactUsers(id, formContact));
+    const res = await store.dispatch(addContactUsers(id, formContact));
+
+    if (res) {
+      handleDialog(false, "add");
+      notify("User added as close contact.");
+    }
   };
 
   useEffect(() => {

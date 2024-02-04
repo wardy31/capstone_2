@@ -92,8 +92,8 @@ const getLocationHistoriesByStationId = async (req, res) => {
         stationId: parseInt(req.params.id),
         ...queries,
       },
-      orderBy:{
-        createdAt:"desc"
+      orderBy: {
+        createdAt: "desc",
       },
       include: {
         user: true,
@@ -164,7 +164,7 @@ const updateStations = async (req, res) => {
         id: parseInt(req.params.id),
       },
       data: {
-        ...req.body,
+        name: req.body.name,
       },
     });
 

@@ -301,27 +301,27 @@ function ClinicDashboard({ open, handleOpen }) {
             disablePadding
             sx={{
               transition: theme.transitions.create(),
-              bgcolor: checkNavigation(/saved-research/, pathname)
+              bgcolor: checkNavigation(/generate-reports/, pathname)
                 ? "white"
                 : "primary.main",
-              color: checkNavigation(/saved-research/, pathname)
+              color: checkNavigation(/generate-reports/, pathname)
                 ? "primary.main"
                 : "white",
               borderRadius: 1.5,
               my: 0.8,
             }}
-            onClick={() => handleNavigate("saved-research")}
+            onClick={() => handleNavigate("generate-reports")}
           >
             {/* <ListItemButton onClick={() => setOpen(false)}> */}
             <ListItemButton
-              selected={checkNavigation(/saved-research/, pathname)}
-              onClick={() => setSelected("/student/saved-research")}
+              selected={checkNavigation(/generate-reports/, pathname)}
+              onClick={() => setSelected("/clinic/generate-reports")}
               sx={{}}
             >
               <ListItemIcon>
                 <PrintTwoToneIcon
                   sx={{
-                    color: checkNavigation(/saved-research/, pathname)
+                    color: checkNavigation(/generate-reports/, pathname)
                       ? "primary.main"
                       : "white",
                   }}

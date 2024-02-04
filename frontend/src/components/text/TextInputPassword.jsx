@@ -27,6 +27,7 @@ function TextInputPassword({
     <FormControl fullWidth error={error}>
       {/* <InputLabel></InputLabel> */}
       <OutlinedInput
+        sx={{ bgcolor: "primary.light" }}
         size={size}
         value={value}
         onChange={onChange}

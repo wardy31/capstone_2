@@ -1,6 +1,7 @@
 const { PrismaClient } = require("@prisma/client");
 const jwt = require("jsonwebtoken");
 const hash = require("bcrypt");
+const fs = require("fs");
 const prisma = new PrismaClient();
 const LoginValidation = require("../validations/LoginValidation");
 const CreateUserValidation = require("../validations/CreateUserValidation");
@@ -46,6 +47,9 @@ const loginUser = async (req, res) => {
           {
             message: "User not found",
             path: ["username"],
+            context: {
+              key: "username",
+            },
           },
         ],
       });
@@ -57,6 +61,9 @@ const loginUser = async (req, res) => {
           {
             message: "Incorrect password",
             path: ["password"],
+            context: {
+              key: "password",
+            },
           },
         ],
       });
@@ -89,11 +96,6 @@ const createUser = async (req, res) => {
       abortEarly: false,
     });
 
-    if (!Object.keys(req.files).length) {
-      res.status(400).send("No Files Detected");
-      return;
-    }
-
     const hashPassword = await hash.hash(password, 10);
 
     const { id } = await prisma.user.create({
@@ -113,8 +115,29 @@ const createUser = async (req, res) => {
       },
     });
 
-    console.log(req.files);
     const resultDescriptor = await createDescriptors(req.files, id);
+
+    for (const key in req.files) {
+      const fileUpload = req.files[key][0];
+
+      if (!fs.existsSync(`profiles/${id}`)) {
+        fs.mkdirSync(`profiles/${id}`, { recursive: true });
+        console.log("not Exist");
+      }
+
+      fs.rename(
+        `${fileUpload.path}`,
+        `profiles/${id}/${fileUpload.fieldname}.jpg`,
+        (err) => {
+          if (err) {
+            console.error("Error moving file:", err);
+          }
+
+          console.log("success");
+        }
+      );
+    }
+
     res.send(resultDescriptor);
   } catch (error) {
     console.log(error);
@@ -489,7 +512,9 @@ const getCloseContact = async (req, res) => {
         };
       });
     };
-    // res.json(getUserVisitedLocation);
+
+    console.log(getUserVisitedLocation);
+    console.log(users);
     res.json({
       usersContact: filterLocationHistoryByDate(users).filter(
         (f) => f.UserLocationHistory.length
@@ -522,11 +547,11 @@ const createContactUser = async (req, res) => {
 const getFace = async (req, res) => {
   try {
     const result = await checkFaces(req.file.filename);
-    console.log(result);
+    console.log("face:", result);
     res.send(req.file);
   } catch (error) {
-    console.log(error);
-    res.send(error);
+    console.log("error", error);
+    res.status(400).send(error);
   }
 };
 
