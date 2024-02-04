@@ -1,6 +1,6 @@
 import React from "react";
 import Header from "../../../components/header/Header";
-import { Box, Container } from "@mui/material";
+import { Box, Container, Paper } from "@mui/material";
 import ContactTable from "../components/monitor_contacts/ContactTable";
 import { useSelector } from "react-redux";
 import { useFetch } from "../../../hooks/useFetch";
@@ -16,6 +16,7 @@ import useDialog from "../../../hooks/useDialog";
 import useForm from "../../../hooks/useForm";
 import UpdateStatusDIalog from "../components/dialogs/UpdateStatusDIalog";
 import notify from "../../../utils/toast";
+import SearchFilter from "../components/search/SearchFilter";
 
 function MonitorContacts() {
   const navigate = useNavigate();
@@ -38,6 +39,11 @@ function MonitorContacts() {
     remove: false,
   });
 
+  const { state: filterForm, handleChange: handleForm } = useForm({
+    textField: "",
+    select: "",
+  });
+
   const handleRemove = async () => {
     const res = await store.dispatch(removeInfectedUsers(form));
     if (res) {
@@ -56,10 +62,6 @@ function MonitorContacts() {
 
   useFetch(() => store.dispatch(getInfectedUsers()));
 
-  if (loading) {
-    return <></>;
-  }
-  
   return (
     <Box>
       <Header
@@ -91,21 +93,42 @@ function MonitorContacts() {
         }
       ></ConfirmationDialog>
 
-      <ContactTable
-        data={data}
-        handleUpdateStatus={(data) => {
-          console.log(data);
-          handleDialog(true, "edit");
-          handleAll(data);
-        }}
-        handleRemove={(userId) => {
-          handleChange(userId, "id");
-          handleDialog(true, "remove");
-        }}
-        handleTrace={(userId) => navigate(`${userId}/trace-contacts`)}
-        handleView={(userId) => navigate(`/clinic/profile/${userId}`)}
-        checkContacts={(userId) => navigate(`${userId}/check-contacts`)}
-      ></ContactTable>
+      <Paper sx={{ px: 1, py: 1, mb: 2 }}>
+        <SearchFilter
+          textField={{
+            value: filterForm.textField,
+            onChange: (e) => handleForm(e.target.value, "textField"),
+          }}
+          selectField={{
+            value: filterForm.select,
+            onChange: (e) => handleForm(e.target.value, "select"),
+          }}
+          loading={loading}
+          onFilter={() =>
+            store.dispatch(
+              getInfectedUsers(filterForm.select, filterForm.textField)
+            )
+          }
+        ></SearchFilter>
+      </Paper>
+
+      {!loading && (
+        <ContactTable
+          data={data}
+          handleUpdateStatus={(data) => {
+            console.log(data);
+            handleDialog(true, "edit");
+            handleAll(data);
+          }}
+          handleRemove={(userId) => {
+            handleChange(userId, "id");
+            handleDialog(true, "remove");
+          }}
+          handleTrace={(userId) => navigate(`${userId}/trace-contacts`)}
+          handleView={(userId) => navigate(`/clinic/profile/${userId}`)}
+          checkContacts={(userId) => navigate(`${userId}/check-contacts`)}
+        ></ContactTable>
+      )}
     </Box>
   );
 }

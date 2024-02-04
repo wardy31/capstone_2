@@ -1,23 +1,25 @@
 import axios from "../../utils/axios";
 import { SET_DATA, SET_ERROR, SET_LOADING, SET_SUCCESS } from "./stationSlice";
 
-export const getStation = () => async (dispatch) => {
-  try {
-    dispatch(SET_LOADING({ type: "getStation", payload: true }));
-    dispatch(SET_ERROR({ type: "getStation", payload: false }));
-    dispatch(SET_SUCCESS({ type: "getStation", payload: false }));
+export const getStation =
+  (search = "") =>
+  async (dispatch) => {
+    try {
+      dispatch(SET_LOADING({ type: "getStation", payload: true }));
+      dispatch(SET_ERROR({ type: "getStation", payload: false }));
+      dispatch(SET_SUCCESS({ type: "getStation", payload: false }));
 
-    const { data } = await axios.get("stations");
-    console.log(data);
+      const { data } = await axios.get(`stations?search=${search}`);
+      console.log(data);
 
-    dispatch(SET_LOADING({ type: "getStation", payload: false }));
-    dispatch(SET_SUCCESS({ type: "getStation", payload: true }));
-    dispatch(SET_DATA({ type: "getStation", payload: data }));
-  } catch (error) {
-    dispatch(SET_LOADING({ type: "getStation", payload: false }));
-    dispatch(SET_ERROR({ type: "getStation", payload: true }));
-  }
-};
+      dispatch(SET_LOADING({ type: "getStation", payload: false }));
+      dispatch(SET_SUCCESS({ type: "getStation", payload: true }));
+      dispatch(SET_DATA({ type: "getStation", payload: data }));
+    } catch (error) {
+      dispatch(SET_LOADING({ type: "getStation", payload: false }));
+      dispatch(SET_ERROR({ type: "getStation", payload: true }));
+    }
+  };
 
 export const getLocations =
   (stationId = "") =>

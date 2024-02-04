@@ -32,6 +32,9 @@ function UserProfile() {
   useFetch(() => store.dispatch(getUserHealthRecords(id)));
   useFetch(() => store.dispatch(getUserLocations(id)));
 
+  if (userHealthRecord.loading || userLocation.loading || userById.loading) {
+    return <></>;
+  }
   return (
     <>
       <ProfileHeader {...userById}></ProfileHeader>
@@ -45,6 +48,7 @@ function UserProfile() {
         <ProfileTab
           userHealthRecord={userHealthRecord.data}
           userLocation={userLocation.data}
+          userContacts={userById?.data?.ExposedUser}
           handleView={(data) => {
             handleDialog(true, "view");
             handleRecord(data);

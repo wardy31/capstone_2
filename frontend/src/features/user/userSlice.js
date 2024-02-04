@@ -22,7 +22,7 @@ const userSlice = createSlice({
     },
     userHealthRecord: {
       data: [],
-      loading: false,
+      loading: true,
     },
     userLocation: {
       data: [],

@@ -6,9 +6,26 @@ const userSeeder = async () => {
   try {
     const result = await prisma.user.createMany({
       data: [
+        // Admin Start
         {
           firstName: "Admin",
           lastName: "Admin",
+          gender: "male",
+          role: "clinic",
+          department: "admin",
+          address: "admin",
+          vaccineStatus: "fully vacinated",
+          contactNumber: "12345678901",
+          email: "admin@gmail.com",
+          username: "admin",
+          password: await hash.hash("password", 10),
+          isClinicStaff: true,
+          imagesPath: "/admin",
+        },
+        // ADmin ENd
+        {
+          firstName: "John",
+          lastName: "Doe",
           gender: "male",
           role: "student",
           department: "BSIT",
@@ -18,7 +35,6 @@ const userSeeder = async () => {
           email: "warded@gmail.com",
           username: "user1",
           password: await hash.hash("password", 10),
-          isClinicStaff: true,
           imagesPath: "/ed",
         },
         {

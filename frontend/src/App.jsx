@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useFetch } from "./hooks/useFetch";
 import store from "./store/store";
-import { getAuth } from "./features/auth/authThunks";
+import { getAuth, getNotifications } from "./features/auth/authThunks";
 import { socket } from "./utils/socket";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -18,9 +18,10 @@ function App() {
       console.log("Socket connected to server", socket.id);
     });
 
-    socket.on("clinic", (arg) => {
+    socket.on("clinic", async(arg) => {
       console.log(arg);
-      store.dispatch(notifyClinic(true));
+      await store.dispatch(notifyClinic(true));
+      await store.dispatch(getNotifications());
     });
   }, []);
 

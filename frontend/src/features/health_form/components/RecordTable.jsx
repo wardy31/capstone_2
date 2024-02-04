@@ -7,6 +7,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import React from "react";
@@ -20,7 +21,9 @@ function RecordTable({ data, handleView, handleData }) {
         <TableHead>
           <TableRow>
             <TableCell sx={{ color: "text.secondary" }}>Name</TableCell>
-            <TableCell sx={{ color: "text.secondary" }} align="left">Role</TableCell>
+            <TableCell sx={{ color: "text.secondary" }} align="left">
+              Role
+            </TableCell>
             <TableCell sx={{ color: "text.secondary" }} align="center">
               Date Submitted
             </TableCell>
@@ -39,21 +42,26 @@ function RecordTable({ data, handleView, handleData }) {
                   fontWeight={"bold"}
                 >{`${user.firstName} ${user.lastName} `}</Typography>
               </TableCell>
-              <TableCell sx={{textTransform:"capitalize"}} align="left">{`${user.role} `}</TableCell>
+              <TableCell
+                sx={{ textTransform: "capitalize" }}
+                align="left"
+              >{`${user.role} `}</TableCell>
               <TableCell align="center">
                 <Typography fontSize={14}>{dateFormat(createdAt)}</Typography>
               </TableCell>
               <TableCell align="right">
-                <IconButton
-                  size="large"
-                  color="primary"
-                  onClick={() => {
-                    handleView();
-                    handleData(UserAnswer);
-                  }}
-                >
-                  <VisibilityTwoToneIcon fontSize="inherit"></VisibilityTwoToneIcon>
-                </IconButton>
+                <Tooltip title="View Profile" arrow>
+                  <IconButton
+                    size="large"
+                    color="primary"
+                    onClick={() => {
+                      handleView();
+                      handleData(UserAnswer);
+                    }}
+                  >
+                    <VisibilityTwoToneIcon fontSize="inherit"></VisibilityTwoToneIcon>
+                  </IconButton>
+                </Tooltip>
               </TableCell>
             </TableRow>
           ))}

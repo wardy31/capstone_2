@@ -54,11 +54,22 @@ const getStations = async (req, res) => {
 
   if (req.query?.search?.trim().length) {
     queries = {
-      name: {
-        contains: req.query.search,
-      },
+      OR: [
+        {
+          name: {
+            contains: req.query.search,
+          },
+        },
+        {
+          username: {
+            contains: req.query.search,
+          },
+        },
+      ],
     };
   }
+
+  console.log(queries);
 
   try {
     const result = await prisma.station.findMany({

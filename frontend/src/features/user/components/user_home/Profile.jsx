@@ -22,6 +22,7 @@ import HandshakeTwoToneIcon from "@mui/icons-material/HandshakeTwoTone";
 import React from "react";
 
 function Profile({ data }) {
+  console.log(data);
   return (
     <>
       <Box
@@ -44,21 +45,27 @@ function Profile({ data }) {
         ></Avatar>
         <Box>
           <Box display={"flex"} columnGap={2}>
-            <Typography variant="h6" sx={{ color: "text.secondary" }}>
+            <Typography
+              variant="h6"
+              sx={{
+                fontSize: { xs: 18, md: 24 },
+                fontWeight: "bold",
+                color: "text.secondary",
+              }}
+            >
               Welcome
             </Typography>
           </Box>
           <Typography
-            variant="h4"
-            fontWeight={"bold"}
+            sx={{ fontSize: { xs: 24, md: 30 }, fontWeight: "bold" }}
             color="primary"
           >{`${data.firstName} ${data.lastName}  `}</Typography>
-          <Chip
+          {/* <Chip
             variant="outlined"
             color="primary"
             label={data?.role}
             sx={{ borderRadius: 1, textTransform: "capitalize" }}
-          ></Chip>
+          ></Chip> */}
         </Box>
       </Box>
 
@@ -78,18 +85,37 @@ function Profile({ data }) {
           }}
           disablePadding
         >
-          <ListItem>
-            <ListItemAvatar>
-              <Avatar sx={{ bgcolor: "primary.main" }} variant="rounded">
-                <HandshakeTwoToneIcon fontSize="medium"></HandshakeTwoToneIcon>
-              </Avatar>
-            </ListItemAvatar>
-            <ListItemText
-              primary="No Contact"
-              secondary="as of today"
-              primaryTypographyProps={{ fontSize: 18, fontWeight: "bold" }}
-            ></ListItemText>
-          </ListItem>
+          {data?.ExposedUser.length || data?.InfectedUser.length ? (
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar sx={{ bgcolor: "error.main" }} variant="rounded">
+                  <HandshakeTwoToneIcon fontSize="medium"></HandshakeTwoToneIcon>
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary="Infected / Close Contact"
+                secondary=" Please take precautions and monitor for symptoms."
+                primaryTypographyProps={{
+                  fontSize: 18,
+                  fontWeight: "bold",
+                  color: "error.main",
+                }}
+              ></ListItemText>
+            </ListItem>
+          ) : (
+            <ListItem>
+              <ListItemAvatar>
+                <Avatar sx={{ bgcolor: "primary.main" }} variant="rounded">
+                  <HandshakeTwoToneIcon fontSize="medium"></HandshakeTwoToneIcon>
+                </Avatar>
+              </ListItemAvatar>
+              <ListItemText
+                primary="No Contact"
+                secondary="as of today"
+                primaryTypographyProps={{ fontSize: 18, fontWeight: "bold" }}
+              ></ListItemText>
+            </ListItem>
+          )}
         </List>
       </Box>
     </>

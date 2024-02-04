@@ -21,12 +21,32 @@ function CreateAccount() {
   }
 
   return (
-    <Box sx={{ bgcolor: "primary.main", py: 4 }}>
-      <Card sx={{ width: "100vh", mx: "auto", py: 4, px: 8 }}>
+    <Box
+      sx={{
+        bgcolor: "primary.main",
+        py: { xs: 0, md: 4 },
+      }}
+    >
+      <Card
+        sx={{
+          width: {
+            md: "100vh",
+          },
+          mx: "auto",
+          py: {
+            xs: 2,
+            md: 4,
+          },
+          px: {
+            xs: 2,
+            md: 8,
+          },
+        }}
+      >
         <Typography variant="h5" fontWeight={"bold"}>
           Create Account
         </Typography>
-        <Typography sx={{ fontSize: 14, color: "text.secondary" }}>
+        <Typography sx={{ fontSize: 14, color: "text.secondary",mb:4 }}>
           Fill up all required fields*
         </Typography>
         <Forms></Forms>

@@ -11,6 +11,7 @@ const {
   loadModels,
 } = require("../utils/faceRecognition");
 const moment = require("moment");
+const transporter = require("../utils/mail");
 
 const authUser = async (req, res) => {
   try {
@@ -19,6 +20,18 @@ const authUser = async (req, res) => {
     const result = await prisma.user.findFirst({
       where: {
         id: id,
+      },
+      include: {
+        ExposedUser: {
+          where: {
+            status: "contact",
+          },
+        },
+        InfectedUser: {
+          where: {
+            status: "infected",
+          },
+        },
       },
     });
 
@@ -146,9 +159,30 @@ const createUser = async (req, res) => {
 };
 
 const getUsers = async (req, res) => {
+  const { search = "" } = req.query;
+  let queries = {};
+
+  if (search.length) {
+    queries = {
+      OR: [
+        {
+          firstName: {
+            contains: search,
+          },
+        },
+        {
+          lastName: {
+            contains: search,
+          },
+        },
+      ],
+    };
+  }
+
   try {
     const result = await prisma.user.findMany({
       where: {
+        ...queries,
         isClinicStaff: false,
       },
     });
@@ -165,7 +199,15 @@ const getUserById = async (req, res) => {
         id: parseInt(req.params.id),
       },
       include: {
-        ExposedUser: true,
+        ExposedUser: {
+          include: {
+            infectedUser: {
+              include: {
+                user: true,
+              },
+            },
+          },
+        },
         InfectedUser: true,
       },
     });
@@ -194,12 +236,32 @@ const getUserHistoriesById = async (req, res) => {
 };
 
 const getInfectedUsers = async (req, res) => {
-  const { status = "" } = req.query;
+  const { status = "", search = "" } = req.query;
   let query = {};
+
+  if (search.length) {
+    query = {
+      OR: [
+        {
+          user: {
+            firstName: { contains: search },
+          },
+        },
+        {
+          user: {
+            lastName: { contains: search },
+          },
+        },
+      ],
+      ...query,
+    };
+  }
 
   if (status.length) {
     query = { ...query, status: status };
   }
+
+  console.log(query);
 
   try {
     const result = await prisma.infectedUser.findMany({
@@ -543,10 +605,23 @@ const createContactUser = async (req, res) => {
     const result = await prisma.exposedUser.create({
       data: {
         infectedUserId: parseInt(req.params.infectedId),
-        userId: userId,
+        userId: parseInt(userId),
       },
     });
-    console.log(result);
+
+    const user = await prisma.user.findFirst({
+      where: {
+        id: parseInt(userId),
+      },
+    });
+
+    const info = await transporter.sendMail({
+      from: "'lnucontacttracingonline' lnucontacttracingonline@gmail.com",
+      to: user.email,
+      subject: `Hi! ${user.firstName} ${user.lastName} you have been identified as a close contact. `,
+      text: "You have been identified as a close contact of a confirmed case. Please monitor your health and consider getting tested.",
+    });
+    console.log("info", info);
     res.send(result);
   } catch (error) {
     console.log(error);

@@ -33,7 +33,7 @@ function LoginUser() {
   }
 
   return (
-    <Paper
+    <Box
       sx={{
         backgroundImage: `url(${bgImage})`,
         backgroundAttachment: "fixed",
@@ -54,7 +54,7 @@ function LoginUser() {
             fontWeight: "bold",
             color: "white",
             letterSpacing: 1.2,
-            fontSize: { xs: 18, md: 48 },
+            fontSize: { xs: 22, md: 48 },
           }}
         >
           Leyte Normal University
@@ -82,14 +82,20 @@ function LoginUser() {
           }}
         >
           <Typography
-            sx={{ fontSize: 16, letterSpacing: 1.2, fontWeight: "bold", mb: 2,color:"primary.main" }}
+            sx={{
+              fontSize: 16,
+              letterSpacing: 1.2,
+              fontWeight: "bold",
+              mb: 2,
+              color: "primary.main",
+            }}
           >
             Login Account
           </Typography>
           <Form></Form>
         </Card>
       </Box>
-    </Paper>
+    </Box>
   );
 }
 

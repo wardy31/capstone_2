@@ -7,6 +7,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
   Typography,
 } from "@mui/material";
 
@@ -25,6 +26,11 @@ function StationTable({
   handleDelete,
   handleViewUser,
 }) {
+
+  if (loading) {
+    return <></>;
+  }
+  
   return (
     <TableContainer component={Paper}>
       <Table>
@@ -62,39 +68,50 @@ function StationTable({
                 </Typography>
               </TableCell>
               <TableCell>
-                <Typography fontSize={14} letterSpacing={1.5}>
-                  {d.isActive.toString()}
-                </Typography>
+                {d.isActive ? (
+                  <Typography color="green" fontSize={14} letterSpacing={1.5}>
+                    Active
+                  </Typography>
+                ) : (
+                  <Typography color="error" fontSize={14} letterSpacing={1.5}>
+                    Not Active
+                  </Typography>
+                )}
               </TableCell>
               <TableCell align="right">
-                <IconButton
-                  color="primary"
-                  size=""
-                  onClick={() => handleViewUser(d)}
-                >
-                  <FormatListBulletedTwoToneIcon></FormatListBulletedTwoToneIcon>
-                </IconButton>
+                <Tooltip title="Logs" arrow>
+                  <IconButton
+                    color="primary"
+                    size=""
+                    onClick={() => handleViewUser(d)}
+                  >
+                    <FormatListBulletedTwoToneIcon></FormatListBulletedTwoToneIcon>
+                  </IconButton>
+                </Tooltip>
 
-                <IconButton
-                  color="primary"
-                  onClick={() => {
-                    handleForm(d);
-                    handleUpdate();
-                  }}
-                >
-                  <EditTwoToneIcon></EditTwoToneIcon>
-                </IconButton>
-
-                <IconButton
-                  color="primary"
-                  size=""
-                  onClick={() => {
-                    handleForm(d);
-                    handleDelete();
-                  }}
-                >
-                  <DeleteTwoToneIcon></DeleteTwoToneIcon>
-                </IconButton>
+                <Tooltip title="Edit" arrow>
+                  <IconButton
+                    color="primary"
+                    onClick={() => {
+                      handleForm(d);
+                      handleUpdate();
+                    }}
+                  >
+                    <EditTwoToneIcon></EditTwoToneIcon>
+                  </IconButton>
+                </Tooltip>
+                <Tooltip title="Delete" arrow>
+                  <IconButton
+                    color="primary"
+                    size=""
+                    onClick={() => {
+                      handleForm(d);
+                      handleDelete();
+                    }}
+                  >
+                    <DeleteTwoToneIcon></DeleteTwoToneIcon>
+                  </IconButton>
+                </Tooltip>
               </TableCell>
             </TableRow>
           ))}

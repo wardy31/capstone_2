@@ -16,12 +16,12 @@ export const getUser = () => async (dispatch) => {
 };
 
 export const getInfectedUsers =
-  (status = "") =>
+  (status = "",search="") =>
   async (dispatch) => {
     dispatch(SET_LOADING({ type: "infectedUsers", payload: true }));
     dispatch(SET_ERROR({ type: "infectedUsers", payload: false }));
     try {
-      const { data } = await axios.get(`infected-users?status=${status}`);
+      const { data } = await axios.get(`infected-users?status=${status}&search=${search}`);
       dispatch(SET_DATA({ type: "infectedUsers", payload: data }));
       dispatch(SET_LOADING({ type: "infectedUsers", payload: false }));
     } catch (error) {

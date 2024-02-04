@@ -60,19 +60,6 @@ function ProfileHeader({ data, loading }) {
               <Typography variant="h5" fontWeight={"bold"}>
                 {`${data.firstName} ${data.lastName}`}
               </Typography>
-
-              <Chip
-                label="Close Contact"
-                sx={{
-                  ".MuiChip-label": {
-                    fontSize: 12,
-                    letterSpacing: 1.2,
-                    fontWeight: "bold",
-                  },
-                }}
-                icon={<LabelTwoToneIcon></LabelTwoToneIcon>}
-                color="error"
-              ></Chip>
             </Box>
             <Box sx={{ display: "flex", columnGap: 4.5 }}>
               <Box>
@@ -118,6 +105,41 @@ function ProfileHeader({ data, loading }) {
                   {`${data.address}`}
                 </Typography>
               </Box>
+            </Box>
+
+            <Box mt={2}>
+              {data.InfectedUser.length && (
+                <Chip
+                  size="small"
+                  label="Infected User"
+                  sx={{
+                    ".MuiChip-label": {
+                      fontSize: 12,
+                      letterSpacing: 1.2,
+                      // fontWeight: "bold",
+                    },
+                    mr:1
+                  }}
+                  icon={<LabelTwoToneIcon></LabelTwoToneIcon>}
+                  color="error"
+                ></Chip>
+              )}
+
+              {data.ExposedUser.length && (
+                <Chip
+                  size="small"
+                  label="Close Contact"
+                  sx={{
+                    ".MuiChip-label": {
+                      fontSize: 12,
+                      letterSpacing: 1.2,
+                      // fontWeight: "bold",
+                    },
+                  }}
+                  icon={<LabelTwoToneIcon></LabelTwoToneIcon>}
+                  color="error"
+                ></Chip>
+              )}
             </Box>
           </Box>
         </Box>

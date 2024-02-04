@@ -25,6 +25,8 @@ import ConfirmationDialog from "../../components/dialogs/ConfirmationDialog";
 import FormDialog from "./components/Dialogs/FormDialog";
 import { useNavigate } from "react-router-dom";
 import toast from "../../utils/toast";
+import useData from "../../hooks/useData";
+import { LoadingButton } from "@mui/lab";
 
 function Station() {
   const navigate = useNavigate();
@@ -48,6 +50,8 @@ function Station() {
     handleAll,
   } = useForm({ name: "" });
 
+  const { state: searchData, handleChange: handleSearch } = useData("wd");
+
   const handleDelete = async () => {
     const result = await store.dispatch(deleteStation(form.id));
     if (result) {
@@ -69,14 +73,11 @@ function Station() {
       toast("Station Updated");
     }
   };
+
   const handleViewUser = (data) => navigate(`${data.id}/logs`);
 
   useFetch(() => store.dispatch(getStation()));
 
-  if (get.loading) {
-    return <></>;
-  }
-  
   return (
     <Container>
       <Header
@@ -126,10 +127,19 @@ function Station() {
             sx={{ bgcolor: "primary.light" }}
             fullWidth
             label="Search here"
+            value={searchData}
+            onChange={(e) => handleSearch(e.target.value)}
           ></TextField>
-          <Button variant="outlined" size="small" color="primary">
+          <LoadingButton
+            sx={{ bgcolor: "primary.light" }}
+            loading={get.loading}
+            variant="outlined"
+            size="small"
+            color="primary"
+            onClick={() => store.dispatch(getStation(searchData))}
+          >
             Filter
-          </Button>
+          </LoadingButton>
         </Box>
       </Paper>
 

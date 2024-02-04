@@ -5,12 +5,14 @@ import { createInfectedUser, getUsers } from "../../userThunks";
 import store from "../../../../store/store";
 import { useSelector } from "react-redux";
 import Header from "../../../../components/header/Header";
-import { Box, Container } from "@mui/material";
+import { Box, Container, Paper } from "@mui/material";
 import ConfirmationDialog from "../../../../components/dialogs/ConfirmationDialog";
 import useDialog from "../../../../hooks/useDialog";
 import useForm from "../../../../hooks/useForm";
 import ConfirmInfectedDialog from "../../components/Dialogs/ConfirmInfectedDialog";
 import notify from "../../../../utils/toast";
+import SearchText from "../../../../components/form/SearchText";
+import useData from "../../../../hooks/useData";
 
 function User() {
   const { data, loading } = useSelector((state) => state.user.getUser);
@@ -21,6 +23,8 @@ function User() {
     add: false,
   });
   const { state: form, handleChange } = useForm({ id: "", dateInfected: "" });
+
+  const { state: searchData, handleChange: onSearch } = useData("");
 
   const handleSubmit = async () => {
     const res = await store.dispatch(createInfectedUser(form));
@@ -35,7 +39,7 @@ function User() {
   if (loading) {
     return <></>;
   }
-  
+
   return (
     <Container>
       <Header title={"Users"} hideButton={true}></Header>
@@ -52,6 +56,16 @@ function User() {
         }}
         handleForm={(d) => handleChange(d, "dateInfected")}
       ></ConfirmInfectedDialog>
+
+      <Paper sx={{ px: 1, py: 1, mb: 2 }}>
+        <SearchText
+          label="Search Name"
+          value={searchData}
+          onChange={(e) => onSearch(e.target.value)}
+          loading={loading}
+          onFilter={() => store.dispatch(getUsers(searchData))}
+        ></SearchText>
+      </Paper>
 
       <UserTable
         data={data}

@@ -7,6 +7,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
 } from "@mui/material";
 import RemoveRedEyeTwoToneIcon from "@mui/icons-material/RemoveRedEyeTwoTone";
 import React from "react";
@@ -38,18 +39,23 @@ function UserTable({ data, handleExposedUser }) {
                 sx={{ textTransform: "capitalize" }}
               >{`${m.role} `}</TableCell>
               <TableCell align="center">
-                <IconButton
-                  color={"primary"}
-                  onClick={() => handleExposedUser(m?.id)}
-                >
-                  <PersonAddAltTwoToneIcon></PersonAddAltTwoToneIcon>
-                </IconButton>
-                <IconButton
-                  color={"primary"}
-                  onClick={() => navigate(`/clinic/profile/${m?.id}`)}
-                >
-                  <RemoveRedEyeTwoToneIcon></RemoveRedEyeTwoToneIcon>
-                </IconButton>
+                <Tooltip title="Mark as infected user" arrow>
+                  <IconButton
+                    color={"primary"}
+                    onClick={() => handleExposedUser(m?.id)}
+                  >
+                    <PersonAddAltTwoToneIcon></PersonAddAltTwoToneIcon>
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title="View Profile" arrow>
+                  <IconButton
+                    color={"primary"}
+                    onClick={() => navigate(`/clinic/profile/${m?.id}`)}
+                  >
+                    <RemoveRedEyeTwoToneIcon></RemoveRedEyeTwoToneIcon>
+                  </IconButton>
+                </Tooltip>
               </TableCell>
             </TableRow>
           ))}

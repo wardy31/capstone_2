@@ -7,6 +7,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
 } from "@mui/material";
 import React from "react";
 import DeleteForeverTwoToneIcon from "@mui/icons-material/DeleteForeverTwoTone";
@@ -22,7 +23,7 @@ function ContactTable({
   handleRemove,
   handleUpdateStatus,
   handleTrace,
-  checkContacts
+  checkContacts,
 }) {
   const countActiveContact = (data) => {
     return data.filter((f) => f.status == "contact").length;
@@ -52,7 +53,9 @@ function ContactTable({
         <TableBody>
           {data.map((u) => (
             <TableRow key={u.id}>
-              <TableCell>{`${u.user.firstName} ${u.user.lastName}`}</TableCell>
+              <TableCell
+                sx={{ fontWeight: "bold", textTransform: "capitalize" }}
+              >{`${u.user.firstName} ${u.user.lastName}`}</TableCell>
               <TableCell sx={{ textTransform: "capitalize" }}>{`${dateFormat(
                 u.dateInfected
               )} `}</TableCell>
@@ -66,27 +69,47 @@ function ContactTable({
                 {u.ExposedUser.length}
               </TableCell>
               <TableCell sx={{ textTransform: "capitalize" }} align="right">
-                <IconButton color="primary" onClick={() => handleTrace(u.id)}>
-                  <PersonSearchTwoToneIcon></PersonSearchTwoToneIcon>
-                </IconButton>
-                <IconButton color="primary" onClick={() => checkContacts(u.id)}>
-                  <GroupsTwoToneIcon></GroupsTwoToneIcon>
-                </IconButton>
-                <IconButton
-                  color="primary"
-                  onClick={() => handleUpdateStatus(u)}
-                >
-                  <EditTwoToneIcon></EditTwoToneIcon>
-                </IconButton>
-                <IconButton color="primary" onClick={() => handleRemove(u.id)}>
-                  <DeleteForeverTwoToneIcon></DeleteForeverTwoToneIcon>
-                </IconButton>
-                <IconButton
-                  color="primary"
-                  onClick={() => handleView(u.user.id)}
-                >
-                  <VisibilityTwoToneIcon></VisibilityTwoToneIcon>
-                </IconButton>
+                <Tooltip title="Trace Contact User" arrow>
+                  <IconButton color="primary" onClick={() => handleTrace(u.id)}>
+                    <PersonSearchTwoToneIcon></PersonSearchTwoToneIcon>
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title="Check Contacted Users" arrow>
+                  <IconButton
+                    color="primary"
+                    onClick={() => checkContacts(u.id)}
+                  >
+                    <GroupsTwoToneIcon></GroupsTwoToneIcon>
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title="Update Status" arrow>
+                  <IconButton
+                    color="primary"
+                    onClick={() => handleUpdateStatus(u)}
+                  >
+                    <EditTwoToneIcon></EditTwoToneIcon>
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title="Delete Infected User">
+                  <IconButton
+                    color="primary"
+                    onClick={() => handleRemove(u.id)}
+                  >
+                    <DeleteForeverTwoToneIcon></DeleteForeverTwoToneIcon>
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title="View Profile" arrow>
+                  <IconButton
+                    color="primary"
+                    onClick={() => handleView(u.user.id)}
+                  >
+                    <VisibilityTwoToneIcon></VisibilityTwoToneIcon>
+                  </IconButton>
+                </Tooltip>
               </TableCell>
             </TableRow>
           ))}

@@ -7,6 +7,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Tooltip,
 } from "@mui/material";
 import React from "react";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
@@ -48,18 +49,27 @@ function InfectedUserContactsTable({
                 sx={{ textTransform: "capitalize" }}
               >{`${m.status}`}</TableCell>
               <TableCell align="right">
-                <IconButton onClick={() => handleDelete(m)} color="primary">
-                  <DeleteTwoToneIcon></DeleteTwoToneIcon>
-                </IconButton>
-                <IconButton onClick={() => handleStatus(m)} color="primary">
-                  <EditTwoToneIcon></EditTwoToneIcon>
-                </IconButton>
-                <IconButton
-                  onClick={() => handleView(m.user.id)}
-                  color="primary"
-                >
-                  <VisibilityTwoToneIcon></VisibilityTwoToneIcon>
-                </IconButton>
+                <Tooltip title="Delete Contact">
+                  <IconButton onClick={() => handleDelete(m)} color="primary">
+                    <DeleteTwoToneIcon></DeleteTwoToneIcon>
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title="Edit Contact Status" arrow>
+                  <IconButton onClick={() => handleStatus(m)} color="primary">
+                    <EditTwoToneIcon></EditTwoToneIcon>
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title="View Profile" arrow>
+                  <IconButton
+                    onClick={() => handleView(m.user.id)}
+                    color="primary"
+                  >
+                    <VisibilityTwoToneIcon></VisibilityTwoToneIcon>
+                  </IconButton>
+                </Tooltip>
+                
               </TableCell>
             </TableRow>
           ))}

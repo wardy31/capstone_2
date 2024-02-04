@@ -13,24 +13,28 @@ export const createUser = (forms) => async (dispatch) => {
     return true;
   } catch (error) {
     dispatch(SET_LOADING({ type: "createUser", payload: false }));
-    dispatch(SET_ERROR({ type: "createUser", payload: error.response.data.details }));
+    dispatch(
+      SET_ERROR({ type: "createUser", payload: error.response.data.details })
+    );
     return false;
   }
 };
 
-export const getUsers = (forms) => async (dispatch) => {
-  try {
-    dispatch(SET_LOADING({ type: "getUser", payload: true }));
-    dispatch(SET_ERROR({ type: "getUser", payload: false }));
+export const getUsers =
+  (search = "", forms) =>
+  async (dispatch) => {
+    try {
+      dispatch(SET_LOADING({ type: "getUser", payload: true }));
+      dispatch(SET_ERROR({ type: "getUser", payload: false }));
 
-    const { data } = await axios.get("users", forms);
-    dispatch(SET_DATA({ type: "getUser", payload: data }));
-    dispatch(SET_LOADING({ type: "getUser", payload: false }));
-  } catch (error) {
-    dispatch(SET_LOADING({ type: "getUser", payload: false }));
-    dispatch(SET_ERROR({ type: "getUser", payload: true }));
-  }
-};
+      const { data } = await axios.get(`users?search=${search}`, forms);
+      dispatch(SET_DATA({ type: "getUser", payload: data }));
+      dispatch(SET_LOADING({ type: "getUser", payload: false }));
+    } catch (error) {
+      dispatch(SET_LOADING({ type: "getUser", payload: false }));
+      dispatch(SET_ERROR({ type: "getUser", payload: true }));
+    }
+  };
 
 export const getUserHealthRecords = (id) => async (dispatch) => {
   try {

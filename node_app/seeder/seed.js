@@ -4,7 +4,7 @@ const userLocationSeeder = require("./userLocationSeeder");
 const prisma = new PrismaClient();
 
 async function main() {
-  // await userSeeder();
+  await userSeeder();
   await userLocationSeeder();
 }
 

@@ -7,7 +7,7 @@ import { getAllUsers } from "../user/userThunks";
 import { useSelector } from "react-redux";
 import StationChart from "./components/StationChart";
 import { getStation } from "../station/stationThunk";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, TextField } from "@mui/material";
 import CountList from "./components/CountCard";
 import { getHealthRecords } from "../health_form/healthThunks";
 import { getInfectedUsers } from "../contacts/contactThunks";
@@ -32,7 +32,7 @@ function ClinicDashboard() {
 
       <Box mt={2}></Box>
       <Grid container spacing={2}>
-        <Grid item xs={9}>
+        <Grid item xs={12} md={9}>
           <Grid
             container
             direction={"row"}
@@ -40,21 +40,21 @@ function ClinicDashboard() {
             alignItems="stretch"
             mb={2}
           >
-            <Grid xs={3} item>
+            <Grid xs={6} md={3} item>
               <CountList
                 {...allUsers}
                 title="Users"
                 count={allUsers.data.length}
               ></CountList>
             </Grid>
-            <Grid xs={3} item>
+            <Grid xs={6} md={3} item>
               <CountList
                 {...stationsData}
                 title="Stations"
                 count={stationsData.data.length}
               ></CountList>
             </Grid>
-            <Grid xs={3} item>
+            <Grid xs={6} md={3} item>
               <CountList
                 {...infectedUsers}
                 title={"Active Infected Users"}
@@ -64,7 +64,7 @@ function ClinicDashboard() {
                 }
               ></CountList>
             </Grid>
-            <Grid xs={3} item>
+            <Grid xs={6} md={3} item>
               <CountList
                 {...getRecords}
                 title="Declaration Responses"
@@ -74,13 +74,13 @@ function ClinicDashboard() {
           </Grid>
 
           <Grid container spacing={2}>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
               <UserChart
                 loading={allUsers.loading}
                 data={allUsers.data}
               ></UserChart>
             </Grid>
-            <Grid item xs={6}>
+            <Grid item xs={12} md={6}>
               <StationChart
                 loading={stationsData.loading}
                 data={stationsData.data}
@@ -89,7 +89,7 @@ function ClinicDashboard() {
           </Grid>
         </Grid>
 
-        <Grid item xs={3}>
+        <Grid item xs={12} md={3}>
           <DataList {...notifications}></DataList>
         </Grid>
       </Grid>

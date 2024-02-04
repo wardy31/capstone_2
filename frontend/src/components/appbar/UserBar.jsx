@@ -27,7 +27,7 @@ import { getNotifications, notifyClinic } from "../../features/user/userThunks";
 import { useFetch } from "../../hooks/useFetch";
 import { deleteAuth } from "../../features/auth/authThunks";
 
-function UserBar({ role = "clinic" }) {
+function UserBar({ role = "clinic", handleOpen }) {
   const navigate = useNavigate();
   const { data } = useSelector((state) => state.auth.getUser);
   const {
@@ -38,14 +38,12 @@ function UserBar({ role = "clinic" }) {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
-  const handleClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
-
-  console.log(notificationsData);
+  // const handleClick = (event) => {
+  //   setAnchorEl(event.currentTarget);
+  // };
+  // const handleClose = () => {
+  //   setAnchorEl(null);
+  // };
 
   useFetch(() => store.dispatch(getNotifications()));
 
@@ -54,6 +52,7 @@ function UserBar({ role = "clinic" }) {
       <Toolbar>
         {role == "clinic" && (
           <IconButton
+            onClick={handleOpen}
             size="large"
             edge="start"
             color="primary"
@@ -71,7 +70,12 @@ function UserBar({ role = "clinic" }) {
             fontWeight={"bold"}
             letterSpacing={1.2}
             component="div"
-            sx={{ flexGrow: 1 }}
+            sx={{
+              display: {
+                xs: "none",
+                md: "block",
+              },
+            }}
           >
             Welcome, {`${data?.firstName} ${data?.lastName}`}
           </Typography>
@@ -82,16 +86,16 @@ function UserBar({ role = "clinic" }) {
             letterSpacing={1.2}
             component="div"
             variant="h6"
-            sx={{ flexGrow: 1 }}
           >
             UniTrace.
           </Typography>
         )}
 
+        <Box flexGrow={1}></Box>
         <Box display={"flex"} alignItems={"center"} columnGap={3}>
           {role == "clinic" && (
             <>
-              <Fade in={notify}>
+              {/* <Fade in={notify}>
                 <Alert
                   icon={<CampaignTwoToneIcon></CampaignTwoToneIcon>}
                   severity="error"
@@ -99,7 +103,7 @@ function UserBar({ role = "clinic" }) {
                 >
                   Infected/Contact user was entered.
                 </Alert>
-              </Fade>
+              </Fade> */}
               <Badge
                 color="error"
                 variant="dot"
@@ -115,7 +119,8 @@ function UserBar({ role = "clinic" }) {
                   color="primary"
                   onClick={(e) => {
                     store.dispatch(notifyClinic(false));
-                    setAnchorEl(e.currentTarget);
+                    navigate("/clinic/notifications");
+                    // setAnchorEl(e.currentTarget);
                   }}
                 >
                   {notify ? (
@@ -128,7 +133,7 @@ function UserBar({ role = "clinic" }) {
                   )}
                 </IconButton>
               </Badge>
-              <Menu
+              {/* <Menu
                 id="basic-menu"
                 anchorEl={anchorEl}
                 open={open}
@@ -170,7 +175,7 @@ function UserBar({ role = "clinic" }) {
                       </ListItem>
                     ))}
                 </List>
-              </Menu>
+              </Menu> */}
             </>
           )}
 
@@ -191,6 +196,16 @@ function UserBar({ role = "clinic" }) {
           </Button>
         </Box>
       </Toolbar>
+      {notify && (
+        <Alert
+          icon={<CampaignTwoToneIcon></CampaignTwoToneIcon>}
+          severity="error"
+          variant="filled"
+          onClose={() => store.dispatch(notifyClinic(false))}
+        >
+          Infected/Contact user was entered.
+        </Alert>
+      )}
     </AppBar>
   );
 }

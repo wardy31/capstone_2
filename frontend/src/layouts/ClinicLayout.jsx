@@ -6,12 +6,31 @@ import UserBar from "../components/appbar/UserBar";
 import { useSelector } from "react-redux";
 import { useFetch } from "../hooks/useFetch";
 import useAuth from "../hooks/useAuth";
+import useData from "../hooks/useData";
 
 function ClinicLayout() {
   const { data, loading } = useSelector((state) => state.auth.getUser);
   const navigate = useNavigate();
 
+  const { state: open, handleChange: handleOpen } = useData(
+    innerWidth <= 900 ? false : true
+  );
+  console.log(open);
+
   const isAuth = useAuth();
+
+  useFetch(() => {
+    window.addEventListener("resize", () => {
+      if (innerWidth <= 900) {
+        console.log(false);
+        handleOpen(false);
+      } else {
+        handleOpen(true);
+        console.log(true);
+      }
+    });
+  });
+
   useFetch(() => {
     if (!isAuth) {
       navigate("/login");
@@ -32,9 +51,12 @@ function ClinicLayout() {
 
   return (
     <Box display={"flex"}>
-      <ClinicDashboard open={true}></ClinicDashboard>
+      <ClinicDashboard
+        open={open}
+        handleOpen={() => handleOpen(!open)}
+      ></ClinicDashboard>
       <Box flexGrow={1}>
-        <UserBar></UserBar>
+        <UserBar handleOpen={() => handleOpen(!open)}></UserBar>
         <Box mx={4}>
           <Outlet></Outlet>
         </Box>

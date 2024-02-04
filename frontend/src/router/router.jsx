@@ -21,6 +21,7 @@ import CheckContacts from "../features/contacts/containers/CheckContacts";
 import ClinicDashboard from "../features/dashboard/ClinicDashboard";
 import Redirect from "../features/auth/Redirect";
 import GenerateReports from "../features/reports/GenerateReports";
+import Notifications from "../features/notifications/Notifications";
 
 export default createBrowserRouter([
   {
@@ -82,6 +83,10 @@ export default createBrowserRouter([
           {
             path: "generate-reports",
             element: <GenerateReports></GenerateReports>,
+          },
+          {
+            path: "notifications",
+            element: <Notifications></Notifications>,
           },
         ],
       },
