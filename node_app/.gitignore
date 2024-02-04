@@ -6,9 +6,12 @@
 # Node artifact files
 node_modules/
 dist/
+
+# Images
 image/
 descriptors/
 profiles/
+station_faces/
 
 # Compiled Java class files
 *.class
