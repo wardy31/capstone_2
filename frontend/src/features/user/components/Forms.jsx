@@ -72,6 +72,7 @@ function Forms() {
 
     const res = await dispatch(createUser(formData));
     if (res) {
+      navigate('/login')
       toast("User Successfully Created");
     }
   };
@@ -341,7 +342,7 @@ function Forms() {
       <Box mt={2}>
         <LoadingButton
           sx={{ textTransform: "capitalize" }}
-          loading={createUser?.loading}
+          loading={postUser?.loading}
           fullWidth
           variant="contained"
           onClick={handleSubmit}

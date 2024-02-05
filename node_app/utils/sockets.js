@@ -8,7 +8,8 @@ const socketServer = (server) => {
   const io = new Server(server, {
     cors: {
       origin: [
-        "http://192.168.1.136:8080",
+        "http://192.168.1.107:5173",
+        "http://192.168.1.107:8080",
         "http://localhost:8080",
         "https://lnucontacttracing.online",
         "http://localhost:80",
