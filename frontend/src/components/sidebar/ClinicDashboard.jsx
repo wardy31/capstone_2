@@ -44,6 +44,7 @@ function ClinicDashboard({ open, handleOpen }) {
     <>
       {/* Hide on Mobile */}
       <Drawer
+        // ModalProps={{ disableScrollLock: true }}
         open={open}
         variant="persistent"
         anchor="left"
@@ -339,6 +340,8 @@ function ClinicDashboard({ open, handleOpen }) {
       <Drawer
         onClose={handleOpen}
         open={open}
+        variant="temporary"
+        ModalProps={{ disableScrollLock: true }}
         anchor="left"
         sx={{
           display: {

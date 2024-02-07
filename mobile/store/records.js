@@ -1,7 +1,6 @@
 import { create } from "zustand";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-const link = "http://192.168.1.105:8000"
 // const link = "https://laravel.lnucontacttracing.online"
 const store = create((set) => ({
   loading: false,
@@ -10,22 +9,20 @@ const store = create((set) => ({
   setData: async () => {
     set({ loading: true });
     try {
-      const token = await AsyncStorage.getItem("token");
-      const { data } = await axios.get(
-        `${link}/api/station/get-visitor-station`,
-        { headers: { Authorization: `Bearer ${token}` } }
-      );
+      const { id } = JSON.parse(await AsyncStorage.getItem("user"));
+      console.log("id", id);
+      const { data } = await axios.get(`stations/${id}/location-histories`);
 
       console.log("data", data);
-      set({ data: data.data });
+      set({ data: data });
       set({ loading: false });
 
-      return true
+      return true;
     } catch (error) {
-      console.log(error);
+      console.log("station Error",error.response);
       set({ loading: false });
 
-      return false
+      return false;
     }
   },
 }));

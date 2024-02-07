@@ -18,16 +18,18 @@ import {
   FontAwesome5,
   AntDesign,
 } from "@expo/vector-icons";
-import axios from "axios";
+import configAxios from "../../../config/axios";
 import { Button, Card, LinearProgress } from "@rneui/base";
 import { CardTitle } from "@rneui/base/dist/Card/Card.Title";
 import * as FaceDetector from "expo-face-detector";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import DailyLogs from "../../../store/stationLogs";
+import Model from "../../../store/model";
+import moment from "moment";
+
 function StationCamera({ navigation }) {
   let cameraRef = useRef();
-  const link = "http://192.168.1.106:4000";
-  // const link = "https://node.lnucontacttracing.online"
+  const [station, setStation] = useState({});
   const [photo, setPhoto] = useState();
   const [faceDetected, setFaceDetected] = useState(false);
   const [hide, setHide] = useState(true);
@@ -45,17 +47,26 @@ function StationCamera({ navigation }) {
   const windowDimensions = useWindowDimensions();
   const [displayBorder, setDisplayBorder] = useState([]);
   const [cameraLoad, setCameraLoad] = useState(false);
-  const { setDaily, daily, cameraLoading } = DailyLogs();
+  const { setData: setDaily, data: dailyData, dailyIncrement } = DailyLogs();
+
+  const {
+    loading: errorLoading,
+    error: errorModel,
+    setData: setModel,
+  } = Model();
 
   useEffect(() => {
     (async () => {
+      await setModel();
+      await setDaily();
       const user = await AsyncStorage.getItem("user");
       const parsed = JSON.parse(user);
-      const res = await Camera.requestCameraPermissionsAsync();
+      setStation(parsed);
       const av = await Speech.getAvailableVoicesAsync();
+      const res = await Camera.requestCameraPermissionsAsync();
+      await setUserName(JSON.parse(user).name);
       await setGranted(true);
-      await setUserName(JSON.parse(user).location.name);
-      await setDaily(JSON.parse(user).location_id);
+
       setTimeout(() => {
         setHide(false);
         ToastAndroid.showWithGravity(
@@ -64,89 +75,88 @@ function StationCamera({ navigation }) {
           ToastAndroid.CENTER
         );
       }, 2000);
-      console.log("speech", av);
-      console.log("camera", res.granted);
+      // console.log("speech", av);
+      // console.log("camera", res.granted);
     })();
   }, []);
 
   useEffect(() => {
     if (faceDetected) {
+      setHide(true);
+      setLoaded(true);
       (async () => {
-        const options = {
-          quality: 1,
-          base64: true,
-          exif: false,
-        };
-        let getPhoto = await cameraRef.current.takePictureAsync(options);
-        await setPhoto(getPhoto);
-        await setLoaded(true);
-
-        const forms = await new FormData();
-        await forms.append("image", {
-          uri: getPhoto.uri,
-          name: "face.jpg",
-          type: "image/jpg",
-        });
-
-        setHide(true);
         try {
-          const user = await AsyncStorage.getItem("user");
-          const { data } = await axios.post(
-            `${link}/api/prediction/${JSON.parse(user).id}`,
-            forms,
-            { headers: { "Content-Type": "multipart/form-data" } }
-          );
-          console.log("data", data);
+          const options = {
+            quality: 1,
+            base64: true,
+            exif: false,
+          };
+
+          let getPhoto = await cameraRef.current.takePictureAsync(options);
+
+          if (getPhoto) {
+            const forms = new FormData();
+            forms.append("stationId", station?.id);
+            forms.append("image", {
+              uri: getPhoto?.uri,
+              name: "face.jpg",
+              type: "image/jpg",
+            });
+
+            const { data } = await configAxios.post(
+              `location-histories`,
+              forms,
+              {
+                headers: {
+                  "Content-Type": "multipart/form-data",
+                },
+              }
+            );
+            console.log("data", data);
+          }
+          // Send Data
+
+          setPhoto(null);
+          setSuccess(true);
+          setLoaded(false);
+          dailyIncrement();
+
+          Speech.speak("Successfully Added", {
+            language: "en-US",
+          });
+
+          setTimeout(() => {
+            setSuccess(false);
+            setFaceDetected(false);
+            setHide(false);
+            console.log("Reset Detection");
+          }, 2000);
+        } catch (error) {
           setLoaded(false);
           setPhoto(null);
-          const dailyReset = await AsyncStorage.getItem("user");
-          await setDaily(JSON.parse(dailyReset).location_id);
 
-          if (
-            data.user_patient[0]?.days_left ||
-            data.user_tagged[0]?.days_left
-          ) {
-            const res = await axios.get(
-              `${link}/contact-notify/${data.id}/${
-                JSON.parse(user).location_id
-              }`
-            );
-            Speech.speak("Successfully Recorded", { language: "en-US" });
-            setSuccess(true);
-            console.log("contact", res.data);
-            // setWarning(true);
-            // Speech.speak("Warning! Please proceed to the clinic immediately.", {
-            //   language: "en-US",
-            // });
-          } else if (!data.user_response_exists) {
-            Speech.speak("No Health Declaration Submitted.", {
+          const errorMessage = error?.response?.data;
+          if (errorMessage?.status == 1) {
+            setForm(true);
+            await Speech.speak("No Declaration Form Submitted", {
               language: "en-US",
             });
-            setForm(true);
-          } else {
-            setSuccess(true);
-            Speech.speak("Successfully Recorded", { language: "en-US" });
           }
+          if (errorMessage?.status == 2) {
+            setNoFace(true);
+            await Speech.speak("Face Doesn't Recognize, Try Again", {
+              language: "en-US",
+            });
+          }
+          console.log("error");
 
           setTimeout(() => {
-            setFaceDetected(false);
-            setWarning(false);
             setForm(false);
-            setSuccess(false);
-            setHide(false);
-          }, 3000);
-        } catch (error) {
-          Speech.speak("Sorry Face Doesnt Recognize", { language: "en-US" });
-          console.log("error", error);
-          setLoaded(false);
-          setNoFace(true);
-          setPhoto(null);
-
-          setTimeout(() => {
+            setNoFace(false);
             setFaceDetected(false);
             setHide(false);
-            setNoFace(false);
-          }, 3000);
+            console.log("Reset Detection");
+          }, 2000);
         }
       })();
     }
@@ -371,7 +381,7 @@ function StationCamera({ navigation }) {
                       marginRight: 8,
                     }}
                   >
-                    {daily}
+                    {dailyData}
                   </Text>
                   <FontAwesome5
                     name="user"

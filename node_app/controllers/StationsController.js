@@ -3,10 +3,11 @@ const prisma = new PrismaClient();
 const jwt = require("jsonwebtoken");
 const hash = require("bcrypt");
 const schema = require("../validations/StationValidation");
+const moment = require("moment");
 
 const loginStation = async (req, res) => {
   try {
-    const { username, password } = schema.validateAsync(req.body, {
+    const { username, password } = await schema.validateAsync(req.body, {
       abortEarly: false,
     });
 
@@ -20,7 +21,7 @@ const loginStation = async (req, res) => {
       return res.status(400).send({
         details: [
           {
-            message: "no user was found",
+            message: "wrong username/password",
             path: ["username"],
           },
         ],
@@ -31,7 +32,7 @@ const loginStation = async (req, res) => {
       return res.status(400).send({
         details: [
           {
-            message: "no user was found",
+            message: "wrong username/password",
             path: ["username"],
           },
         ],
@@ -45,6 +46,7 @@ const loginStation = async (req, res) => {
       token,
     });
   } catch (error) {
+    console.log(error);
     res.status(400).send(error);
   }
 };
@@ -88,11 +90,23 @@ const getStations = async (req, res) => {
 
 const getLocationHistoriesByStationId = async (req, res) => {
   let queries = {};
+  const startCurrentDay = moment().startOf("day").toDate();
+  const endtCurrentDay = moment().endOf("day").toDate();
 
   if (req.query?.search?.trim().length) {
     queries = {
       name: {
         contains: req.query.search,
+      },
+    };
+  }
+
+  if (Boolean(req.query?.isToday)) {
+    queries = {
+      ...queries,
+      createdAt: {
+        gte: startCurrentDay,
+        lte: endtCurrentDay,
       },
     };
   }

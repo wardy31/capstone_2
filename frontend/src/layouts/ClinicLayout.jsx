@@ -57,7 +57,14 @@ function ClinicLayout() {
       ></ClinicDashboard>
       <Box flexGrow={1}>
         <UserBar handleOpen={() => handleOpen(!open)}></UserBar>
-        <Box mx={4}>
+        <Box
+          sx={{
+            mx: {
+              xs: 2,
+              md: 4,
+            },
+          }}
+        >
           <Outlet></Outlet>
         </Box>
       </Box>

@@ -14,6 +14,7 @@ const Records = () => {
 
   useEffect(() => {
     setData();
+    console.log("hehe");
   }, []);
 
   const onRefresh = React.useCallback(async () => {
@@ -57,12 +58,12 @@ const Records = () => {
                 <ListItemTitle>
                   <Text
                     style={{ fontFamily: "PoppinsBold", fontSize: 14 }}
-                  >{`${m.user_account.first_name} ${m.user_account?.middle_name} ${m.user_account?.last_name}`}</Text>
+                  >{`${m.user.firstName} ${m.user.middleName} ${m.user.lastName}`}</Text>
                 </ListItemTitle>
                 <ListItemSubtitle
                   style={{ fontFamily: "Poppins", fontSize: 12 }}
                 >
-                  {moment(m.created_at).format("MMMM DD ,YYYY  h:mm a")}
+                  {moment(m.created_at).format("MMMM DD, YYYY  h:mm a")}
                 </ListItemSubtitle>
               </ListItemContent>
             </ListItem>

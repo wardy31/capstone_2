@@ -13,20 +13,24 @@ function Form() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { state, handleChange } = useForm({ username: "", password: "" });
-  const { loading, data, error } = useSelector((state) => state.auth.login);
+  const { loading, error } = useSelector((state) => state.auth.login);
+  const { data } = useSelector((state) => state.auth.getUser);
 
   const handleLogin = async () => {
     const res = await dispatch(loginUser(state));
     if (res) {
       navigate("/");
-      toast("User Logged In");
+      console.log(data);
+      const message =
+        data.role == "clinic" ? "You are login as admin" : "User logged in";
+      toast(message);
     }
   };
 
   return (
     <>
       <Box mb={2}>
-        <Typography sx={{fontSize:14,mb:0.5}}>Username</Typography>
+        <Typography sx={{ fontSize: 14, mb: 0.5 }}>Username</Typography>
 
         <TextField
           sx={{ bgcolor: "primary.light" }}
@@ -39,7 +43,7 @@ function Form() {
       </Box>
 
       <Box mb={2}>
-        <Typography sx={{fontSize:14,mb:0.5}}>Password</Typography>
+        <Typography sx={{ fontSize: 14, mb: 0.5 }}>Password</Typography>
         <TextInputPassword
           error={Boolean(validate("password", error))}
           helperText={validate("password", error)}

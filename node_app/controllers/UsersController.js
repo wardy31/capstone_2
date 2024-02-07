@@ -223,6 +223,9 @@ const getUserHistoriesById = async (req, res) => {
       where: {
         userId: parseInt(req.params.id),
       },
+      orderBy: {
+        createdAt: "desc",
+      },
       include: {
         station: true,
         user: true,
@@ -647,6 +650,9 @@ const getNotifications = async (req, res) => {
         station: true,
         user: true,
       },
+      orderBy:{
+        createdAt:"desc"
+      }
     });
     res.json(result);
   } catch (error) {

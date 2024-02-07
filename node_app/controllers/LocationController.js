@@ -80,7 +80,7 @@ const createUserLocation = async (req, res) => {
     console.log("user", users);
     // 1 = no form , 2 = no face
     if (!users) {
-      return res.json({
+      return res.status(400).json({
         message: "No Declaration Form",
         status: 1,
       });
@@ -109,7 +109,7 @@ const createUserLocation = async (req, res) => {
     return res.send(result);
   } catch (error) {
     console.log(error);
-    res.status(400).send(error);
+    res.status(400).json(error);
   }
 };
 

@@ -2,24 +2,25 @@ import { create } from "zustand";
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-const store = create((set) => ({
-  loading: false,
-  cameraLoading:false,
+const store = create((set, get) => ({
+  loading: true,
+  cameraLoading: false,
   error: false,
-  data: [],
-  daily:0,
+  data: 0,
+  daily: 0,
   setData: async () => {
     set({ loading: true });
 
     try {
-      const token = await AsyncStorage.getItem("token");
+      const users = await AsyncStorage.getItem("user");
+      const { id } = JSON.parse(users);
+
       const { data } = await axios.get(
-        "http://192.168.1.105:8000/api/user/visited-log-record",
-        { headers: { Authorization: `Bearer ${token}` } }
+        `stations/${id}/location-histories?isToday=${true}`
       );
 
-      console.log("data", data);
-      set({ data: data.data });
+      console.log("dailys", data);
+      set({ data: data.length });
       set({ loading: false });
     } catch (error) {
       console.log(error);
@@ -29,15 +30,19 @@ const store = create((set) => ({
   setDaily: async (data) => {
     const token = await AsyncStorage.getItem("token");
     try {
-      const res = await axios.post(
-        "http://192.168.1.105:8000/api/station/get-daily-visit",{location_id:data},
+      const res = await axios.get(
+        `stations/${id}/location-histories`,
+        { location_id: data },
         { headers: { Authorization: `Bearer ${token}` } }
       );
-      set({daily:res.data.data.length})
-      console.log('count',res.data.data.length);
+      set({ daily: res.data.data.length });
+      console.log("count", res.data.data.length);
     } catch (error) {
-      console.log(error);
+      console.log("l;ogs", error);
     }
+  },
+  dailyIncrement: (data) => {
+    set((state) => ({ data: state.data + 1 }));
   },
 }));
 
