@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import configAxios from "../config/axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ToastAndroid } from "react-native";
 
 // const link = "https://laravel.lnucontacttracing.online";
 
@@ -45,9 +46,19 @@ const store = create((set, get) => ({
       console.log("ur", data);
       return true;
     } catch (error) {
-      set({ error: error.response.data.details });
-      console.log(error.response?.data?.details);
+      console.log(error.response);
       set({ loading: false });
+      if (!error.response?.data?.details) {
+        ToastAndroid.showWithGravity(
+          "Something went wrong.",
+          ToastAndroid.SHORT,
+          ToastAndroid.BOTTOM
+        );
+
+        console.log("error logs");
+        return false;
+      }
+      set({ error: error.response.data.details });
       return false;
     }
   },

@@ -58,12 +58,12 @@ const Records = () => {
                 <ListItemTitle>
                   <Text
                     style={{ fontFamily: "PoppinsBold", fontSize: 14 }}
-                  >{`${m.user.firstName} ${m.user.middleName} ${m.user.lastName}`}</Text>
+                  >{`${m?.user?.firstName} ${m.user?.middleName} ${m?.user?.lastName}`}</Text>
                 </ListItemTitle>
                 <ListItemSubtitle
                   style={{ fontFamily: "Poppins", fontSize: 12 }}
                 >
-                  {moment(m.created_at).format("MMMM DD, YYYY  h:mm a")}
+                  {moment(m?.createdAt).format("MMMM DD, YYYY hh:mm A")}
                 </ListItemSubtitle>
               </ListItemContent>
             </ListItem>
