@@ -87,10 +87,12 @@ function MonitorContacts() {
         loading={removeInfected.loading}
         open={dialog.remove}
         handleClose={() => handleDialog(false, "remove")}
-        title={"Delete Infected User"}
-        content={
-          "Deleting this infected user the contact user's will also be deleted. "
-        }
+        title={`Delete ${
+          form.status == "recovered" ? "Recovered" : "infected"
+        } User`}
+        content={`Deleting this ${
+          form.status == "recovered" ? "recovered" : "infected"
+        } user the contact user's will also be deleted. `}
       ></ConfirmationDialog>
 
       <Paper sx={{ px: 1, py: 1, mb: 2 }}>
@@ -121,8 +123,8 @@ function MonitorContacts() {
             handleAll(data);
           }}
           handleRemove={(userId) => {
-            handleChange(userId, "id");
             handleDialog(true, "remove");
+            handleAll(userId);
           }}
           handleTrace={(userId) => navigate(`${userId}/trace-contacts`)}
           handleView={(userId) => navigate(`/clinic/profile/${userId}`)}

@@ -22,6 +22,7 @@ import ClinicDashboard from "../features/dashboard/ClinicDashboard";
 import Redirect from "../features/auth/Redirect";
 import GenerateReports from "../features/reports/GenerateReports";
 import Notifications from "../features/notifications/Notifications";
+import UserProfilePage from "../features/user/containers/UserProfile";
 
 export default createBrowserRouter([
   {
@@ -105,6 +106,10 @@ export default createBrowserRouter([
           {
             path: "form",
             element: <Form></Form>,
+          },
+          {
+            path: "profile",
+            element: <UserProfilePage></UserProfilePage>,
           },
           {
             path: "visited-logs",

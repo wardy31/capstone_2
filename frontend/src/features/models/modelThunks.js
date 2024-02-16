@@ -38,10 +38,16 @@ export const postDetectFace = (image) => async (dispatch) => {
     dispatch(SET_SUCCESS({ type: "detectFace", payload: true }));
     console.log("has face");
 
-    return true;
+    return { status: 1, message: "face detected" };
   } catch (error) {
-    console.log("no face");
+    console.log("no face", error);
+    const status = error.response.data?.status;
     dispatch(SET_ERROR({ type: "detectFace", payload: true }));
-    return false;
+
+    if (!status) {
+      return { status: 2, message: "no face detected" };
+    } else {
+      return { status: 3, message: "faceSimilar" };
+    }
   }
 };

@@ -93,11 +93,12 @@ function ContactTable({
                   </IconButton>
                 </Tooltip>
 
-                <Tooltip title="Delete Infected User">
-                  <IconButton
-                    color="primary"
-                    onClick={() => handleRemove(u.id)}
-                  >
+                <Tooltip
+                  title={`Delete ${
+                    u.status == "recovered" ? "recovered" : "infected"
+                  } user`}
+                >
+                  <IconButton color="primary" onClick={() => handleRemove(u)}>
                     <DeleteForeverTwoToneIcon></DeleteForeverTwoToneIcon>
                   </IconButton>
                 </Tooltip>

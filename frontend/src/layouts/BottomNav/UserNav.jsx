@@ -5,6 +5,7 @@ import useData from "../../hooks/useData";
 import CottageTwoToneIcon from "@mui/icons-material/CottageTwoTone";
 import PersonPinTwoToneIcon from "@mui/icons-material/PersonPinTwoTone";
 import FeedTwoToneIcon from "@mui/icons-material/FeedTwoTone";
+import PersonOutlineTwoToneIcon from "@mui/icons-material/PersonOutlineTwoTone";
 import { useTheme } from "@emotion/react";
 
 function UserNav() {
@@ -65,6 +66,18 @@ function UserNav() {
           LinkComponent={Link}
           value={"/user/visited-logs"}
           to="visited-logs"
+        />
+        <BottomNavigationAction
+          sx={{
+            bgcolor: state == "/user/profile" ? "white" : "",
+            color: state == "/user/profile" ? "" : "white",
+            transition: theme.transitions.create(),
+          }}
+          label="Profile"
+          icon={<PersonOutlineTwoToneIcon />}
+          LinkComponent={Link}
+          value={"/user/profile"}
+          to="profile"
         />
       </BottomNavigation>
     </Paper>

@@ -67,7 +67,7 @@ function CheckContacts() {
       <Box display={"flex"} alignItems={"stretch"} columnGap={2} mt={2}>
         <Header
           title={"Check Contacts"}
-          subTitle={"close contacts of the infected user."}
+          subTitle={"close contacts."}
           hideButton={true}
           isBackButton={true}
           handleBackButton={() => navigate(-1)}

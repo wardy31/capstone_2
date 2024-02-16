@@ -28,7 +28,7 @@ app.use(logger("dev"));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use((res, req, next) => {
-  console.log("Date Log:", Date.now());
+  console.log("Date Log:", new Date(8.64e15).toString());
   next();
 });
 

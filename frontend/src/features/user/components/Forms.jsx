@@ -72,7 +72,7 @@ function Forms() {
 
     const res = await dispatch(createUser(formData));
     if (res) {
-      navigate('/login')
+      navigate("/login");
       toast("User Successfully Created");
     }
   };
@@ -80,7 +80,14 @@ function Forms() {
   useFetch(() => dispatch(getModel()));
 
   if (loading && !success) {
-    return <Progress message={"Loading Models ..."} xs={"caption"} md={"h6"} size={40}></Progress>;
+    return (
+      <Progress
+        message={"Loading Models ..."}
+        xs={"caption"}
+        md={"h6"}
+        size={40}
+      ></Progress>
+    );
   }
 
   return (
@@ -280,7 +287,7 @@ function Forms() {
             }
             helperText={
               Boolean(face1Error)
-                ? "No Face Detected"
+                ? face1Error
                 : validate("upload1", postUser.error)
             }
             fullWidth
@@ -292,10 +299,11 @@ function Forms() {
               const formData = new FormData();
               formData.append("face", e.target.files[0]);
               const res = await handleFaceDetection1(formData);
-              if (res) {
+              console.log("app", res);
+              if (res.status == 1) {
                 state.upload1 = e.target.files[0];
               } else {
-                handleFace1Error(true);
+                // handleFace1Error(true);
                 state.upload1 = "";
                 e.target.value = null;
               }
@@ -315,7 +323,7 @@ function Forms() {
             }
             helperText={
               Boolean(face2Error)
-                ? "No Face Detected"
+                ? face2Error
                 : validate("upload2", postUser.error)
             }
             fullWidth
@@ -327,10 +335,10 @@ function Forms() {
               const formData = new FormData();
               formData.append("face", e.target.files[0]);
               const res = await handleFaceDetection2(formData);
-              if (res) {
+              if (res.status == 1) {
                 state.upload2 = e.target.files[0];
               } else {
-                handleFace2Error(true);
+                // handleFace2Error(true);
                 state.upload2 = "";
                 e.target.value = null;
               }

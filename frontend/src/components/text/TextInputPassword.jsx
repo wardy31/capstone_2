@@ -20,6 +20,7 @@ function TextInputPassword({
   error,
   helperText,
   size = "large",
+  bgcolor = "primary.light",
 }) {
   const { state: showPassword, handleChange: handlePassword } = useValue(false);
 
@@ -27,7 +28,7 @@ function TextInputPassword({
     <FormControl fullWidth error={error}>
       {/* <InputLabel></InputLabel> */}
       <OutlinedInput
-        sx={{ bgcolor: "primary.light" }}
+        sx={{ bgcolor: bgcolor }}
         size={size}
         value={value}
         onChange={onChange}

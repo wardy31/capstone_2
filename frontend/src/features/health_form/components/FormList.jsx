@@ -47,6 +47,7 @@ function FormList({
             </Card>
           ))}
           <LoadingButton
+            disabled={!data.length}
             fullWidth
             variant="contained"
             size="large"

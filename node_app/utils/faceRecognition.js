@@ -82,6 +82,35 @@ const checkFaces = (filename) =>
     }
   });
 
+const checkSimilarFaces = (filename) =>
+  new Promise(async (resolve, reject) => {
+    const { Canvas, Image, ImageData } = canvas;
+    faceapi.env.monkeyPatch({ Canvas, Image, ImageData });
+
+    const img = await canvas.loadImage(`./uploads/${filename}`);
+
+    const result = await faceapi
+      .detectSingleFace(img)
+      .withFaceLandmarks()
+      .withFaceDescriptor();
+
+    const labeledImages = await loadImages();
+
+    const loadMatch = new faceapi.FaceMatcher(labeledImages);
+
+    if (result) {
+      const match = loadMatch.findBestMatch(result.descriptor);
+      console.log("Check Face:", match);
+      if (match.label != "unknown") {
+        resolve(true);
+      } else {
+        resolve(false);
+      }
+    } else {
+      resolve(false);
+    }
+  });
+
 const createDescriptors = (files, userId) =>
   new Promise(async (resolve, reject) => {
     const { Canvas, Image, ImageData } = canvas;
@@ -133,4 +162,5 @@ module.exports = {
   loadImages,
   loadModels,
   checkFaces,
+  checkSimilarFaces,
 };

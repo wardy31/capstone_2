@@ -13,8 +13,9 @@ import RemoveRedEyeTwoToneIcon from "@mui/icons-material/RemoveRedEyeTwoTone";
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import PersonAddAltTwoToneIcon from "@mui/icons-material/PersonAddAltTwoTone";
+import DeleteTwoToneIcon from "@mui/icons-material/DeleteTwoTone";
 
-function UserTable({ data, handleExposedUser }) {
+function UserTable({ data, handleExposedUser, onDelete }) {
   const navigate = useNavigate();
 
   return (
@@ -48,6 +49,11 @@ function UserTable({ data, handleExposedUser }) {
                   </IconButton>
                 </Tooltip>
 
+                <Tooltip title="Delete User" arrow>
+                  <IconButton color={"primary"} onClick={() => onDelete(m?.id)}>
+                    <DeleteTwoToneIcon></DeleteTwoToneIcon>
+                  </IconButton>
+                </Tooltip>
                 <Tooltip title="View Profile" arrow>
                   <IconButton
                     color={"primary"}

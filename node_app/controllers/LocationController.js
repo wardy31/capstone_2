@@ -5,12 +5,23 @@ const prisma = new PrismaClient();
 const { sockets } = require("../utils/sockets");
 
 const getLocations = async (req, res) => {
-  const { search = "" } = req.query;
+  const { search = "", date = "" } = req.query;
   let queries = {};
 
   if (search.trim().length) {
     queries = {
+      ...queries,
       stationId: parseInt(search),
+    };
+  }
+
+  if (date.trim().length) {
+    queries = {
+      ...queries,
+      createdAt: {
+        gte: moment(date).startOf("day").format(),
+        lte: moment(date).endOf("day").format(),
+      },
     };
   }
 
@@ -21,11 +32,11 @@ const getLocations = async (req, res) => {
         station: true,
         user: true,
       },
-      orderBy:{
-        station:{
-          name:"asc"
-        }
-      }
+      orderBy: {
+        station: {
+          name: "asc",
+        },
+      },
     });
 
     res.json(result);

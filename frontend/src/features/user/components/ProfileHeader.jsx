@@ -108,7 +108,7 @@ function ProfileHeader({ data, loading }) {
             </Box>
 
             <Box mt={2}>
-              {data.InfectedUser.length && (
+              {data.InfectedUser.length != 0 && (
                 <Chip
                   size="small"
                   label="Infected User"
@@ -118,14 +118,14 @@ function ProfileHeader({ data, loading }) {
                       letterSpacing: 1.2,
                       // fontWeight: "bold",
                     },
-                    mr:1
+                    mr: 1,
                   }}
                   icon={<LabelTwoToneIcon></LabelTwoToneIcon>}
                   color="error"
                 ></Chip>
               )}
 
-              {data.ExposedUser.length && (
+              {data.ExposedUser.length != 0 && (
                 <Chip
                   size="small"
                   label="Close Contact"

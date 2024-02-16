@@ -36,6 +36,22 @@ export const getUsers =
     }
   };
 
+export const removeUser = (id) => async (dispatch) => {
+  try {
+    dispatch(SET_LOADING({ type: "remove", payload: true }));
+    dispatch(SET_ERROR({ type: "remove", payload: false }));
+
+    const { data } = await axios.delete(`/users/${id}`);
+    console.log("data", data);
+    dispatch(SET_DATA({ type: "remove", payload: data }));
+    dispatch(SET_LOADING({ type: "remove", payload: false }));
+    await dispatch(getUsers());
+  } catch (error) {
+    dispatch(SET_LOADING({ type: "remove", payload: false }));
+    dispatch(SET_ERROR({ type: "remove", payload: true }));
+  }
+};
+
 export const getUserHealthRecords = (id) => async (dispatch) => {
   try {
     dispatch(SET_LOADING({ type: "userHealthRecord", payload: true }));
@@ -138,4 +154,41 @@ export const getNotifications = (id) => async (dispatch) => {
 
 export const notifyClinic = (isActive) => async (dispatch) => {
   dispatch(dispatch(SET_NOTIFY({ type: "notification", payload: isActive })));
+};
+
+export const onUpdateProfile = (form) => async (dispatch) => {
+  try {
+    dispatch(SET_LOADING({ type: "updateProfile", payload: true }));
+    dispatch(SET_ERROR({ type: "updateProfile", payload: false }));
+
+    const { data } = await axios.put(`users/${form.id}`, form);
+    dispatch(SET_DATA({ type: "updateProfile", payload: data }));
+    dispatch(SET_LOADING({ type: "updateProfile", payload: false }));
+
+    return true;
+  } catch (error) {
+    dispatch(SET_LOADING({ type: "updateProfile", payload: false }));
+    dispatch(SET_ERROR({ type: "updateProfile", payload: true }));
+
+    return false;
+  }
+};
+
+export const onUpdatePassword = (form) => async (dispatch) => {
+  try {
+    dispatch(SET_LOADING({ type: "updatePassword", payload: true }));
+    dispatch(SET_ERROR({ type: "updatePassword", payload: false }));
+
+    const { data } = await axios.put(`users/${form.id}/password`, form);
+    console.log("password", data);
+    dispatch(SET_DATA({ type: "updatePassword", payload: data }));
+    dispatch(SET_LOADING({ type: "updatePassword", payload: false }));
+
+    return true;
+  } catch (error) {
+    dispatch(SET_LOADING({ type: "updatePassword", payload: false }));
+    dispatch(SET_ERROR({ type: "updatePassword", payload: true }));
+
+    return false;
+  }
 };

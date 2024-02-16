@@ -13,6 +13,18 @@ function useFace(initialState) {
     setLoading(true);
     const result = await dispatch(postDetectFace(image));
     setLoading(false);
+
+    switch (result.status) {
+      case 2:
+        setError("No face detected");
+        break;
+      case 3:
+        setError("Detected the same face on the system");
+        break;
+
+      default:
+        break;
+    }
     return result;
   };
 

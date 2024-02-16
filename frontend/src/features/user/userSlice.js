@@ -45,6 +45,18 @@ const userSlice = createSlice({
       data: [],
       loading: true,
     },
+    updateProfile: {
+      loading: false,
+      error: [],
+    },
+    updatePassword: {
+      loading: false,
+      error: [],
+    },
+    remove: {
+      loading: false,
+      error: [],
+    },
   },
   reducers: {
     SET_DATA: (state, { payload: { type, payload } }) => {

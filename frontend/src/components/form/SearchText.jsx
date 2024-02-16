@@ -2,7 +2,7 @@ import { LoadingButton } from "@mui/lab";
 import { Box, Button, TextField } from "@mui/material";
 import React from "react";
 
-function SearchText({onChange, value, onFilter, loading, label}) {
+function SearchText({onChange, value, onFilter, loading, label,filterName="Filter"}) {
   return (
     <Box display={"flex"} alignItems={"center"} columnGap={2}>
       <TextField
@@ -19,7 +19,7 @@ function SearchText({onChange, value, onFilter, loading, label}) {
         variant="outlined"
         sx={{ bgcolor: "primary.light",py:0.8 }}
       >
-        Filter
+        {filterName}
       </LoadingButton>
     </Box>
   );

@@ -21,29 +21,32 @@ function Header({
       columnGap={2}
       mt={4}
     >
-      {isBackButton && (
-        <Button size="medium" variant="contained" onClick={handleBackButton}>
-          <ArrowBackTwoToneIcon fontSize="large" />
-        </Button>
-      )}
-      <Box>
-        <Typography
-          color={"primary"}
-          sx={{
-            fontSize: 24,
-            fontWeight: "bold",
-            textTransform: "capitalize",
-            letterSpacing: 1.2,
-          }}
-        >
-          {title}
-        </Typography>
-        <Typography
-          variant="caption"
-          sx={{ color: "text.secondary", letterSpacing: 1.2 }}
-        >
-          {subTitle}
-        </Typography>
+      <Box display={"flex"} alignItems={"center"} columnGap={2}>
+        {isBackButton && (
+          <Button size="medium" variant="contained" onClick={handleBackButton}>
+            <ArrowBackTwoToneIcon fontSize="large" />
+          </Button>
+        )}
+
+        <Box>
+          <Typography
+            color={"primary"}
+            sx={{
+              fontSize: 24,
+              fontWeight: "bold",
+              textTransform: "capitalize",
+              letterSpacing: 1.2,
+            }}
+          >
+            {title}
+          </Typography>
+          <Typography
+            variant="caption"
+            sx={{ color: "text.secondary", letterSpacing: 1.2 }}
+          >
+            {subTitle}
+          </Typography>
+        </Box>
       </Box>
       {!hideButton && (
         <Box>

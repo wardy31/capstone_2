@@ -27,6 +27,10 @@ function GenerateReports() {
     await store.dispatch(getInfectedUsers(e.target.value));
   };
 
+  const onDate = async (e) => {
+    await store.dispatch(getLocations("", e.target.value));
+  };
+
   const onClear = async () => {
     await store.dispatch(getLocations(" "));
   };
@@ -55,6 +59,7 @@ function GenerateReports() {
           stationRecords,
           locationRecords,
           onStation,
+          onDate,
           onClear,
         }}
         infectedUserData={{

@@ -22,7 +22,7 @@ export const getStation =
   };
 
 export const getLocations =
-  (stationId = "") =>
+  (stationId = "", date = "") =>
   async (dispatch) => {
     try {
       dispatch(SET_LOADING({ type: "getLocations", payload: true }));
@@ -30,7 +30,7 @@ export const getLocations =
       dispatch(SET_SUCCESS({ type: "getLocations", payload: false }));
 
       const { data } = await axios.get(
-        `location-histories?search=${stationId}`
+        `location-histories?search=${stationId}&date=${date}`
       );
       console.log(data);
 

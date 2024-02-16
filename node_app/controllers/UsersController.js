@@ -2,6 +2,7 @@ const { PrismaClient } = require("@prisma/client");
 const jwt = require("jsonwebtoken");
 const hash = require("bcrypt");
 const fs = require("fs");
+const fse = require("fs-extra");
 const prisma = new PrismaClient();
 const LoginValidation = require("../validations/LoginValidation");
 const CreateUserValidation = require("../validations/CreateUserValidation");
@@ -9,6 +10,8 @@ const {
   checkFaces,
   createDescriptors,
   loadModels,
+  t,
+  checkSimilarFaces,
 } = require("../utils/faceRecognition");
 const moment = require("moment");
 const transporter = require("../utils/mail");
@@ -635,6 +638,16 @@ const createContactUser = async (req, res) => {
 const getFace = async (req, res) => {
   try {
     const result = await checkFaces(req.file.filename);
+
+    if (result) {
+      const similar = await checkSimilarFaces(req.file.filename);
+      if (similar) {
+        return res
+          .status(400)
+          .send({ status: "faceSimilar", message: "Similar Face Detected" });
+      }
+    }
+
     console.log("face:", result);
     res.send(req.file);
   } catch (error) {
@@ -650,9 +663,84 @@ const getNotifications = async (req, res) => {
         station: true,
         user: true,
       },
-      orderBy:{
-        createdAt:"desc"
-      }
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    res.json(result);
+  } catch (error) {
+    res.send(error);
+  }
+};
+
+const updateUserById = async (req, res) => {
+  let queries = { ...req.body };
+  delete queries.password;
+  delete queries.createdAt;
+  delete queries.ExposedUser;
+  delete queries.InfectedUser;
+
+  try {
+    const result = await prisma.user.update({
+      where: {
+        id: parseInt(req.params.id),
+      },
+      data: {
+        ...queries,
+      },
+    });
+    res.json(result);
+  } catch (error) {
+    res.send(error);
+  }
+};
+
+const deleteUserById = async (req, res) => {
+  try {
+    await prisma.user.delete({
+      where: {
+        id: parseInt(req.params.id),
+      },
+    });
+
+    await fse.remove(`profiles/${req.params.id}`);
+
+    const descriptorsData = await fse.readJSON(
+      "descriptors/descriptors.json",
+      "utf8"
+    );
+
+    const updatedData = descriptorsData.filter((f) => req.params.id != f.label);
+
+    await fse.writeFile(
+      "descriptors/descriptors.json",
+      JSON.stringify(updatedData, null, 2)
+    );
+
+    res.json(updatedData);
+  } catch (error) {
+    res.send(error);
+  }
+};
+
+const updatePasswordById = async (req, res) => {
+  // let queries = { ...req.body };
+
+  // if (queries.password.trim().length) {
+  //   const hashPassword = await hash.hash(queries.password, 10);
+  //   queries = { ...queries, password: hashPassword };
+  // }
+
+  const hashPassword = await hash.hash(req.body.password, 10);
+
+  try {
+    const result = await prisma.user.update({
+      where: {
+        id: parseInt(req.params.id),
+      },
+      data: {
+        password: hashPassword,
+      },
     });
     res.json(result);
   } catch (error) {
@@ -661,6 +749,9 @@ const getNotifications = async (req, res) => {
 };
 
 module.exports = {
+  deleteUserById,
+  updatePasswordById,
+  updateUserById,
   getCloseContact,
   getFace,
   traceContacts,

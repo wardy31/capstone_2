@@ -1,7 +1,7 @@
 import React from "react";
 import UserTable from "../../components/UserTable";
 import { useFetch } from "../../../../hooks/useFetch";
-import { createInfectedUser, getUsers } from "../../userThunks";
+import { createInfectedUser, getUsers, removeUser } from "../../userThunks";
 import store from "../../../../store/store";
 import { useSelector } from "react-redux";
 import Header from "../../../../components/header/Header";
@@ -16,11 +16,13 @@ import useData from "../../../../hooks/useData";
 
 function User() {
   const { data, loading } = useSelector((state) => state.user.getUser);
+  const { loading: deleteLoading } = useSelector((state) => state.user.remove);
   const { loading: loadingInfected } = useSelector(
     (state) => state.user.createInfected
   );
   const { dialog, handleDialog } = useDialog({
     add: false,
+    remove: false,
   });
   const { state: form, handleChange } = useForm({ id: "", dateInfected: "" });
 
@@ -31,6 +33,14 @@ function User() {
     if (res) {
       handleDialog(false, "add");
       notify("Submitted as infected user");
+    }
+  };
+
+  const onRemoveUser = async () => {
+    const res = store.dispatch(removeUser(form.id));
+    if (res) {
+      handleDialog(false, "remove");
+      notify("user was deleted","error");
     }
   };
 
@@ -57,6 +67,26 @@ function User() {
         handleForm={(d) => handleChange(d, "dateInfected")}
       ></ConfirmInfectedDialog>
 
+      <ConfirmationDialog
+        open={dialog?.remove}
+        handleClose={() => handleDialog(false, "remove")}
+        loading={deleteLoading}
+        title={"Delete User"}
+        content={"Are you sure to delete this user?"}
+        handleSubmit={onRemoveUser}
+      ></ConfirmationDialog>
+
+      <ConfirmInfectedDialog
+        open={dialog.add}
+        loading={loadingInfected}
+        handleSubmit={handleSubmit}
+        handleClose={() => {
+          handleDialog(false, "add");
+          handleChange("", "dateInfected");
+        }}
+        handleForm={(d) => handleChange(d, "dateInfected")}
+      ></ConfirmInfectedDialog>
+
       <Paper sx={{ px: 1, py: 1, mb: 2 }}>
         <SearchText
           label="Search Name"
@@ -64,6 +94,7 @@ function User() {
           onChange={(e) => onSearch(e.target.value)}
           loading={loading}
           onFilter={() => store.dispatch(getUsers(searchData))}
+          filterName="Search"
         ></SearchText>
       </Paper>
 
@@ -72,6 +103,10 @@ function User() {
         handleExposedUser={(id) => {
           handleDialog(true, "add");
           handleChange(id, "id");
+        }}
+        onDelete={(id) => {
+          handleChange(id, "id");
+          handleDialog(true, "remove");
         }}
       ></UserTable>
     </Container>

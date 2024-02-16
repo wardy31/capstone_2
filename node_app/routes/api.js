@@ -23,6 +23,9 @@ const {
   createContactUser,
   getContactsByInfectedUserId,
   getNotifications,
+  updateUserById,
+  updatePasswordById,
+  deleteUserById,
 } = require("../controllers/UsersController");
 const {
   getDisease,
@@ -98,6 +101,9 @@ router.post("/create-user", images(), createUser);
 
 router.get("/users", getUsers);
 router.get("/users/:id", getUserById);
+router.put("/users/:id", updateUserById);
+router.delete("/users/:id", deleteUserById);
+router.put("/users/:id/password", updatePasswordById);
 router.get("/users/:id/location-histories", getUserHistoriesById);
 router.get("/users/:id/responses", getResponseByUserId);
 router.post("/users/:id/responses", createResponse);

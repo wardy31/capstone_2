@@ -7,6 +7,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  Typography,
 } from "@mui/material";
 import React from "react";
 import VisibilityTwoToneIcon from "@mui/icons-material/VisibilityTwoTone";
@@ -16,6 +17,16 @@ import { useNavigate } from "react-router-dom";
 function UserTable({ data }) {
   const navigate = useNavigate();
 
+  if (!data.length) {
+    return (
+      <>
+        <Typography variant="h6" fontWeight={"bold"} mt={6}>
+          No Data Found{" "}
+        </Typography>
+      </>
+    );
+  }
+  
   return (
     <TableContainer component={Paper}>
       <Table>

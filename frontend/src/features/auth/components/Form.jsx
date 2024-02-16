@@ -19,11 +19,11 @@ function Form() {
   const handleLogin = async () => {
     const res = await dispatch(loginUser(state));
     if (res) {
-      navigate("/");
-      console.log(data);
-      const message =
-        data.role == "clinic" ? "You are login as admin" : "User logged in";
+      console.log(data.role);
+      // const message = (data?.role == "clinic") ? "You are login as admin" : "Logged  In";
+      console.log("message","Logged In");
       toast(message);
+      navigate("/");
     }
   };
 

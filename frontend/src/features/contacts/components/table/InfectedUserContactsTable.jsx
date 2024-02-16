@@ -8,6 +8,7 @@ import {
   TableHead,
   TableRow,
   Tooltip,
+  Typography,
 } from "@mui/material";
 import React from "react";
 import EditTwoToneIcon from "@mui/icons-material/EditTwoTone";
@@ -21,7 +22,11 @@ function InfectedUserContactsTable({
   handleView,
 }) {
   if (!data.length) {
-    return <></>;
+    return (
+      <>
+        <Typography textAlign={"center"} variant="h6" fontWeight={"bold"} mt={8}>No Contacts Found</Typography>
+      </>
+    );
   }
   return (
     <TableContainer component={Paper}>
@@ -69,7 +74,6 @@ function InfectedUserContactsTable({
                     <VisibilityTwoToneIcon></VisibilityTwoToneIcon>
                   </IconButton>
                 </Tooltip>
-                
               </TableCell>
             </TableRow>
           ))}

@@ -12,6 +12,7 @@ import {
   TableContainer,
   TableHead,
   TableRow,
+  TextField,
   Typography,
 } from "@mui/material";
 import DownloadButton from "./button/DownloadButton";
@@ -22,9 +23,11 @@ function StationsPanel({
   stationRecords: { data, loading },
   locationRecords: { data: locationData, loading: locationLoading },
   onStation,
+  onDate,
   onClear,
 }) {
   const { toPDF, targetRef } = usePDF({ filename: "station-users-entry.pdf" });
+
   return (
     <TabPanel value={2}>
       <Box
@@ -32,12 +35,12 @@ function StationsPanel({
         alignItems={"center"}
         justifyContent={"space-between"}
       >
-        <Box>
-          <Typography variant="caption" display={"block"}>
-            Select Station
-          </Typography>
+        <Box display={"flex"} alignItems={"end"}>
           <Box>
-            <FormControl sx={{ width: 320 }}>
+            <Typography variant="caption" display={"block"}>
+              Select Station
+            </Typography>
+            <FormControl sx={{ width: 320, mr: 1 }}>
               <Select
                 size="small"
                 sx={{ bgcolor: "white" }}
@@ -47,6 +50,21 @@ function StationsPanel({
                   data.map((m) => <MenuItem value={m.id}>{m.name}</MenuItem>)}
               </Select>
             </FormControl>
+          </Box>
+
+          <Box>
+            <Typography variant="caption" display={"block"}>
+              Select Station
+            </Typography>
+
+            <TextField
+              type="date"
+              size="small"
+              onChange={onDate}
+            ></TextField>
+          </Box>
+
+          <Box>
             <Button
               onClick={onClear}
               variant="outlined"
