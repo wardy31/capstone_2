@@ -1,6 +1,7 @@
 const faceapi = require("face-api.js");
 const tf = require("@tensorflow/tfjs-node");
 const fs = require("fs");
+const fse = require("fs-extra");
 const canvas = require("canvas");
 const { rsqrt } = require("@tensorflow/tfjs-core");
 
@@ -96,6 +97,11 @@ const checkSimilarFaces = (filename) =>
 
     const labeledImages = await loadImages();
 
+    if (!labeledImages.length) {
+      return resolve(false);
+    }
+
+    console.log("labeledImages", labeledImages);
     const loadMatch = new faceapi.FaceMatcher(labeledImages);
 
     if (result) {

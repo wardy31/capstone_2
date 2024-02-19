@@ -8,6 +8,7 @@ node_modules/
 dist/
 
 # Images
+uploads/
 image/
 descriptors/
 profiles/
