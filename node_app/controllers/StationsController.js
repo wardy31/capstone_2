@@ -3,6 +3,7 @@ const prisma = new PrismaClient();
 const jwt = require("jsonwebtoken");
 const hash = require("bcrypt");
 const schema = require("../validations/StationValidation");
+const createStationValidation = require("../validations/CreateStationValidation");
 const moment = require("moment");
 
 const loginStation = async (req, res) => {
@@ -134,7 +135,7 @@ const getLocationHistoriesByStationId = async (req, res) => {
 
 const createStation = async (req, res) => {
   try {
-    const { name, username, password } = await schema.validateAsync(req.body, {
+    const { name } = await createStationValidation.validateAsync(req.body, {
       abortEarly: false,
     });
 
